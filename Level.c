@@ -19,12 +19,7 @@ Screen currentLevel[16];
 void SetLevel(void)
 {
     SWITCH_ROM(2);
-        unsigned char echo[8192];
-
-                for(int x = 0;x < 4096;x++)
-                {
-                    echo[x] = 0;
-                }
+    
     
 
     initLevelVram();
@@ -33,7 +28,7 @@ void SetLevel(void)
     {
         for(int y = 0; y < 32; y++)
         {
-            set_bkg_tile_xy(x,y,echo[x + y]);
+            
         }
     }
 

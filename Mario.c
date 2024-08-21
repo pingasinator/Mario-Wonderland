@@ -14,15 +14,25 @@ Collision hitbox = {.size={.x=2,.y=3},.offset={.x=-1,.y=-2},.pixeloffset={.x=6,.
 
 int Transformation = 0;
 
-int dir = 0;
+int maxSpeed;
+
+int orientation = 0;
 
 int Started = 0;
 char onGround = 0;
+
+int animState = 0;
 
 void Start_Mario(void)
 {
     set_sprite_data(0,1,null);
     set_sprite_data(1,6,Small_Idle);
+    set_sprite_data(7,4,Small_Move_0);
+    set_sprite_data(11,4,Small_Move_1);
+    set_sprite_data(15,4,Small_Move_2);
+    set_sprite_data(19,6,Small_Jump);
+    set_sprite_data(25,1,Small_Fall);
+    set_sprite_data(26,5,Small_Slide);
 }
 
 void Update_Mario(void)
@@ -31,7 +41,22 @@ void Update_Mario(void)
     {
         Start_Mario();
     }
-    dir = joypad() == J_LEFT ? 1 : joypad() == J_RIGHT ? 0 : dir;
+    orientation = joypad() == J_LEFT ? 1 : joypad() == J_RIGHT ? 0 : orientation;
+    
+    switch(joypad())
+    {
+        case J_B:
+        case J_RIGHT+J_B:
+        case J_LEFT+J_B:
+        case J_DOWN+J_B:
+        case J_UP+J_B:
+        maxSpeed = 10;
+        break;
+
+        default:
+        maxSpeed = 5;
+        break;
+    }
     
     switch(joypad())
     {
@@ -48,18 +73,40 @@ void Update_Mario(void)
         break;
     }
 
-    Idle();
-
-
-
     velocity.x -= Sign(velocity.x);
     velocity.y += 1;
-    velocity.x = Clamp(velocity.x,TileMapCollisionSide(GetMarioCollision(),&velocity,2) == 1 ? 0 : -5,TileMapCollisionSide(GetMarioCollision(),&velocity,3) == 1 ? 0 : 5);
-    velocity.y = Clamp(velocity.y,TileMapCollisionSide(GetMarioCollision(),&velocity,1) == 1 ? 0 : -5,TileMapCollisionSide(GetMarioCollision(),&velocity,0) == 1 ? 0 : 5);
-
+    velocity.x = Clamp(velocity.x,TileMapCollisionSide(GetMarioCollision(),&velocity,2) == 1 ? 0 : -maxSpeed,TileMapCollisionSide(GetMarioCollision(),&velocity,3) == 1 ? 0 : maxSpeed);
+    velocity.y = Clamp(velocity.y,TileMapCollisionSide(GetMarioCollision(),&velocity,1) == 1 ? 0 : -7,TileMapCollisionSide(GetMarioCollision(),&velocity,0) == 1 ? 0 : 5);
+    
     Vector2 dir = {.x=0,.y=1};
-    if(Raycast(position,dir,velocity,2,8) == 1)
+    onGround = Raycast(position,dir,velocity,1,8);
+
+    if(onGround == 0)
     {
+        if(velocity.y >= 1)
+        {
+            Mario_Fall();
+        }else
+        {
+            Mario_Jump();
+        }
+
+    }else
+    {
+        if(abs(velocity.x) >= 1)
+        {
+            if((velocity.x < 0 && orientation == 0) || (velocity.x > 0 && orientation == 1))
+            {
+                Mario_Slide();
+            }else
+            {
+                Mario_Move();
+            }
+        }else
+        {
+            Mario_Idle();
+        }
+
         switch(joypad())
         {
             case J_A:
@@ -84,7 +131,7 @@ void Update_Mario(void)
 
 }
 
-void Idle(void)
+void Mario_Idle(void)
 {
     switch(Transformation)
     {
@@ -116,11 +163,106 @@ void Idle(void)
     }
 }
 
+void Mario_Move(void)
+{
+    switch(animState)
+    {
+        case 0:
+        set_sprite_tile(0,0);
+        set_sprite_tile(1,0);
+        set_sprite_tile(2,1);
+        set_sprite_tile(3,2);
+        set_sprite_tile(4,0);
+        set_sprite_tile(5,7);
+        set_sprite_tile(6,8);
+        set_sprite_tile(7,0);
+        set_sprite_tile(8,9);
+        set_sprite_tile(9,10);
+        break;
+
+        case 2:
+        set_sprite_tile(0,0);
+        set_sprite_tile(1,0);
+        set_sprite_tile(2,1);
+        set_sprite_tile(3,2);
+        set_sprite_tile(4,0);
+        set_sprite_tile(5,11);
+        set_sprite_tile(6,12);
+        set_sprite_tile(7,0);
+        set_sprite_tile(8,13);
+        set_sprite_tile(9,14);
+        break;
+
+        case 4:
+        set_sprite_tile(0,0);
+        set_sprite_tile(1,0);
+        set_sprite_tile(2,1);
+        set_sprite_tile(3,2);
+        set_sprite_tile(4,0);
+        set_sprite_tile(5,15);
+        set_sprite_tile(6,16);
+        set_sprite_tile(7,0);
+        set_sprite_tile(8,17);
+        set_sprite_tile(9,18);
+        break;
+    }
+
+
+    animState++;
+    animState = animState >= 6 ? 0 : animState;
+}
+
+void Mario_Fall(void)
+{
+    animState = 0;
+
+    set_sprite_tile(0,0);
+    set_sprite_tile(1,0);
+    set_sprite_tile(2,19);
+    set_sprite_tile(3,2);
+    set_sprite_tile(4,0);
+    set_sprite_tile(5,21);
+    set_sprite_tile(6,25);
+    set_sprite_tile(7,0);
+    set_sprite_tile(8,23);
+    set_sprite_tile(9,24);
+}
+
+void Mario_Jump(void)
+{
+    animState = 0;
+    set_sprite_tile(0,0);
+    set_sprite_tile(1,0);
+    set_sprite_tile(2,19);
+    set_sprite_tile(3,20);
+    set_sprite_tile(4,0);
+    set_sprite_tile(5,21);
+    set_sprite_tile(6,22);
+    set_sprite_tile(7,0);
+    set_sprite_tile(8,23);
+    set_sprite_tile(9,24);
+}
+
+void Mario_Slide(void)
+{
+    animState = 0;
+    set_sprite_tile(0,0);
+    set_sprite_tile(1,0);
+    set_sprite_tile(2,1);
+    set_sprite_tile(3,2);
+    set_sprite_tile(4,0);
+    set_sprite_tile(5,26);
+    set_sprite_tile(6,27);
+    set_sprite_tile(7,30);
+    set_sprite_tile(8,28);
+    set_sprite_tile(9,29);
+}
+
 void DisplayMario(void)
 {
     Vector2 cam ;
     cam = GetCamera();
-    switch (dir)
+    switch (orientation)
     {
         case 0:
         for(int i = 0; i < 10; i++)
@@ -158,6 +300,11 @@ void DisplayMario(void)
     }
 }
 
+void Set_Mario_Position(int x,int y)
+{
+    position.x = x;
+    position.y = y;
+}
 
 Collision GetMarioCollision(void)
 {

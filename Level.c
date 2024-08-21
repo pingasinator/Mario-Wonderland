@@ -1,6 +1,7 @@
 #include "include\Level.h"
 #include "include\Camera.h"
 #include "include\Mario.h"
+#include "include\Enemies.h"
 #include "include\Items.h"
 #include "include\Sprite.h"
 #include "include\TilePalettes.h"
@@ -17,9 +18,6 @@ extern Screen *Level_00[];
 Screen **loadedLevel;
 
 Item* Items;
-
-
-
 
 Screen currentLevel[16];
 
@@ -63,9 +61,12 @@ void SetLevel(void)
 
 void Level_Update(void)
 {
+    Enemy e = {.position={.x=32,.y=32},.type=0,.sprite=0};
+    Set_Mario_Position(2 * 8,27 * 8);
     while (1)
     {
         Update_Mario();
+        Update_Enemy(&e);
         Update_Camera();
         SHOW_SPRITES;
         SHOW_BKG;

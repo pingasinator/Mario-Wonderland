@@ -16,9 +16,9 @@ typedef struct
     Collision* Hitbox;
 } Enemy;
 
-void Enemy_Update(Enemy *e);
+void Update_Enemy(Enemy *e);
 
-void Goomba_Update(Enemy *e);
+void Update_Goomba(Enemy *e);
 void Goomba_Start(Enemy* e);
 
 void Koopa_Start(Enemy *e);

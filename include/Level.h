@@ -7,7 +7,6 @@ typedef struct
 {
     unsigned char* Tilemap;
     Vector2 position;
-    int ID;
     Vector2 MinBounds;
     Vector2 MaxBounds;
 } Screen;

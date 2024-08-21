@@ -4,13 +4,13 @@
 
 #pragma bank 2
 
-const Screen Level_00_Screen_00 = {.Tilemap=Tilemap_Level_00_00,.position={.x=0,.y=0},.MinBounds={.x=1,.y=1},.MaxBounds={.x=0,.y=1},.ID=0};
-const Screen Level_00_Screen_10 = {.Tilemap=Tilemap_Level_00_10,.position={.x=1,.y=0},.MinBounds={.x=0,.y=1},.MaxBounds={.x=1,.y=1},.ID=1};
-const Screen Level_00_Screen_20 = {.Tilemap=Tilemap_Level_00_20,.position={.x=2,.y=0},.MinBounds={.x=0,.y=1},.MaxBounds={.x=0,.y=1},.ID=2};
+const Screen Level_00_Screen_00 = {.Tilemap=Tilemap_Level_00_00,.position={.x=0,.y=0},.MinBounds={.x=1,.y=1},.MaxBounds={.x=0,.y=1}};
+const Screen Level_00_Screen_10 = {.Tilemap=Tilemap_Level_00_10,.position={.x=1,.y=0},.MinBounds={.x=0,.y=1},.MaxBounds={.x=1,.y=1}};
+const Screen Level_00_Screen_20 = {.Tilemap=Tilemap_Level_00_20,.position={.x=2,.y=0},.MinBounds={.x=0,.y=1},.MaxBounds={.x=0,.y=1}};
 
-const Screen Level_00_Screen_01 = {.Tilemap=Tilemap_Level_00_01,.position={.x=0,.y=1},.MinBounds={.x=0,.y=1},.MaxBounds={.x=0,.y=1},.ID=3};
-const Screen Level_00_Screen_11 = {.Tilemap=Tilemap_Level_00_11,.position={.x=0,.y=1},.MinBounds={.x=0,.y=1},.MaxBounds={.x=0,.y=1},.ID=3};
-const Screen Level_00_Screen_21 = {.Tilemap=Tilemap_Level_00_21,.position={.x=0,.y=1},.MinBounds={.x=0,.y=1},.MaxBounds={.x=0,.y=1},.ID=3};
+const Screen Level_00_Screen_01 = {.Tilemap=Tilemap_Level_00_01,.position={.x=0,.y=1},.MinBounds={.x=0,.y=1},.MaxBounds={.x=0,.y=1}};
+const Screen Level_00_Screen_11 = {.Tilemap=Tilemap_Level_00_11,.position={.x=0,.y=1},.MinBounds={.x=0,.y=1},.MaxBounds={.x=0,.y=1}};
+const Screen Level_00_Screen_21 = {.Tilemap=Tilemap_Level_00_21,.position={.x=0,.y=1},.MinBounds={.x=0,.y=1},.MaxBounds={.x=0,.y=1}};
 
 
 const Screen *Level_00[] = 

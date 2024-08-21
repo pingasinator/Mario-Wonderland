@@ -18,7 +18,5 @@ void DisplayMario(void);
 int Get_Transformation(void);
 int Set_Transformation(int i);
 
-void Update_Camera(void);
-
 Collision GetMarioCollision(void);
 #endif 

@@ -1,5 +1,6 @@
 #include "include\Camera.h"
 #include "include\Level.h"
+#include "include\Sprite.h"
 #include <gb\gb.h>
 
 Vector2 Camera = {.x=0,.y=0};
@@ -9,24 +10,27 @@ Vector2 GetCamera(void)
     return Camera;
 }
 
+void Update_Camera(void)
+{
+    char *Tilemap = Get_Tilemap();
+        for(int i = 0;i < 11;i++)
+        {
+            Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * 128],Camera.x / 16 * 2 - 2,Camera.y / 16 * 2 - 2 + i * 2);
+            Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 - 2);
+            Set_Sprite_Tile(Tilemap[Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * 128],Camera.x / 16 * 2 + 20,Camera.y / 16 * 2 - 2 + i * 2);
+            Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 + 18);
+        }
+    
+
+    move_bkg(Camera.x,Camera.y);
+}
+
 void MoveCamera(int x,int y)
 {
     Camera.x += x;
     Camera.y += y;
 
-    Screen *level = GetCurrentLevel();
-    Screen s;
-
-    for(int i = 0; i < 2;i++)
-    {
-        if(level[i].position.x == (Camera.x + 8) / 8 / 32 && level[i].position.y == (Camera.y + 8) / 8 / 32)
-        {
-            s = level[i];
-            break;
-        }
-    }
-
-    Camera.x = s.MinBounds.x == 1 && Camera.x < s.position.x * 8 * 32? s.position.x * 8 *32 : Camera.x + 20 * 8 > (s.position.x + 1) * 8 * 32 && s.MaxBounds.x == 1 ? (s.position.x + 1) * 8 * 32 - 20 * 8 : Camera.x;
-    Camera.y = s.MinBounds.y == 1 && Camera.y < s.position.y * 8 * 32? s.position.y * 8 *32 : Camera.y + 18 * 8 > (s.position.y + 1) * 8 * 32 && s.MaxBounds.y == 1 ? (s.position.y + 1) * 8 * 32 - 18 * 8 : Camera.y;
+    Camera.x = Clamp(Camera.x,0,128 * 16 - 10 * 16);
+    Camera.y = Clamp(Camera.y,0,32 * 16 - 9 * 16);
     move_bkg(Camera.x,Camera.y);
 }

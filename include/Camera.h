@@ -8,4 +8,5 @@ Vector2 GetCameraCenter(void);
 Vector2 GetVRamCamera(int i);
 void MoveCamera(int x,int y);
 Vector2 GetPositionInVram(Vector2 position);
+void Update_Camera(void);
 #endif

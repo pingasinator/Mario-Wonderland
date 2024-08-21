@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    "*.embeddedhtml": "html",
     ".fantomasignore": "ignore",
     "goomba.h": "c",
     "metasprites.h": "c",
@@ -17,7 +18,8 @@
     "objects.h": "c",
     "items.h": "c",
     "stdlib.h": "c",
-    "camera.h": "c"
+    "camera.h": "c",
+    "sprite.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

@@ -5,6 +5,7 @@
 #include "Sprites\Mario.h"
 
 #include <gb\gb.h>
+#include <stdlib.h>
 
 Vector2 position = {.x=0,.y=0};
 Vector2 velocity = {.x=0,.y=0};
@@ -36,67 +37,51 @@ void Update_Mario(void)
     {
         case J_RIGHT:
         case J_RIGHT+J_B:
+        case J_RIGHT+J_A:
         velocity.x += 2;
         break;
 
         case J_LEFT:
         case J_LEFT+J_B:
-        velocity.x -= 2;
-        break;
-
-        case J_A:
-        velocity.y -= 5;
-        break;
-
         case J_LEFT+J_A:
-        velocity.y -= 5;
         velocity.x -= 2;
-        break;
-
-        case J_RIGHT+J_A:
-        velocity.x += 2;
-        velocity.y -= 5;
         break;
     }
 
     Idle();
 
-    velocity.y += 1;
-    velocity.y = Clamp(velocity.y,-5, 5);
-    velocity.x = Clamp(velocity.x,-5,5);
+
+
     velocity.x -= Sign(velocity.x);
+    velocity.y += 1;
+    velocity.x = Clamp(velocity.x,TileMapCollisionSide(GetMarioCollision(),&velocity,2) == 1 ? 0 : -5,TileMapCollisionSide(GetMarioCollision(),&velocity,3) == 1 ? 0 : 5);
+    velocity.y = Clamp(velocity.y,TileMapCollisionSide(GetMarioCollision(),&velocity,1) == 1 ? 0 : -5,TileMapCollisionSide(GetMarioCollision(),&velocity,0) == 1 ? 0 : 5);
+
+    Vector2 dir = {.x=0,.y=1};
+    if(Raycast(position,dir,velocity,2,8) == 1)
+    {
+        switch(joypad())
+        {
+            case J_A:
+            case J_A + J_B:
+            case J_A + J_RIGHT:
+            case J_A + J_LEFT:
+            case J_A + J_DOWN:
+            case J_A + J_UP:
+            velocity.y = -10;
+            break;
+
+        }
+    }
 
     position.x += velocity.x;
     position.y += velocity.y;
 
-
-    while(TileMapCollisionSide(GetMarioCollision(),velocity,0) >= 1)
-    {
-        position.y--;
-        velocity.y = velocity.y > 0 ? 0 : velocity.y;
-    }
-
-    while(TileMapCollisionSide(GetMarioCollision(),velocity,1) >= 1)
-    {
-        position.y++;
-        velocity.y = velocity.y < 0 ? 0 : velocity.y;
-    }
-
-    while(TileMapCollisionSide(GetMarioCollision(),velocity,3) >= 1)
-    {
-        position.x++;
-        velocity.x = velocity.x < 0 ? 0 : velocity.x;
-    }
-
-    while(TileMapCollisionSide(GetMarioCollision(),velocity,2) >= 1)
-    {
-        position.x--;
-        velocity.x > velocity.x > 0 ? 0 : velocity.x;
-    }
-
-
-    Update_Camera();
+    Vector2 camera;
+    camera = GetCamera();
+    MoveCamera(position.x - (camera.x + 88),position.y - (camera.y + 80));
     DisplayMario();
+
 }
 
 void Idle(void)
@@ -171,14 +156,6 @@ void DisplayMario(void)
         move_sprite(9,-(cam.x - position.x),-(cam.y - position.y) + 16);
         break;
     }
-}
-
-void Update_Camera(void)
-{
-    Vector2 camera;
-    camera = GetCamera();
-    MoveCamera(position.x - (camera.x + 88),0);
-    MoveCamera(0,position.y - (camera.y + 72));
 }
 
 

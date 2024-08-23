@@ -5,6 +5,8 @@ extern unsigned char *Overworld_Palette[];
 unsigned char **Current_Palette;
 unsigned char Tilemap[4096];
 
+
+
 void Set_Tile_Palette(int i)
 {
     switch(i)

@@ -14,8 +14,10 @@
 #include <stdlib.h>
 
 extern Screen *Level_00[];
+extern Enemy Level_00_Enemies[];
 
 Screen **loadedLevel;
+Enemy *currentEnemies;
 
 Item* Items;
 
@@ -24,6 +26,7 @@ Screen currentLevel[16];
 void SetLevel(void)
 {
     SWITCH_ROM(2);
+    currentEnemies = Level_00_Enemies;
     for(int i = 0; i < 16;i++)
     {
         if(Level_00[i] != NULL)
@@ -61,13 +64,12 @@ void SetLevel(void)
 
 void Level_Update(void)
 {
-    Enemy e = {.position={.x=32,.y=32},.type=0,.sprite=0};
-    Set_Mario_Position(2 * 8,27 * 8);
     while (1)
     {
-        Update_Mario();
-        Update_Enemy(&e);
         Update_Camera();
+        Update_Mario();
+
+
         SHOW_SPRITES;
         SHOW_BKG;
     }
@@ -75,12 +77,15 @@ void Level_Update(void)
 
 void initLevelVram(void)
 {
+    init_enemies_sprite();
+
     for(int z = 0; z < 5; z++)
     {
         set_bkg_data(1 + z * 4,4,Default_Tiles[z]);
     }
 
-    set_bkg_data(22,6,Pipe);
+    set_bkg_data(21,5,Pipe_H);
+    set_bkg_data(26,5,Pipe_V);
 }
 
 Screen *GetCurrentLevel(void)

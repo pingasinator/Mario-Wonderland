@@ -1,6 +1,7 @@
 #include "include\Mathf.h"
 #include "include\Mario.h"
 #include "include\Camera.h"
+#include "include\GameSystem.h"
 
 #include "Sprites\Mario.h"
 
@@ -10,7 +11,7 @@
 Vector2 position = {.x=0,.y=0};
 Vector2 velocity = {.x=0,.y=0};
 
-Collision hitbox = {.size={.x=2,.y=3},.offset={.x=-1,.y=-2},.pixeloffset={.x=6,.y=6},.pixelsize={.x=5,.y=6}};
+Collision hitbox = {.pixeloffset={.x=-8,.y=-18},.pixelsize={.x=14,.y=24}};
 
 int Transformation = 0;
 
@@ -41,37 +42,11 @@ void Update_Mario(void)
     {
         Start_Mario();
     }
-    orientation = joypad() == J_LEFT ? 1 : joypad() == J_RIGHT ? 0 : orientation;
+    orientation = GetButtonDown(J_LEFT) ? 1 : GetButtonDown(J_RIGHT) ? 0 : orientation;
     
-    switch(joypad())
-    {
-        case J_B:
-        case J_RIGHT+J_B:
-        case J_LEFT+J_B:
-        case J_DOWN+J_B:
-        case J_UP+J_B:
-        maxSpeed = 10;
-        break;
-
-        default:
-        maxSpeed = 5;
-        break;
-    }
+    maxSpeed = GetButtonDown(J_B) ? 7 : 5;
     
-    switch(joypad())
-    {
-        case J_RIGHT:
-        case J_RIGHT+J_B:
-        case J_RIGHT+J_A:
-        velocity.x += 2;
-        break;
-
-        case J_LEFT:
-        case J_LEFT+J_B:
-        case J_LEFT+J_A:
-        velocity.x -= 2;
-        break;
-    }
+    velocity.x += GetButtonDown(J_RIGHT) ? 2 : GetButtonDown(J_LEFT) == 1 ? -2 : 0;
 
     velocity.x -= Sign(velocity.x);
     velocity.y += 1;
@@ -79,7 +54,7 @@ void Update_Mario(void)
     velocity.y = Clamp(velocity.y,TileMapCollisionSide(GetMarioCollision(),&velocity,1) == 1 ? 0 : -7,TileMapCollisionSide(GetMarioCollision(),&velocity,0) == 1 ? 0 : 5);
     
     Vector2 dir = {.x=0,.y=1};
-    onGround = Raycast(position,dir,velocity,1,8);
+    onGround = Raycast(position,dir,velocity,8);
 
     if(onGround == 0)
     {
@@ -107,18 +82,7 @@ void Update_Mario(void)
             Mario_Idle();
         }
 
-        switch(joypad())
-        {
-            case J_A:
-            case J_A + J_B:
-            case J_A + J_RIGHT:
-            case J_A + J_LEFT:
-            case J_A + J_DOWN:
-            case J_A + J_UP:
-            velocity.y = -10;
-            break;
-
-        }
+        velocity.y = GetButtonDown(J_A) ? -10 : velocity.y;
     }
 
     position.x += velocity.x;
@@ -304,6 +268,21 @@ void Set_Mario_Position(int x,int y)
 {
     position.x = x;
     position.y = y;
+}
+
+Vector2 Get_Mario_Velocity(void)
+{
+    return velocity;
+}
+
+Vector2 *Get_Mario_Velocity_ptr(void)
+{
+    return &velocity;
+}
+void Set_Mario_Velocity(int x,int y)
+{
+    velocity.x = x;
+    velocity.y = y;
 }
 
 Collision GetMarioCollision(void)

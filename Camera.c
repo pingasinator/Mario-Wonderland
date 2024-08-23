@@ -44,5 +44,4 @@ void MoveCamera(int x,int y)
 
     Camera.x = Clamp(Camera.x,0,128 * 16 - 10 * 16);
     Camera.y = Clamp(Camera.y,0,32 * 16 - 9 * 16);
-    move_bkg(Camera.x,Camera.y);
 }

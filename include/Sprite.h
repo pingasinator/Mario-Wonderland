@@ -3,15 +3,9 @@
 #ifndef Sprite_H
 #define Sprite_H
 
-static unsigned char Sprites[40] =
-{
-    1,1,1,1,1,1,1,1,1,1,
-    1,1,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0
-};
 
-void AddSprite(int* i,int size,int Tile);
+
+int Add_Sprite(int size);
 void FreeSprite(int* sprite,int size);
 int CheckVramPlace(void);
 void Set_Sprite_Tile(unsigned char Sprite,int x,int y);

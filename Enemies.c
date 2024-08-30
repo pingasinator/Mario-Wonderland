@@ -2,6 +2,7 @@
 #include "include\Camera.h"
 #include "Sprites\Goomba.h"
 #include "include\Mario.h"
+#include "include\Sprite.h"
 #include <gb\gb.h>
 
 void init_enemies_sprite(void)
@@ -40,6 +41,8 @@ void Update_Goomba(Enemy *e)
         e->Hitbox.pixelsize.y = 14;
         e->Hitbox.position = e->position;
         e->deathDelay = 10;
+        e->Sprite_tile = 0;
+        e->Sprite_size = 4;
         e->dir.x = 1;
         e->dead = 0;
         e->start = 1;
@@ -47,7 +50,10 @@ void Update_Goomba(Enemy *e)
 
     if(e->position.x > camera.x - 8 * 2 && e->position.x < camera.x + 22 * 8 && e->deathDelay > 0)
     {
-
+        if(e->Sprite_tile == 0)
+        {
+            e->Sprite_tile = Add_Sprite(e->Sprite_size);
+        }
         e->Hitbox.position = e->position;
 
         if(e->dead != 1)
@@ -58,17 +64,17 @@ void Update_Goomba(Enemy *e)
             switch (e->animState)
             {
                 case 0:
-                set_sprite_tile(13,128);
-                set_sprite_tile(14,129);
-                set_sprite_tile(15,130);
-                set_sprite_tile(16,131);
+                set_sprite_tile(e->Sprite_tile,128);
+                set_sprite_tile(e->Sprite_tile+1,129);
+                set_sprite_tile(e->Sprite_tile+2,130);
+                set_sprite_tile(e->Sprite_tile+3,131);
                 break;
                 
                 case 5:
-                set_sprite_tile(13,132);
-                set_sprite_tile(14,133);
-                set_sprite_tile(15,134);
-                set_sprite_tile(16,135);
+                set_sprite_tile(e->Sprite_tile,132);
+                set_sprite_tile(e->Sprite_tile+1,133);
+                set_sprite_tile(e->Sprite_tile+2,134);
+                set_sprite_tile(e->Sprite_tile+3,135);
                 break;
             }
 
@@ -77,10 +83,10 @@ void Update_Goomba(Enemy *e)
 
                 if(OnCollisionSide(e->Hitbox,GetMarioCollision(),&e->velocity,Get_Mario_Velocity_ptr(),1) && Get_Mario_Velocity().y > 0)
                 {
-                    set_sprite_tile(13,0);
-                    set_sprite_tile(14,0);
-                    set_sprite_tile(15,136);
-                    set_sprite_tile(16,137);
+                    set_sprite_tile(e->Sprite_tile,0);
+                    set_sprite_tile(e->Sprite_tile+1,0);
+                    set_sprite_tile(e->Sprite_tile+2,136);
+                    set_sprite_tile(e->Sprite_tile+3,137);
                     Set_Mario_Velocity(Get_Mario_Velocity().x,-10);
                     e->dead = 1;
                 }else if(OnCollision(e->Hitbox,GetMarioCollision()))
@@ -94,10 +100,10 @@ void Update_Goomba(Enemy *e)
                 if(e->deathDelay <= 0)
                 {
                     e->deathDelay = 0;
-                    set_sprite_tile(13,0);
-                    set_sprite_tile(14,0);
-                    set_sprite_tile(15,0);
-                    set_sprite_tile(16,0);
+                    set_sprite_tile(e->Sprite_tile,0);
+                    set_sprite_tile(e->Sprite_tile+1,0);
+                    set_sprite_tile(e->Sprite_tile+2,0);
+                    set_sprite_tile(e->Sprite_tile+3,0);
                 }
             }
 
@@ -110,10 +116,10 @@ void Update_Goomba(Enemy *e)
     e->position.x += e->velocity.x;
     e->position.y += e->velocity.y;
     
-    move_sprite(13,-(camera.x - e->position.x),-(camera.y - e->position.y));
-    move_sprite(14,-(camera.x - e->position.x)+8,-(camera.y - e->position.y));
-    move_sprite(15,-(camera.x - e->position.x),-(camera.y - e->position.y) + 8);
-    move_sprite(16,-(camera.x - e->position.x)+8,-(camera.y - e->position.y) + 8);
+    move_sprite(e->Sprite_tile,-(camera.x - e->position.x),-(camera.y - e->position.y));
+    move_sprite(e->Sprite_tile+1,-(camera.x - e->position.x)+8,-(camera.y - e->position.y));
+    move_sprite(e->Sprite_tile+2,-(camera.x - e->position.x),-(camera.y - e->position.y) + 8);
+    move_sprite(e->Sprite_tile+3,-(camera.x - e->position.x)+8,-(camera.y - e->position.y) + 8);
     }
     
 }

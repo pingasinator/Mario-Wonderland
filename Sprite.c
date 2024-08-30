@@ -5,7 +5,31 @@ extern unsigned char *Overworld_Palette[];
 unsigned char **Current_Palette;
 unsigned char Tilemap[4096];
 
+static unsigned char Sprites[40] =
+{
+    1,1,1,1,1,1,1,1,1,1,
+    1,1,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0
+};
 
+int Add_Sprite(int size)
+{
+    
+    for(int i = 12; i < 40;i++)
+    {
+        if(Sprites[i] == 0 && Sprites[i + size] == 0)
+        {
+            for(int j = 0;j < size;j++)
+            {
+                Sprites[i + j] = 1;
+            }
+            return i;
+        }
+    }
+
+    return 0;
+}
 
 void Set_Tile_Palette(int i)
 {

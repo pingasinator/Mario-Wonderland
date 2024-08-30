@@ -68,7 +68,7 @@ void Level_Update(void)
     {
         Update_Camera();
         Update_Mario();
-
+        Update_Enemy(currentEnemies);
 
         SHOW_SPRITES;
         SHOW_BKG;

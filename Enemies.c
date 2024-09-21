@@ -111,7 +111,7 @@ void Update_Goomba(Enemy *e)
     Vector2 Rdir = {.x=0,.y=-1};
 
     e->dir.x = Raycast(Rpos,Rdir,e->velocity,8) ? e->dir.x - 2 * Sign(e->dir.x) : e->dir.x;
-    e->velocity.y = Clamp(e->velocity.y,-2,TileMapCollisionSide(e->Hitbox,&e->velocity,0) ? 0 : 2);
+    e->velocity.y = Clamp(e->velocity.y,-2,TileMapCollisionSide(&e->Hitbox,&e->velocity,0) ? 0 : 2);
 
     e->position.x += e->velocity.x;
     e->position.y += e->velocity.y;

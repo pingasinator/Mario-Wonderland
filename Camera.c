@@ -26,7 +26,7 @@ void Update_Camera(void)
         
     if(oldCamera.y != Camera.y / 16)
     {
-        for(int i = 0;i < 11;i++)
+        for(int i = 0;i < 12;i++)
         {
             Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 - 2);
             Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 + 18);

@@ -5,7 +5,6 @@
 
 typedef struct
 {
-    unsigned char* Tilemap;
     Vector2 position;
     Vector2 MinBounds;
     Vector2 MaxBounds;
@@ -13,7 +12,6 @@ typedef struct
 
 void SetLevel(void);
 void ShowLevel(void);
-void initLevelVram(void);
 Screen GetCurrentScreen(void);
 void Level_Update(void);
 

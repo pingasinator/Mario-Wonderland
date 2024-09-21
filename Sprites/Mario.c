@@ -1,7 +1,6 @@
-#ifndef Mario_Sprite_H
-#define Mario_Sprite_H
+#pragma bank 3
 
-unsigned char null[] = 
+const unsigned char null[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -13,7 +12,7 @@ unsigned char null[] =
     0x00,0x00,
 };
 
-unsigned char Small_Idle[] = 
+const unsigned char Small_Idle[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -70,7 +69,7 @@ unsigned char Small_Idle[] =
     0xF8,0xF8
 };
 
-unsigned char Small_Move_0[] = 
+const unsigned char Small_Move_0[] = 
 {
 
     0x1F,0x1E,
@@ -110,7 +109,7 @@ unsigned char Small_Move_0[] =
     0xE0,0xE0
 };
 
-unsigned char Small_Move_1[] =
+const unsigned char Small_Move_1[] =
 {
     0x1F,0x1E,
     0x3F,0x28,
@@ -149,7 +148,7 @@ unsigned char Small_Move_1[] =
     0x80,0x80
 };
 
-unsigned char Small_Move_2[] =
+const unsigned char Small_Move_2[] =
 {
     0x1F,0x1C,
     0x3F,0x28,
@@ -188,7 +187,7 @@ unsigned char Small_Move_2[] =
     0xFC,0xFC
 };
 
-unsigned char Small_Jump[] = 
+const unsigned char Small_Jump[] = 
 {
     0X00,0X00,
     0X00,0X00,
@@ -245,7 +244,7 @@ unsigned char Small_Jump[] =
     0x00,0x00
 };
 
-unsigned char Small_Fall[] = 
+const unsigned char Small_Fall[] = 
 {
 
     0x28,0x08,
@@ -258,7 +257,7 @@ unsigned char Small_Fall[] =
     0xFC,0xA4
 };
 
-unsigned char Small_Slide[] = 
+const unsigned char Small_Slide[] = 
 {
     0x3F,0x3C,
     0x3F,0x28,
@@ -306,7 +305,7 @@ unsigned char Small_Slide[] =
     0x00,0x00
 };
 
-unsigned char Small_Crounch[] = 
+const unsigned char Small_Crounch[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -345,7 +344,7 @@ unsigned char Small_Crounch[] =
     0xF0,0xF0
 };
 
-unsigned char Small_Front[] = 
+const unsigned char Small_Front[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -375,7 +374,7 @@ unsigned char Small_Front[] =
     0x7F,0x7F
 };
 
-unsigned char Dead[] = 
+const unsigned char Dead[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -405,7 +404,7 @@ unsigned char Dead[] =
     0x30,0x30
 };
 
-unsigned char Small_Swim_0[] = 
+const unsigned char Small_Swim_0[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -462,7 +461,7 @@ unsigned char Small_Swim_0[] =
     0x80,0x80
 };
 
-unsigned char Small_Swim_1[] = 
+const unsigned char Small_Swim_1[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -519,7 +518,7 @@ unsigned char Small_Swim_1[] =
     0x00,0x00
 };
 
-unsigned char Great_Idle[] = 
+const unsigned char Great_Idle[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -594,7 +593,7 @@ unsigned char Great_Idle[] =
     0xF8,0xF8
 };
 
-unsigned char Great_Move_0[] = 
+const unsigned char Great_Move_0[] = 
 {
     0x3F,0x3F,
     0x3F,0x3F,
@@ -615,7 +614,7 @@ unsigned char Great_Move_0[] =
     0xE0,0xE0
 };
 
-unsigned char Great_Move_1[] = 
+const unsigned char Great_Move_1[] = 
 {
     
     0x3F,0x30,
@@ -655,7 +654,7 @@ unsigned char Great_Move_1[] =
     0xFC,0xFC
 };
 
-unsigned char Great_Move_2[] = 
+const unsigned char Great_Move_2[] = 
 {
 
     0x1F,0x18,
@@ -695,7 +694,7 @@ unsigned char Great_Move_2[] =
     0x00,0x00
 };
 
-unsigned char Great_Jump[] = 
+const unsigned char Great_Jump[] = 
 {
 
     0x00,0x00,
@@ -773,7 +772,7 @@ unsigned char Great_Jump[] =
     0x00,0x00
 };
 
-unsigned char Great_Fall[] =
+const unsigned char Great_Fall[] =
 {
     0x1F,0x18,
     0x3F,0x3E,
@@ -785,7 +784,7 @@ unsigned char Great_Fall[] =
     0x7F,0x4F
 };
 
-unsigned char Great_Slide[] = 
+const unsigned char Great_Slide[] = 
 {
     0x09,0x08,
     0x17,0x11,
@@ -842,7 +841,7 @@ unsigned char Great_Slide[] =
     0xC0,0xC0
 };
 
-unsigned char Great_Crounch[] = 
+const unsigned char Great_Crounch[] = 
 {
     0x07,0x07,
     0x18,0x18,
@@ -881,7 +880,7 @@ unsigned char Great_Crounch[] =
     0xFC,0xFC
 };
 
-unsigned char Great_Front[] = 
+const unsigned char Great_Front[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -920,7 +919,7 @@ unsigned char Great_Front[] =
     0x7F,0x7F,
 };
 
-unsigned char Great_Swim_0[] = 
+const unsigned char Great_Swim_0[] = 
 {
     0x3F,0x30,
     0x1F,0x1E,
@@ -977,7 +976,7 @@ unsigned char Great_Swim_0[] =
     0x00,0x00,
 };
 
-unsigned char Great_Swim_1[] = 
+const unsigned char Great_Swim_1[] = 
 {
     0x1F,0x18,
     0x7F,0x7E,
@@ -1025,5 +1024,3 @@ unsigned char Great_Swim_1[] =
     0x09,0x08,
     
 };
-
-#endif

@@ -2,153 +2,77 @@
 #include "include\Sprite.h"
 
 
-int TileMapCollisionSide(Collision A,Vector2 *velocity,int side)
+int TileMapCollisionSide(Collision *A,Vector2 *velocity,int side)
 {
     unsigned char* Tilemap = Get_Tilemap();
     Vector2 pos;
-    pos.x = A.position.x + A.pixeloffset.x;
-    pos.y = A.position.y + A.pixeloffset.y;
-    Vector2 overload = {.x=A.pixelsize.x - (A.pixelsize.x / 16) * 16,.y=A.pixelsize.y - (A.pixelsize.y / 16) * 16};
+    pos.x = A->position.x + A->pixeloffset.x;
+    pos.y = A->position.y + A->pixeloffset.y;
+    Vector2 overload = {.x=A->pixelsize.x - (A->pixelsize.x / 16) * 16,.y=A->pixelsize.y - (A->pixelsize.y / 16) * 16};
+    int boundOut = 0;
+    int boundIn = 0;
+    int i = 0;
+
 
     switch(side)
     {
         case 0:
-
-        for(int x = 0;x < A.pixelsize.x / 16;x++)
+        while(i <= A->pixelsize.x)
         {
-            if(Tilemap[(pos.x + x * 16) / 16 + ((pos.y + A.pixelsize.y + velocity->y) / 16) * 128] > 0)
+            boundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y) / 16) * 128;
+            boundOut = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y + 1) / 16) * 128;
+            if(Tilemap[boundOut] > 0 && Tilemap[boundIn] > 0)
             {
-                while(Tilemap[(pos.x + x * 16) / 16 + ((pos.y + A.pixelsize.y + velocity->y) / 16) * 128] > 0)
-                {
-                    velocity->y--;
-                }
-
-                if(Tilemap[(pos.x + x * 16) / 16 + ((pos.y + A.pixelsize.y) / 16) * 128] > 0)
-                {
-                    return 1;
-                }
-            }   
-        }
-
-        if(overload.x > 0)
-        {
-            if(Tilemap[(pos.x + A.pixelsize.x) / 16 + ((pos.y + A.pixelsize.y + velocity->y) / 16) * 128] > 0)
+                return 1;
+            }else if(Tilemap[boundOut] > 0)
             {
-                while(Tilemap[(pos.x + A.pixelsize.x) / 16 + ((pos.y + A.pixelsize.y + velocity->y) / 16) * 128] > 0)
-                {
-                    velocity->y--;
-                }
-
-                if(Tilemap[(pos.x + A.pixelsize.x) / 16 + ((pos.y + A.pixelsize.y) / 16) * 128] > 0)
-                {
-                    return 1;
-                }
-            } 
+                return 2;
+            }
+            i += i + 16 <= A->pixelsize.x ? 16 : i == A->pixelsize.x ? 1 : A->pixelsize.x - i;
         }
 
         break;
 
         case 1:
-            for(int x = 0; x < A.pixelsize.x / 16; x++)
+        while(i <= A->pixelsize.x)
+        {
+            boundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y) / 16) * 128;
+            boundOut = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y - 1) / 16) * 128;
+            if(Tilemap[boundOut] > 0)
             {
-                if(Tilemap[(pos.x + x * 16) / 16 + ((pos.y + velocity->y) / 16) * 128] > 0)
-                {
-                    while(Tilemap[(pos.x + x * 16) / 16 + ((pos.y + velocity->y) / 16) * 128] > 0)
-                    {
-                        velocity->y++;
-                    }
-
-                    if(Tilemap[(pos.x + x * 16) / 16 + ((pos.y) / 16) * 128] > 0)
-                    {
-                        return 1;
-                    }
-                }   
+                return 1;
             }
-
-            if(overload.x > 0)
-            {
-                if(Tilemap[(pos.x + A.pixelsize.x) / 16 + ((pos.y + velocity->y) / 16) * 128] > 0)
-                {
-                    while(Tilemap[(pos.x + A.pixelsize.x) / 16 + ((pos.y + velocity->y) / 16) * 128] > 0)
-                    {
-                        velocity->y--;
-                    }
-
-                if(Tilemap[(pos.x + A.pixelsize.x) / 16 + ((pos.y ) / 16) * 128] > 0)
-                {
-                    return 1;
-                }
-            } 
+            i += i + 16 <= A->pixelsize.x ? 16 : i == A->pixelsize.x ? 1 : A->pixelsize.x - i;
         }
+
         break;
 
         case 2:
-            for(int y = 0; y < A.pixelsize.y / 16; y++)
+        while(i <= A->pixelsize.y)
+        {
+            boundIn = (A->position.x + A->pixeloffset.x) / 16 + ((pos.y + i) / 16) * 128;
+            boundOut = (A->position.x+ A->pixeloffset.x - 1) / 16 + ((pos.y + i) / 16) * 128;
+            if(Tilemap[boundOut] > 0)
             {
-                if(Tilemap[(pos.x + velocity->x) / 16 + ((pos.y + y * 16) / 16) * 128] > 0)
-                {
-                    while(Tilemap[(pos.x + velocity->x) / 16 + ((pos.y + y * 16) / 16) * 128] > 0)
-                    {
-                        velocity->x++;
-                    }
-
-                    if(Tilemap[(pos.x) / 16 + ((pos.y + y * 16) / 16) * 128] > 0)
-                    {
-                        return 1;
-                    }
-                }   
+                
+                return 1;
             }
+            i += i + 16 <= A->pixelsize.y ? 16 : i == A->pixelsize.y ? 1 : A->pixelsize.y - i;
+        }
 
-            if(overload.y > 0)
-            {
-                if(Tilemap[(pos.x + velocity->x) / 16 + ((pos.y + A.pixelsize.y) / 16) * 128] > 0)
-                {
-                    while(Tilemap[(pos.x + velocity->x) / 16 + ((pos.y + A.pixelsize.y) / 16) * 128] > 0)
-                    {
-                        velocity->y--;
-                    }
-
-                    if(Tilemap[(pos.x) / 16 + ((pos.y + A.pixelsize.y) / 16) * 128] > 0)
-                    {
-                        return 1;
-                    }
-                } 
-            }
-            
         break;
 
         case 3:
-            for(int y = 0; y < A.pixelsize.y / 16; y++)
+        while(i <= A->pixelsize.y)
+        {
+            boundIn = (A->position.x + A->pixeloffset.x + A->pixelsize.x) / 16 + ((pos.y + i) / 16) * 128;
+            boundOut = (A->position.x+ A->pixeloffset.x + A->pixelsize.x + 1) / 16 + ((pos.y + i) / 16) * 128;
+            if(Tilemap[boundOut] > 0)
             {
-                if(Tilemap[(pos.x + A.pixelsize.x + velocity->x) / 16 + ((pos.y + y * 16) / 16) * 128] > 0)
-                {
-                    while(Tilemap[(pos.x + A.pixelsize.x + velocity->x) / 16 + ((pos.y + y * 16) / 16) * 128] > 0)
-                    {
-                        velocity->x--;
-                    }
-
-                    if(Tilemap[(pos.x + A.pixelsize.x) / 16 + ((pos.y + y * 16) / 16) * 128] > 0)
-                    {
-                        return 1;
-                    }
-                }   
+                return 1;
             }
-
-            if(overload.y > 0)
-            {
-                if(Tilemap[(pos.x + A.pixelsize.x + velocity->x) / 16 + ((pos.y + A.pixelsize.y) / 16) * 128] > 0)
-                {
-                    while(Tilemap[(pos.x + A.pixelsize.x + velocity->x) / 16 + ((pos.y + A.pixelsize.y) / 16) * 128] > 0)
-                    {
-                        velocity->y--;
-                    }
-
-                    if(Tilemap[(pos.x + A.pixelsize.x) / 16 + ((pos.y + A.pixelsize.y) / 16) * 128] > 0)
-                    {
-                        return 1;
-                    }
-                } 
-            }
+            i += i + 16 <= A->pixelsize.y ? 16 : i == A->pixelsize.y ? 1 : A->pixelsize.y - i;
+        }
         break;
     }
     return 0;

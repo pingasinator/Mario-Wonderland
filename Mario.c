@@ -3,15 +3,25 @@
 #include "include\Camera.h"
 #include "include\GameSystem.h"
 
-#include "Sprites\Mario.h"
-
 #include <gb\gb.h>
 #include <stdlib.h>
 
-Vector2 position = {.x=0,.y=0};
 Vector2 velocity = {.x=0,.y=0};
 
-Collision hitbox = {.pixeloffset={.x=-8,.y=-18},.pixelsize={.x=14,.y=24}};
+Collision hitbox = {.position={.x=128,.y=128},.pixeloffset={.x=-8,.y=-18},.pixelsize={.x=14,.y=24}};
+
+extern unsigned char null[];
+extern unsigned char Small_Idle[];
+extern unsigned char Small_Move_0[];
+extern unsigned char Small_Move_1[];
+extern unsigned char Small_Move_2[];
+extern unsigned char Small_Jump[];
+extern unsigned char Small_Fall[];
+extern unsigned char Small_Slide[];
+
+
+
+
 
 int Transformation = 0;
 
@@ -26,6 +36,7 @@ int animState = 0;
 
 void Start_Mario(void)
 {
+    SWITCH_ROM(3);
     set_sprite_data(0,1,null);
     set_sprite_data(1,6,Small_Idle);
     set_sprite_data(7,4,Small_Move_0);
@@ -50,11 +61,9 @@ void Update_Mario(void)
 
     velocity.x -= Sign(velocity.x);
     velocity.y += 1;
-    velocity.x = Clamp(velocity.x,TileMapCollisionSide(GetMarioCollision(),&velocity,2) == 1 ? 0 : -maxSpeed,TileMapCollisionSide(GetMarioCollision(),&velocity,3) == 1 ? 0 : maxSpeed);
-    velocity.y = Clamp(velocity.y,TileMapCollisionSide(GetMarioCollision(),&velocity,1) == 1 ? 0 : -7,TileMapCollisionSide(GetMarioCollision(),&velocity,0) == 1 ? 0 : 5);
-    
+
     Vector2 dir = {.x=0,.y=1};
-    onGround = Raycast(position,dir,velocity,8);
+    onGround = Raycast(hitbox.position,dir,velocity,8);
 
     if(onGround == 0)
     {
@@ -85,14 +94,22 @@ void Update_Mario(void)
         velocity.y = GetButtonDown(J_A) ? -10 : velocity.y;
     }
 
-    position.x += velocity.x;
-    position.y += velocity.y;
+    velocity.y = Clamp(velocity.y,TileMapCollisionSide(&hitbox,&velocity,1) ? 0 : -10,TileMapCollisionSide(&hitbox,&velocity,0) ? 0 : 5);
+    velocity.x = Clamp(velocity.x,TileMapCollisionSide(&hitbox,&velocity,2) ? 0 : -5, TileMapCollisionSide(&hitbox,&velocity,3) ? 0 : 5);
+    
+    hitbox.position.x += velocity.x;
+    hitbox.position.y += velocity.y;
 
     Vector2 camera;
     camera = GetCamera();
-    MoveCamera(position.x - (camera.x + 88),position.y - (camera.y + 80));
+    MoveCamera(hitbox.position.x - (camera.x + 88),hitbox.position.y - (camera.y + 80));
     DisplayMario();
 
+}
+
+void Get_TileObject(void)
+{
+    
 }
 
 void Mario_Idle(void)
@@ -233,16 +250,16 @@ void DisplayMario(void)
         {
             set_sprite_prop(i,0);
         }
-        move_sprite(0,-(cam.x - position.x),-(cam.y - position.y) - 8);
-        move_sprite(1,-(cam.x - position.x)+8,-(cam.y - position.y) - 8);
-        move_sprite(2,-(cam.x - position.x),-(cam.y - position.y));
-        move_sprite(3,-(cam.x - position.x)+8,-(cam.y - position.y));
-        move_sprite(4,-(cam.x - position.x)-8,-(cam.y - position.y) + 8);
-        move_sprite(5,-(cam.x - position.x),-(cam.y - position.y) + 8);
-        move_sprite(6,-(cam.x - position.x)+8,-(cam.y - position.y) + 8);
-        move_sprite(7,-(cam.x - position.x)-8,-(cam.y - position.y) + 16);
-        move_sprite(8,-(cam.x - position.x),-(cam.y - position.y) + 16);
-        move_sprite(9,-(cam.x - position.x)+8,-(cam.y - position.y) + 16);
+        move_sprite(0,-(cam.x - hitbox.position.x),-(cam.y - hitbox.position.y) - 8);
+        move_sprite(1,-(cam.x - hitbox.position.x)+8,-(cam.y - hitbox.position.y) - 8);
+        move_sprite(2,-(cam.x - hitbox.position.x),-(cam.y - hitbox.position.y));
+        move_sprite(3,-(cam.x - hitbox.position.x)+8,-(cam.y - hitbox.position.y));
+        move_sprite(4,-(cam.x - hitbox.position.x)-8,-(cam.y - hitbox.position.y) + 8);
+        move_sprite(5,-(cam.x - hitbox.position.x),-(cam.y - hitbox.position.y) + 8);
+        move_sprite(6,-(cam.x - hitbox.position.x)+8,-(cam.y - hitbox.position.y) + 8);
+        move_sprite(7,-(cam.x - hitbox.position.x)-8,-(cam.y - hitbox.position.y) + 16);
+        move_sprite(8,-(cam.x - hitbox.position.x),-(cam.y - hitbox.position.y) + 16);
+        move_sprite(9,-(cam.x - hitbox.position.x)+8,-(cam.y - hitbox.position.y) + 16);
         break;
     
         case 1:
@@ -250,24 +267,24 @@ void DisplayMario(void)
         {
             set_sprite_prop(i,S_FLIPX);
         }
-        move_sprite(0,-(cam.x - position.x)+8,-(cam.y - position.y) - 8);
-        move_sprite(1,-(cam.x - position.x),-(cam.y - position.y) - 8);
-        move_sprite(2,-(cam.x - position.x)+8,-(cam.y - position.y));
-        move_sprite(3,-(cam.x - position.x),-(cam.y - position.y));
-        move_sprite(4,-(cam.x - position.x)+16,-(cam.y - position.y) + 8);
-        move_sprite(5,-(cam.x - position.x)+8,-(cam.y - position.y) + 8);
-        move_sprite(6,-(cam.x - position.x),-(cam.y - position.y) + 8);
-        move_sprite(7,-(cam.x - position.x)+16,-(cam.y - position.y) + 16);
-        move_sprite(8,-(cam.x - position.x)+8,-(cam.y - position.y) + 16);
-        move_sprite(9,-(cam.x - position.x),-(cam.y - position.y) + 16);
+        move_sprite(0,-(cam.x - hitbox.position.x)+8,-(cam.y - hitbox.position.y) - 8);
+        move_sprite(1,-(cam.x - hitbox.position.x),-(cam.y - hitbox.position.y) - 8);
+        move_sprite(2,-(cam.x - hitbox.position.x)+8,-(cam.y - hitbox.position.y));
+        move_sprite(3,-(cam.x - hitbox.position.x),-(cam.y - hitbox.position.y));
+        move_sprite(4,-(cam.x - hitbox.position.x)+16,-(cam.y - hitbox.position.y) + 8);
+        move_sprite(5,-(cam.x - hitbox.position.x)+8,-(cam.y - hitbox.position.y) + 8);
+        move_sprite(6,-(cam.x - hitbox.position.x),-(cam.y - hitbox.position.y) + 8);
+        move_sprite(7,-(cam.x - hitbox.position.x)+16,-(cam.y - hitbox.position.y) + 16);
+        move_sprite(8,-(cam.x - hitbox.position.x)+8,-(cam.y - hitbox.position.y) + 16);
+        move_sprite(9,-(cam.x - hitbox.position.x),-(cam.y - hitbox.position.y) + 16);
         break;
     }
 }
 
 void Set_Mario_Position(int x,int y)
 {
-    position.x = x;
-    position.y = y;
+    hitbox.position.x = x;
+    hitbox.position.y = y;
 }
 
 Vector2 Get_Mario_Velocity(void)
@@ -287,6 +304,5 @@ void Set_Mario_Velocity(int x,int y)
 
 Collision GetMarioCollision(void)
 {
-    hitbox.position = position;
     return hitbox;
 }

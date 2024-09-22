@@ -18,8 +18,15 @@ void Update_Camera(void)
     {
         for(int i = 0;i < 11;i++)
         {
-            Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * 128],Camera.x / 16 * 2 - 2,Camera.y / 16 * 2 - 2 + i * 2);
-            Set_Sprite_Tile(Tilemap[Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * 128],Camera.x / 16 * 2 + 20,Camera.y / 16 * 2 - 2 + i * 2);
+            if(Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * 128 > 0 && Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * 128 < 4096)
+            {
+                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * 128],Camera.x / 16 * 2 - 2,Camera.y / 16 * 2 - 2 + i * 2);
+            }
+
+            if(Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * 128 > 0 && Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * 128 < 4096)
+            {
+                Set_Sprite_Tile(Tilemap[Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * 128],Camera.x / 16 * 2 + 20,Camera.y / 16 * 2 - 2 + i * 2);
+            }
         }
         oldCamera.x = Camera.x / 16;
     }
@@ -28,8 +35,17 @@ void Update_Camera(void)
     {
         for(int i = 0;i < 12;i++)
         {
-            Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 - 2);
-            Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 + 18);
+            if(Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * 128 > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * 128 < 4096)
+            {
+                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 - 2);
+            }
+
+            if(Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * 128 > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * 128 < 4096)
+            {
+                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 + 18);
+            }
+            
+
         }
         oldCamera.y = Camera.y / 16;
     }

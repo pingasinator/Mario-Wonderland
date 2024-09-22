@@ -2,6 +2,7 @@
 #include "include\Mario.h"
 #include "include\Camera.h"
 #include "include\GameSystem.h"
+#include "include\Physic.h" 
 
 #include <gb\gb.h>
 #include <stdlib.h>
@@ -63,7 +64,7 @@ void Update_Mario(void)
     velocity.y += 1;
 
     Vector2 dir = {.x=0,.y=1};
-    onGround = Raycast(hitbox.position,dir,velocity,8);
+    onGround = Raycast(hitbox.position,dir,8);
 
     if(onGround == 0)
     {
@@ -94,8 +95,10 @@ void Update_Mario(void)
         velocity.y = GetButtonDown(J_A) ? -10 : velocity.y;
     }
 
-    velocity.y = Clamp(velocity.y,TileMapCollisionSide(&hitbox,&velocity,1) ? 0 : -10,TileMapCollisionSide(&hitbox,&velocity,0) ? 0 : 5);
-    velocity.x = Clamp(velocity.x,TileMapCollisionSide(&hitbox,&velocity,2) ? 0 : -5, TileMapCollisionSide(&hitbox,&velocity,3) ? 0 : 5);
+    ApplyPhysics(&hitbox,&velocity);
+    
+    velocity.y = Clamp(velocity.y,-10,5);
+    velocity.x = Clamp(velocity.x,-5,5);
     
     hitbox.position.x += velocity.x;
     hitbox.position.y += velocity.y;

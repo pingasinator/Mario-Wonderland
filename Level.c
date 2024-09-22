@@ -13,9 +13,11 @@
 #include <stdlib.h>
 
 extern Screen *Level_00[];
-extern Enemy Level_00_Enemies[];
+extern Enemy Level_00_Enemies[3];
 
 extern unsigned char Level_00_Tilemap[];
+
+Enemy E[3];
 
 Screen **loadedLevel;
 Enemy *currentEnemies;
@@ -27,6 +29,7 @@ Screen currentLevel[16];
 void SetLevel(void)
 {
     SWITCH_ROM(2);
+    init_enemies_sprite();
     initLevelVram();
     SWITCH_ROM(4);
 
@@ -35,7 +38,10 @@ void SetLevel(void)
         Get_Tilemap()[i] = Level_00_Tilemap[i];
     }
 
-
+    for(int i=0;i<sizeof(Level_00_Enemies) / sizeof(Enemy);i++)
+    {
+        E[i] = Level_00_Enemies[i];
+    }
 
     
     Set_Tile_Palette(0);
@@ -54,6 +60,7 @@ void Level_Update(void)
     {
         Update_Mario();
         Update_Camera();
+        Update_Enemy(E);
         Update_bkg();
         SHOW_SPRITES;
         SHOW_BKG;

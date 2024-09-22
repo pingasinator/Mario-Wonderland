@@ -2,13 +2,12 @@
 #include "include\Sprite.h"
 
 
-int TileMapCollisionSide(Collision *A,Vector2 *velocity,int side)
+int TileMapCollisionSide(Collision *A,int side)
 {
     unsigned char* Tilemap = Get_Tilemap();
     Vector2 pos;
     pos.x = A->position.x + A->pixeloffset.x;
     pos.y = A->position.y + A->pixeloffset.y;
-    Vector2 overload = {.x=A->pixelsize.x - (A->pixelsize.x / 16) * 16,.y=A->pixelsize.y - (A->pixelsize.y / 16) * 16};
     int boundOut = 0;
     int boundIn = 0;
     int i = 0;
@@ -21,12 +20,9 @@ int TileMapCollisionSide(Collision *A,Vector2 *velocity,int side)
         {
             boundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y) / 16) * 128;
             boundOut = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y + 1) / 16) * 128;
-            if(Tilemap[boundOut] > 0 && Tilemap[boundIn] > 0)
+            if(Tilemap[boundOut] > 0 || Tilemap[boundIn] > 0)
             {
-                return 1;
-            }else if(Tilemap[boundOut] > 0)
-            {
-                return 2;
+                return (Tilemap[boundOut] > 0) + (Tilemap[boundIn] > 0) * 2;
             }
             i += i + 16 <= A->pixelsize.x ? 16 : i == A->pixelsize.x ? 1 : A->pixelsize.x - i;
         }
@@ -38,9 +34,9 @@ int TileMapCollisionSide(Collision *A,Vector2 *velocity,int side)
         {
             boundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y) / 16) * 128;
             boundOut = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y - 1) / 16) * 128;
-            if(Tilemap[boundOut] > 0)
+            if(Tilemap[boundOut] > 0 || Tilemap[boundIn] > 0)
             {
-                return 1;
+                return (Tilemap[boundOut] > 0) + (Tilemap[boundIn] > 0) * 2;
             }
             i += i + 16 <= A->pixelsize.x ? 16 : i == A->pixelsize.x ? 1 : A->pixelsize.x - i;
         }
@@ -52,10 +48,9 @@ int TileMapCollisionSide(Collision *A,Vector2 *velocity,int side)
         {
             boundIn = (A->position.x + A->pixeloffset.x) / 16 + ((pos.y + i) / 16) * 128;
             boundOut = (A->position.x+ A->pixeloffset.x - 1) / 16 + ((pos.y + i) / 16) * 128;
-            if(Tilemap[boundOut] > 0)
+            if(Tilemap[boundOut] > 0 || Tilemap[boundIn] > 0)
             {
-                
-                return 1;
+                return (Tilemap[boundOut] > 0) + (Tilemap[boundIn] > 0) * 2;
             }
             i += i + 16 <= A->pixelsize.y ? 16 : i == A->pixelsize.y ? 1 : A->pixelsize.y - i;
         }
@@ -67,9 +62,9 @@ int TileMapCollisionSide(Collision *A,Vector2 *velocity,int side)
         {
             boundIn = (A->position.x + A->pixeloffset.x + A->pixelsize.x) / 16 + ((pos.y + i) / 16) * 128;
             boundOut = (A->position.x+ A->pixeloffset.x + A->pixelsize.x + 1) / 16 + ((pos.y + i) / 16) * 128;
-            if(Tilemap[boundOut] > 0)
+            if(Tilemap[boundOut] > 0 || Tilemap[boundIn] > 0)
             {
-                return 1;
+                return (Tilemap[boundOut] > 0) + (Tilemap[boundIn] > 0) * 2;
             }
             i += i + 16 <= A->pixelsize.y ? 16 : i == A->pixelsize.y ? 1 : A->pixelsize.y - i;
         }
@@ -115,25 +110,19 @@ int OnCollisionSide(Collision A,Collision B,Vector2 *A_velocity,Vector2 *B_veloc
     return 0;
 }
 
-int Raycast(Vector2 point,Vector2 dir,Vector2 velocity,int pixelSize)
+int Raycast(Vector2 point,Vector2 dir,int pixelSize)
 {
     dir.x = Clamp(dir.x,-1,1);
     dir.y = Clamp(dir.y,-1,1);
-    int overload = pixelSize - (pixelSize / 16) * 16;
-    for(int i = 0; i < pixelSize / 16 ;i++)
+    char *Tilemap = Get_Tilemap();
+    int i=0;
+    while(i <= pixelSize)
     {
-        if(Get_Tilemap()[(point.x + dir.x * i * 16 - velocity.x) / 16 + (point.y + dir.y * i * 16 - velocity.y) / 16 * 128] > 0)
+        if(Tilemap[(point.x + dir.x * pixelSize) / 16 + ((point.y + dir.y * pixelSize) / 16) * 128]  > 0)
         {
-            return 1;
+            return Tilemap[(point.x + dir.x * pixelSize) / 16 + ((point.y + dir.y * pixelSize) / 16) * 128] > 0;
         }
-    }
-
-    if(overload > 0)
-    {
-        if(Get_Tilemap()[(point.x + dir.x * pixelSize - velocity.x) / 16 + (point.y + dir.y * pixelSize - velocity.y) / 16 * 128] > 0)
-        {
-            return 1;
-        }
+        i += i + 16 <= pixelSize ? 16 : i == pixelSize ? 1 : pixelSize - i;
     }
 
     return 0;

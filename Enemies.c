@@ -3,6 +3,7 @@
 #include "Sprites\Goomba.h"
 #include "include\Mario.h"
 #include "include\Sprite.h"
+#include "include\Physic.h"
 #include <gb\gb.h>
 
 void init_enemies_sprite(void)
@@ -110,8 +111,9 @@ void Update_Goomba(Enemy *e)
     Vector2 Rpos = {.x=e->position.x + Sign(e->dir.x) * 12,.y=e->position.y-1};
     Vector2 Rdir = {.x=0,.y=-1};
 
-    e->dir.x = Raycast(Rpos,Rdir,e->velocity,8) ? e->dir.x - 2 * Sign(e->dir.x) : e->dir.x;
-    e->velocity.y = Clamp(e->velocity.y,-2,TileMapCollisionSide(&e->Hitbox,&e->velocity,0) ? 0 : 2);
+    e->dir.x = Raycast(Rpos,Rdir,8) ? e->dir.x - 2 * Sign(e->dir.x) : e->dir.x;
+    e->velocity.y = Clamp(e->velocity.y,-2,2);
+    ApplyPhysicsOnSide(&e->Hitbox,&e->velocity,0);
 
     e->position.x += e->velocity.x;
     e->position.y += e->velocity.y;

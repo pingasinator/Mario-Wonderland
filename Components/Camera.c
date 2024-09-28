@@ -1,10 +1,32 @@
-#include "include\Camera.h"
-#include "include\Level.h"
-#include "include\Sprite.h"
+#include "..\include\Camera.h"
+#include "..\include\Level.h"
+#include "..\include\Sprite.h"
 #include <gb\gb.h>
 
 Vector2 Camera = {.x=0,.y=0};
 Vector2 oldCamera = {.x=0,.y=0};
+
+char c[] = 
+{
+    0x6F,0x70,0x75,0x75,0,0x71,0x70,0x75,0x75,0,0,0,0,0,0,0x00,0x74,0x75,0x75,0x75
+};
+
+void Update_HUD(int Lifes,int Coin,int Timer)
+{
+    c[2] = 0x75 + Lifes / 10;
+    Lifes -= 10 * (Lifes / 10);
+    c[3] = 0x75 + Lifes;
+    c[7] = 0x75 + Coin / 10;
+    Coin -= 10 * (Coin / 10);
+    c[8] = 0x75 + Coin;
+    c[17] = 0x75 + Timer / 100;
+    Timer -= 100 * (Timer / 100);
+    c[18] = 0x75 + Timer / 10;
+    Timer -= 10 * (Timer / 10);
+    c[19] = 0x75 + Timer;
+    set_win_tiles(0,0,20,1,c);
+    move_win(7,136);
+}
 
 Vector2 GetCamera(void)
 {

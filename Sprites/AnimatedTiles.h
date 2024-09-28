@@ -1,7 +1,6 @@
 #ifndef AnimatedTiles_H
 #define AnimatedTiles_H
 
-
 unsigned char Block_Item_0[] = 
 {
     0x7F,0x7F,

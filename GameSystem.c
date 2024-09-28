@@ -2,6 +2,34 @@
 #include <gb\gb.h>
 
 int Time = 1;
+int Coin_Number;
+int Lifes_Number;
+
+void Add_Coin(int i)
+{
+    Coin_Number += i;
+
+    if(Coin_Number >= 100)
+    {
+        Coin_Number = 0;
+        Add_Life(1);
+    }
+}
+
+int Get_Coin_Number(void)
+{
+    return Coin_Number;
+}
+
+int Get_Life_Number(void)
+{
+    return Lifes_Number;
+}
+
+void Add_Life(int i)
+{
+    Lifes_Number += i;
+}
 
 int Get_Time(void)
 {

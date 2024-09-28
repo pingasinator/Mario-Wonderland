@@ -4,8 +4,12 @@
 #include "include\Enemies.h"
 #include "include\Items.h"
 #include "include\Sprite.h"
+#include "include\Objects.h"
+#include "include\GameSystem.h"
 #include "TilePalettes\TilePalettes.h"
 #include "TilePalettes\OverworldPalette.h"
+
+#include "include\Animations\BKG.h"
 
 #include <stdio.h>
 #include <gb\gb.h>
@@ -24,14 +28,20 @@ Enemy *currentEnemies;
 
 Item* Items;
 
+int Timer = 300;
+int milisec = 30;
+
 Screen currentLevel[16];
 
 void SetLevel(void)
 {
-    SWITCH_ROM(2);
-    init_enemies_sprite();
-    initLevelVram();
-    SWITCH_ROM(4);
+    init_Enemies_Vram();
+    init_Level_Vram();
+    init_Objects_Vram();
+    init_Mario_Vram();
+    init_HUD_Vram();
+    Timer = 300;
+    SWITCH_ROM(20);
 
     for(int i = 0; i < 4096;i++)
     {
@@ -56,13 +66,23 @@ void SetLevel(void)
 
 void Level_Update(void)
 {
+    init_win(0);
     while (1)
     {
         Update_Mario();
         Update_Camera();
+        Update_HUD(Get_Life_Number(),Get_Coin_Number(),Timer);
         Update_Enemy(E);
-        Update_bkg();
+        Objects_Update();
+        Anim_BKG_Update();
+        milisec--;
+        if(milisec <= 0)
+        {
+            milisec = 30;
+            Timer--;
+        }
         SHOW_SPRITES;
+        SHOW_WIN;
         SHOW_BKG;
     }
 }

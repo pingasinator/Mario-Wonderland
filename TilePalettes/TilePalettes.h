@@ -1,14 +1,20 @@
 #ifndef TilePalette_H
 #define TilePalette_H
 
-char *DefaultPalette[11] = 
+char *DefaultPalette[18] = 
 {
-    T_null,T_Block_P,T_U_Block_P,T_Alt_Block_P,T_Q_Block_P,T_Coin,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_UR,T_Pipe_H_DR,
+    T_null,T_Coin,T_Q_Block_P,T_Q_Block_P,T_Q_Block_P,T_Q_Block_P,T_Block_P,T_U_Block_P,T_Alt_Block_P,
+    T_Pipe_V_UL,T_Pipe_V_UR,T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_UR,T_Pipe_H_DR,T_Invisible_wall
 };
 
 char T_null[4] = 
 {
     0x00,0x00,0x00,0x00
+};
+
+char T_Invisible_wall[4] = 
+{
+    0,0,0,0
 };
 
 char T_Block_P[4] = 
@@ -36,6 +42,26 @@ char T_Coin[4] =
     0x11,0x12,0x13,0x14
 };
 
+char T_Pipe_V_UL[4] = 
+{
+    0x1A,0x1B,0x1D,0x00
+};
+
+char T_Pipe_V_UR[4] = 
+{
+    0x1B,0x1C,0x00,0x1E
+};
+
+char T_Pipe_V_DL[4] = 
+{
+    0x1D,0x00,0x1A,0x1B
+};
+
+char T_Pipe_V_DR[4] = 
+{
+    0x00,0x1E,0X1B,0x1C
+};
+
 char T_Pipe_H_UL[4] = 
 {
     0x15,0x16,0x17,0x00
@@ -48,12 +74,12 @@ char T_Pipe_H_DL[4] =
 
 char T_Pipe_H_UR[4] = 
 {
-    22,21,0,23
+    0x16,0x15,0x00,0x17
 };
 
 char T_Pipe_H_DR[4] = 
 {
-    22,23,0,24
+    0x16,0x17,0x00,0x18
 };
 
 

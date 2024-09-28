@@ -1,8 +1,11 @@
-#include "include\collision.h"
-#include "include\Sprite.h"
+#include "..\include\collision.h"
+#include "..\include\Sprite.h"
 
+#include <gb\gb.h>
 
-int TileMapCollisionSide(Collision *A,int side)
+#pragma bank 13
+
+int TileMapCollisionSide(Collision *A,int side) BANKED
 {
     unsigned char* Tilemap = Get_Tilemap();
     Vector2 pos;
@@ -20,9 +23,9 @@ int TileMapCollisionSide(Collision *A,int side)
         {
             boundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y) / 16) * 128;
             boundOut = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y + 1) / 16) * 128;
-            if(Tilemap[boundOut] > 0 || Tilemap[boundIn] > 0)
+            if(Tilemap[boundOut] > 1 || Tilemap[boundIn] > 1)
             {
-                return (Tilemap[boundOut] > 0) + (Tilemap[boundIn] > 0) * 2;
+                return (Tilemap[boundOut] > 1) + (Tilemap[boundIn] > 1) * 2;
             }
             i += i + 16 <= A->pixelsize.x ? 16 : i == A->pixelsize.x ? 1 : A->pixelsize.x - i;
         }
@@ -34,9 +37,9 @@ int TileMapCollisionSide(Collision *A,int side)
         {
             boundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y) / 16) * 128;
             boundOut = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y - 1) / 16) * 128;
-            if(Tilemap[boundOut] > 0 || Tilemap[boundIn] > 0)
+            if(Tilemap[boundOut] > 1 || Tilemap[boundIn] > 1)
             {
-                return (Tilemap[boundOut] > 0) + (Tilemap[boundIn] > 0) * 2;
+                return (Tilemap[boundOut] > 1) + (Tilemap[boundIn] > 1) * 2;
             }
             i += i + 16 <= A->pixelsize.x ? 16 : i == A->pixelsize.x ? 1 : A->pixelsize.x - i;
         }
@@ -48,9 +51,9 @@ int TileMapCollisionSide(Collision *A,int side)
         {
             boundIn = (A->position.x + A->pixeloffset.x) / 16 + ((pos.y + i) / 16) * 128;
             boundOut = (A->position.x+ A->pixeloffset.x - 1) / 16 + ((pos.y + i) / 16) * 128;
-            if(Tilemap[boundOut] > 0 || Tilemap[boundIn] > 0)
+            if(Tilemap[boundOut] > 1 || Tilemap[boundIn] > 1)
             {
-                return (Tilemap[boundOut] > 0) + (Tilemap[boundIn] > 0) * 2;
+                return (Tilemap[boundOut] > 1) + (Tilemap[boundIn] > 1) * 2;
             }
             i += i + 16 <= A->pixelsize.y ? 16 : i == A->pixelsize.y ? 1 : A->pixelsize.y - i;
         }
@@ -62,9 +65,9 @@ int TileMapCollisionSide(Collision *A,int side)
         {
             boundIn = (A->position.x + A->pixeloffset.x + A->pixelsize.x) / 16 + ((pos.y + i) / 16) * 128;
             boundOut = (A->position.x+ A->pixeloffset.x + A->pixelsize.x + 1) / 16 + ((pos.y + i) / 16) * 128;
-            if(Tilemap[boundOut] > 0 || Tilemap[boundIn] > 0)
+            if(Tilemap[boundOut] > 1 || Tilemap[boundIn] > 1)
             {
-                return (Tilemap[boundOut] > 0) + (Tilemap[boundIn] > 0) * 2;
+                return (Tilemap[boundOut] > 1) + (Tilemap[boundIn] > 1) * 2;
             }
             i += i + 16 <= A->pixelsize.y ? 16 : i == A->pixelsize.y ? 1 : A->pixelsize.y - i;
         }
@@ -73,7 +76,7 @@ int TileMapCollisionSide(Collision *A,int side)
     return 0;
 }
 
-int OnCollision(Collision A,Collision B)
+int OnCollision(Collision A,Collision B) BANKED
 {
     Vector2 A_minpos = {.x=A.position.x + A.pixeloffset.x,.y=A.position.y + A.pixeloffset.y};
     Vector2 A_maxpos = {.x=A_minpos.x + A.pixelsize.x,.y=A_minpos.y + A.pixelsize.y};
@@ -86,7 +89,7 @@ int OnCollision(Collision A,Collision B)
     return V == 1 && H == 1? 1 : 0;
 }
 
-int OnCollisionSide(Collision A,Collision B,Vector2 *A_velocity,Vector2 *B_velocity, int side)
+int OnCollisionSide(Collision A,Collision B,Vector2 *A_velocity,Vector2 *B_velocity, int side) BANKED
 {
     Vector2 A_minpos = {.x=A.position.x + A.pixeloffset.x - A_velocity->x,.y=A.position.y + A.pixeloffset.y - A_velocity->y};
     Vector2 A_maxpos = {.x=A_minpos.x + A.pixelsize.x,.y=A_minpos.y + A.pixelsize.y };
@@ -110,7 +113,7 @@ int OnCollisionSide(Collision A,Collision B,Vector2 *A_velocity,Vector2 *B_veloc
     return 0;
 }
 
-int Raycast(Vector2 point,Vector2 dir,int pixelSize)
+int Raycast(Vector2 point,Vector2 dir,int pixelSize) BANKED
 {
     dir.x = Clamp(dir.x,-1,1);
     dir.y = Clamp(dir.y,-1,1);
@@ -118,9 +121,9 @@ int Raycast(Vector2 point,Vector2 dir,int pixelSize)
     int i=0;
     while(i <= pixelSize)
     {
-        if(Tilemap[(point.x + dir.x * pixelSize) / 16 + ((point.y + dir.y * pixelSize) / 16) * 128]  > 0)
+        if(Tilemap[(point.x + dir.x * pixelSize) / 16 + ((point.y + dir.y * pixelSize) / 16) * 128]  > 1)
         {
-            return Tilemap[(point.x + dir.x * pixelSize) / 16 + ((point.y + dir.y * pixelSize) / 16) * 128] > 0;
+            return Tilemap[(point.x + dir.x * pixelSize) / 16 + ((point.y + dir.y * pixelSize) / 16) * 128] > 1;
         }
         i += i + 16 <= pixelSize ? 16 : i == pixelSize ? 1 : pixelSize - i;
     }

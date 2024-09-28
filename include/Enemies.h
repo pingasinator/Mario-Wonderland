@@ -18,6 +18,7 @@ typedef struct
     Collision Hitbox;
     int deathDelay;
     int dead;
+    char Destroyed;
 } Enemy;
 
 void Update_Enemy(Enemy *e);
@@ -28,5 +29,4 @@ void Start_Goomba(Enemy *e);
 void Koopa_Start(Enemy *e);
 void Koopa_Update(Enemy *e);
 
-void init_enemies_sprite(void);
 #endif

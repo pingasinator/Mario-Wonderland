@@ -1,7 +1,6 @@
-#ifndef Overworld_Sprite_H
-#define Overworld_Sprite_H
+#pragma bank 6
 
-unsigned char Overworld_Ground[] = 
+const unsigned char Overworld_Ground[] = 
 {
     0xFF,0xFF,
     0x00,0xFF,
@@ -165,5 +164,3 @@ unsigned char Overworld_Ground[] =
     0xFF,0x00,
     0xFF,0x00
 };
-
-#endif

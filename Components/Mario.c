@@ -109,19 +109,12 @@ void Get_TileObject(void)
             case 3:
             case 4:
             case 5:
+            case 6:
             if(velocity.y < 0)
             {
                 Q_Block(c,hitbox.position.x + hitbox.pixeloffset.x + i * hitbox.pixelsize.x,hitbox.position.y + hitbox.pixeloffset.y - 5);
             }
             break;
-            
-            case 6:
-            if(velocity.y < 0)
-            {
-                Brick(hitbox.position.x + hitbox.pixeloffset.x + i * hitbox.pixelsize.x,hitbox.position.y + hitbox.pixeloffset.y - 5);
-            }
-            break;
-
         }  
     }
     

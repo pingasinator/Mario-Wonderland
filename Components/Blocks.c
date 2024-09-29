@@ -28,15 +28,12 @@ void Objects_Update(void) BANKED
             switch(AllObjects[i].type)
             {
                 case 1:
+                case 3:
                 Blocks_Update(i);
                 break;
 
                 case 2:
                 Coin_Update(i);
-                break;
-
-                case 3:
-                Brick_Update(i);
                 break;
             }
         }
@@ -51,16 +48,32 @@ void Blocks_Update(int i) BANKED
         AllObjects[i].position.y += AllObjects[i].returnToPoint ? 4 : -4;
         if(AllObjects[i].Sprite != 0)
         {
-            set_sprite_tile(AllObjects[i].Sprite,0x94);
-            set_sprite_tile(AllObjects[i].Sprite + 1,0x95);
-            set_sprite_tile(AllObjects[i].Sprite + 2,0x96);
-            set_sprite_tile(AllObjects[i].Sprite + 3,0x97);
+            if(AllObjects[i].type != 3)
+            {
+                set_sprite_tile(AllObjects[i].Sprite,0x94);
+                set_sprite_tile(AllObjects[i].Sprite + 1,0x95);
+                set_sprite_tile(AllObjects[i].Sprite + 2,0x96);
+                set_sprite_tile(AllObjects[i].Sprite + 3,0x97);
+            }else
+            {
+                set_sprite_tile(AllObjects[i].Sprite,0x9A);
+                set_sprite_tile(AllObjects[i].Sprite + 1,0x9B);
+                set_sprite_tile(AllObjects[i].Sprite + 2,0x9C);
+                set_sprite_tile(AllObjects[i].Sprite + 3,0x9D);
+            }
+
         }
 
         if(AllObjects[i].position.y < AllObjects[i].originalPosition.y - 4)
         {
             AllObjects[i].returnToPoint = 1;
-            Set_Tile(7,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+            if(AllObjects[i].type != 3)
+            {
+                Set_Tile(7,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+            }else
+            {
+                Set_Tile(6,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+            }
             Remove_Sprite(AllObjects[i].Sprite,4);
             AllObjects[i] = nullObject;
         }
@@ -96,36 +109,6 @@ void Coin_Update(int i) BANKED
     }
 }
 
-void Brick_Update(int i) BANKED
-{
-    if(AllObjects[i].Used != 0)
-    {
-        AllObjects[i].position.y += AllObjects[i].returnToPoint ? 4 : -4;
-        if(AllObjects[i].Sprite != 0)
-        {
-            set_sprite_tile(AllObjects[i].Sprite,0x9A);
-            set_sprite_tile(AllObjects[i].Sprite + 1,0x9B);
-            set_sprite_tile(AllObjects[i].Sprite + 2,0x9C);
-            set_sprite_tile(AllObjects[i].Sprite + 3,0x9D);
-        }
-
-        if(AllObjects[i].position.y < AllObjects[i].originalPosition.y - 4)
-        {
-            AllObjects[i].returnToPoint = 1;
-            Set_Tile(6,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
-            Remove_Sprite(AllObjects[i].Sprite,4);
-            AllObjects[i] = nullObject;
-        }
-
-        if(AllObjects[i].Sprite != 0)
-        {
-            move_sprite(AllObjects[i].Sprite,-(GetCamera().x - AllObjects[i].position.x) + 8,-(GetCamera().y - AllObjects[i].position.y) + 16);
-            move_sprite(AllObjects[i].Sprite + 1,-(GetCamera().x - AllObjects[i].position.x) + 16,-(GetCamera().y - AllObjects[i].position.y) + 16);
-            move_sprite(AllObjects[i].Sprite + 2,-(GetCamera().x - AllObjects[i].position.x) + 8,-(GetCamera().y - AllObjects[i].position.y) + 24);
-            move_sprite(AllObjects[i].Sprite + 3,-(GetCamera().x - AllObjects[i].position.x) + 16,-(GetCamera().y - AllObjects[i].position.y) + 24);
-        }
-    }
-}
 
 void Use_Coin(int x,int y) BANKED
 {
@@ -176,43 +159,24 @@ void Q_Block(int Type,int x,int y) BANKED
             set_sprite_tile(AllObjects[i].Sprite + 1,0x91);
             set_sprite_tile(AllObjects[i].Sprite + 2,0x92);
             set_sprite_tile(AllObjects[i].Sprite + 3,0x93);
-            move_sprite(AllObjects[i].Sprite,-(GetCamera().x - AllObjects[i].position.x) + 8,-(GetCamera().y - AllObjects[i].position.y) + 16);
-            move_sprite(AllObjects[i].Sprite + 1,-(GetCamera().x - AllObjects[i].position.x) + 16,-(GetCamera().y - AllObjects[i].position.y) + 16);
-            move_sprite(AllObjects[i].Sprite + 2,-(GetCamera().x - AllObjects[i].position.x) + 8,-(GetCamera().y - AllObjects[i].position.y) + 24);
-            move_sprite(AllObjects[i].Sprite + 3,-(GetCamera().x - AllObjects[i].position.x) + 16,-(GetCamera().y - AllObjects[i].position.y) + 24);
-                switch (Type)
-                {
-                    case 2:
-                    Make_Coin(AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
-                    break;
+            switch (Type)
+            {
+                case 2:
+                Make_Coin(AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+                break;
     
-                    case 3:
+                case 3:
                     
-                    break;
-                }
-            break;
-        }
-    }
-}
+                break;
 
-void Brick(int x,int y) BANKED
-{
-    for(int i = 0; i < 10;i++)
-    {
-        if(AllObjects[i].Used == 0)
-        {
-            Set_Tile(17,x,y);
-            AllObjects[i].Sprite = Add_Sprite(4);
-            AllObjects[i].position.x = (x / 16) * 16;
-            AllObjects[i].position.y = (y / 16) * 16;
-            AllObjects[i].originalPosition.x = (x / 16) * 16;
-            AllObjects[i].originalPosition.y = (y / 16) * 16;
-            AllObjects[i].Used = 1;
-            AllObjects[i].type = 3;
-            set_sprite_tile(AllObjects[i].Sprite,0x9A);
-            set_sprite_tile(AllObjects[i].Sprite + 1,0x9B);
-            set_sprite_tile(AllObjects[i].Sprite + 2,0x9C);
-            set_sprite_tile(AllObjects[i].Sprite + 3,0x9D);
+                case 6:
+                AllObjects[i].type = 3;
+                set_sprite_tile(AllObjects[i].Sprite,0x9A);
+                set_sprite_tile(AllObjects[i].Sprite + 1,0x9B);
+                set_sprite_tile(AllObjects[i].Sprite + 2,0x9C);
+                set_sprite_tile(AllObjects[i].Sprite + 3,0x9D);
+                break;
+            }
             move_sprite(AllObjects[i].Sprite,-(GetCamera().x - AllObjects[i].position.x) + 8,-(GetCamera().y - AllObjects[i].position.y) + 16);
             move_sprite(AllObjects[i].Sprite + 1,-(GetCamera().x - AllObjects[i].position.x) + 16,-(GetCamera().y - AllObjects[i].position.y) + 16);
             move_sprite(AllObjects[i].Sprite + 2,-(GetCamera().x - AllObjects[i].position.x) + 8,-(GetCamera().y - AllObjects[i].position.y) + 24);

@@ -15,7 +15,7 @@ void Update_Enemy(Enemy *e)
 
     for(int i= 0; i < 3;i++)
     {
-        if(!e->Destroyed)
+        if(!e[i].Destroyed)
         {
             switch(e->type)
             {
@@ -101,6 +101,7 @@ void Update_Goomba(Enemy *e)
             {
                 e->deathDelay = 0;
                 e->Sprite_tile = Remove_Sprite(e->Sprite_tile,e->Sprite_size);
+                e->Destroyed = 1;
             }
         }
     }else

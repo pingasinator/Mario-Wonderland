@@ -1,7 +1,7 @@
 #include "..\include\Animations\Enemies.h"
 #include <gb\gb.h>
 
-#pragma bank 11
+#pragma bank 15
 
 void Anim_Goomba_Move(Enemy *e) BANKED
 {

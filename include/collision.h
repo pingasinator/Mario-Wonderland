@@ -14,7 +14,7 @@ typedef struct
 int Raycast(Vector2 point,Vector2 dir,int pixelSize) BANKED;
 
 int OnCollision(Collision A,Collision B) BANKED;
-int OnCollisionSide(Collision A,Collision B,Vector2 *A_velocity,Vector2 *B_velocity, int side) BANKED;
+int OnCollisionSide(Collision A,Collision B, int side) BANKED;
 int TileMapCollision(Collision A) BANKED;
 int TileMapCollisionSide(Collision *A,int side) BANKED;
 #endif

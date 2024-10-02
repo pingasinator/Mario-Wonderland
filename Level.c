@@ -2,12 +2,12 @@
 #include "include\Camera.h"
 #include "include\Mario.h"
 #include "include\Enemies.h"
-#include "include\Items.h"
 #include "include\Sprite.h"
 #include "include\Objects.h"
 #include "include\GameSystem.h"
 #include "TilePalettes\TilePalettes.h"
 #include "TilePalettes\OverworldPalette.h"
+#include "include\Items.h"
 
 #include "include\Animations\BKG.h"
 
@@ -16,24 +16,19 @@
 
 #include <stdlib.h>
 
-extern Screen *Level_00[];
-extern Enemy Level_00_Enemies[3];
 
-extern unsigned char Level_00_Tilemap[];
+extern Level Level_01;
+extern Level Level_02;
 
-Enemy E[3];
+Enemy E[20];
 
-Screen **loadedLevel;
 Enemy *currentEnemies;
-
-Item* Items;
 
 int Timer = 300;
 int milisec = 30;
 
-Screen currentLevel[16];
 
-void SetLevel(void)
+void SetLevel(int LevelSelected)
 {
     init_Enemies_Vram();
     init_Level_Vram();
@@ -41,25 +36,26 @@ void SetLevel(void)
     init_Mario_Vram();
     init_HUD_Vram();
     Timer = 300;
-    SWITCH_ROM(20);
+    SWITCH_ROM(19 + LevelSelected);
 
     for(int i = 0; i < 4096;i++)
     {
-        Get_Tilemap()[i] = Level_00_Tilemap[i];
+        Get_Tilemap()[i] = GetLevel(LevelSelected).Tilemap[i];
     }
 
-    for(int i=0;i<sizeof(Level_00_Enemies) / sizeof(Enemy);i++)
+    for(int i=0;i<20;i++)
     {
-        E[i] = Level_00_Enemies[i];
+        E[i] = GetLevel(LevelSelected).Enemies[i];
     }
 
-    
+    Vector2 camera;
+    camera = GetCamera();
     Set_Tile_Palette(0);
-    for(int y = 0;y < 16;y++)
+    for(int y = 0;y < 32;y++)
     {
         for(int x = 0;x < 16;x++)
         {
-            Set_Sprite_Tile(Get_Tilemap()[x + y * 128],x * 2,y * 2);
+            Set_Sprite_Tile(Get_Tilemap()[camera.x / 16 + x  + y * 128],(camera.x / 16 * 2) + x * 2,y * 2);
         }
     }
 }
@@ -74,6 +70,7 @@ void Level_Update(void)
         Update_HUD(Get_Life_Number(),Get_Coin_Number(),Timer);
         Update_Enemy(E);
         Objects_Update();
+        Items_Update();
         Anim_BKG_Update();
         milisec--;
         if(milisec <= 0)
@@ -87,7 +84,18 @@ void Level_Update(void)
     }
 }
 
-Screen *GetCurrentLevel(void)
+Level GetLevel(int i)
 {
-    return currentLevel;
+    switch(i)
+    {
+        case 1:
+        return Level_01;
+        break;
+
+        case 2:
+        return Level_02;
+        break;
+    }
+
+    return Level_01;
 }

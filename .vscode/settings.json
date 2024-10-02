@@ -30,7 +30,10 @@
     "gamesystem.h": "c",
     "numbers": "c",
     "tilepalettes.h": "c",
-    "overworldpalette.h": "c"
+    "overworldpalette.h": "c",
+    "smallmario.h": "c",
+    "greatmario.h": "c",
+    "firemario.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

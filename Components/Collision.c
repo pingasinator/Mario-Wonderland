@@ -89,11 +89,11 @@ int OnCollision(Collision A,Collision B) BANKED
     return V == 1 && H == 1? 1 : 0;
 }
 
-int OnCollisionSide(Collision A,Collision B,Vector2 *A_velocity,Vector2 *B_velocity, int side) BANKED
+int OnCollisionSide(Collision A,Collision B, int side) BANKED
 {
-    Vector2 A_minpos = {.x=A.position.x + A.pixeloffset.x - A_velocity->x,.y=A.position.y + A.pixeloffset.y - A_velocity->y};
+    Vector2 A_minpos = {.x=A.position.x + A.pixeloffset.x,.y=A.position.y + A.pixeloffset.y};
     Vector2 A_maxpos = {.x=A_minpos.x + A.pixelsize.x,.y=A_minpos.y + A.pixelsize.y };
-    Vector2 B_minpos = {.x=B.position.x + B.pixeloffset.x - B_velocity->x,.y=B.position.y + B.pixeloffset.y - B_velocity->y};
+    Vector2 B_minpos = {.x=B.position.x + B.pixeloffset.x,.y=B.position.y + B.pixeloffset.y};
     Vector2 B_maxpos = {.x=B_minpos.x + B.pixelsize.x,.y=B_minpos.y + B.pixelsize.y};
 
 

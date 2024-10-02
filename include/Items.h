@@ -6,16 +6,20 @@
 
 typedef struct
 {
-    int type;
-    int started;
-    int* Sprite;
+    char start;
     Vector2 position;
+    Vector2 originalPosition;
     Vector2 velocity;
-    Collision hitbox;
+    char dir;
+    char Used;
+    char type;
+    char Sprite;
+    Collision Hitbox;
 }Item;
 
-void Item_Update(Item* i);
-void Mushroom_Start(Item* i);
+void Items_Update(void);
+void Create_Item(int type,int x,int y);
 void Mushroom_Update(Item* i);
+void FireFlower_Update(Item *i);
 
 #endif

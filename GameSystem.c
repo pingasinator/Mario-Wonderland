@@ -5,6 +5,8 @@ int Time = 1;
 int Coin_Number;
 int Lifes_Number;
 
+unsigned char allInputsDown[9] = {0,0,0,0,0,0,0,0,0};
+unsigned char allInputs[9] = {NULL,J_RIGHT,J_LEFT,J_UP,J_DOWN,J_A,J_B,J_SELECT,J_START};
 void Add_Coin(int i)
 {
     Coin_Number += i;
@@ -43,14 +45,42 @@ void Set_Time(int i)
 
 int GetButtonDown(unsigned char input)
 {
-    unsigned char allInputs[9] = {NULL,J_RIGHT,J_LEFT,J_UP,J_DOWN,J_A,J_B,J_SELECT,J_START};
+    for(int i = 0;i < 9;i++)
+    {
+        if(allInputs[i] == input && !allInputsDown[i])
+        {
+
+            for(int j = 0;j < 9;j++)
+            {
+                if(joypad() == input + allInputs[j] && allInputs[j] != input)
+                {
+                    allInputsDown[i] = 1;
+                    return 1;
+                }
+            }
+            break;
+        }
+    }
+    return 0;
+}
+
+int GetButton(unsigned char input)
+{
     for(int i = 0; i < 9;i++)
     {
-        if(joypad() == input + allInputs[i] && input != allInputs[i])
+        if(joypad() == input + allInputs[i] && allInputs[i] !=  input)
         {
             return 1;
         }
     }
 
+    for(int i = 0; i < 9;i++)
+    {
+        if(allInputs[i] == input && allInputsDown[i])
+        {
+            allInputsDown[i] = 0;
+            break;
+        }
+    }
     return 0;
 }

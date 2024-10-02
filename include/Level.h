@@ -1,19 +1,18 @@
 #include "Mathf.h"
+#include "Enemies.h"
 
 #ifndef Level_H
 #define Level_H
 
 typedef struct
 {
-    Vector2 position;
-    Vector2 MinBounds;
-    Vector2 MaxBounds;
-} Screen;
+    unsigned char *Tilemap;
+    Enemy *Enemies;
+    Vector2 Spawnpoint;
+} Level;
 
-void SetLevel(void);
+void SetLevel(int LevelSelected);
 void ShowLevel(void);
-Screen GetCurrentScreen(void);
 void Level_Update(void);
-
-Screen *GetCurrentLevel(void);
+Level GetLevel(int i);
 #endif

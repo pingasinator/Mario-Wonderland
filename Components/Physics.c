@@ -34,7 +34,7 @@ void ApplyPhysics(Collision *hitbox,Vector2 *velocity) BANKED
         }
     }
 
-        while(max.x == 3  && min.x == 0)
+    while(max.x == 3  && min.x == 0)
     {
         hitbox->position.x--;
         velocity->x = 0;

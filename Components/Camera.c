@@ -3,7 +3,7 @@
 #include "..\include\Sprite.h"
 #include <gb\gb.h>
 
-Vector2 Camera = {.x=0,.y=0};
+Vector2 Camera = {.x=16,.y=16*29};
 Vector2 oldCamera = {.x=0,.y=0};
 
 char c[] = 

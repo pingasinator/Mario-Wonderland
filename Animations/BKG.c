@@ -5,6 +5,7 @@
 int coin_animstate = 0;
 int qblock_animstate = 0;
 
+
 void Anim_BKG_Update(void)
 {
     Anim_BKG_Coin();

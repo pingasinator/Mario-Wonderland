@@ -1,19 +1,18 @@
 #include "Mathf.h"
 #include "collision.h"
 
-
 #ifndef Objects_H
 #define Objects_H
 
 typedef struct 
 {
     Vector2 originalPosition;
-    Vector2 position;
     Collision hitbox;
+    Vector2 Velocity;
     char Used;
     char returnToPoint;
-    int Sprite;
-    int animstate;
+    char Sprite;
+    char animstate;
     char type;
 }Object;
 

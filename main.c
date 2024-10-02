@@ -7,7 +7,7 @@ void main(void)
 {
     while (1)
     {
-        SetLevel();
+        SetLevel(1);
         Level_Update();
 
     }

@@ -13,7 +13,7 @@ void Update_Enemy(Enemy *e)
     Vector2 cam;
     cam = GetCamera();
 
-    for(int i= 0; i < 3;i++)
+    for(int i= 0; i < 20;i++)
     {
         if(!e[i].Destroyed)
         {
@@ -47,7 +47,7 @@ void Update_Goomba(Enemy *e)
         e->start = 1;
     }   
 
-    if(e->position.x > camera.x - 8 * 2 && e->position.x < camera.x + 22 * 8 && e->deathDelay > 0)
+    if(e->position.x > camera.x - 8 * 2 && e->position.x < camera.x + 22 * 8 && e->position.y > camera.y - 8 && e->position.y < camera.y + 19 * 8)
     {
         if(e->Sprite_tile == 0)
         {
@@ -65,12 +65,15 @@ void Update_Goomba(Enemy *e)
             e->animState++;
             e->animState = e->animState >= 10 ? 0 : e->animState;
 
-            if(OnCollisionSide(e->Hitbox,GetMarioCollision(),&e->velocity,Get_Mario_Velocity_ptr(),1) && Get_Mario_Velocity().y > 0)
+            if(OnCollisionSide(e->Hitbox,GetMarioCollision(),1) && Get_Mario_Velocity().y > 0)
             {
                 Anim_Goomba_Death(e);
                 Set_Mario_Velocity(Get_Mario_Velocity().x,-10);
                 e->dead = 1;
 
+            }else if(OnCollision(e->Hitbox,GetMarioCollision()))
+            {
+                Set_Transformation(0);
             }
         }
 

@@ -12,7 +12,7 @@
 
 Vector2 velocity = {.x=0,.y=0};
 
-Collision hitbox = {.position={.x=128,.y=128},.pixeloffset={.x=-6,.y=-14},.pixelsize={.x=10,.y=18}};
+Collision hitbox = {.position={.x=16,.y=16*31},.pixeloffset={.x=-6,.y=-14},.pixelsize={.x=10,.y=18}};
 
 int Transformation = 0;
 
@@ -26,11 +26,11 @@ int animState = 0;
 
 void Update_Mario(void)
 {
-    orientation = GetButtonDown(J_LEFT) ? 1 : GetButtonDown(J_RIGHT) ? 0 : orientation;
+    orientation = GetButton(J_LEFT) ? 1 : GetButton(J_RIGHT) ? 0 : orientation;
     
-    maxSpeed = GetButtonDown(J_B) ? 7 : 5;
+    maxSpeed = GetButton(J_B) ? 7 : 5;
     
-    velocity.x += GetButtonDown(J_RIGHT) ? 2 : GetButtonDown(J_LEFT) == 1 ? -2 : 0;
+    velocity.x += GetButton(J_RIGHT) ? 2 : GetButton(J_LEFT) == 1 ? -2 : 0;
 
     velocity.x -= Sign(velocity.x);
     velocity.y += 1;
@@ -40,28 +40,29 @@ void Update_Mario(void)
     Vector2 w = {.x= hitbox.position.x + hitbox.pixeloffset.x + hitbox.pixelsize.x - 2,.y=hitbox.position.y};
     onGround = (Raycast(v,dir,5) || Raycast(w,dir,5));
 
-    if(onGround == 0)
+    if(!onGround)
     {
-        velocity.y += !GetButtonDown(J_A) * 2;
+        velocity.y += !GetButton(J_A) * 2;
         if(velocity.y >= 1)
         {
-            Anim_Mario_Fall();
+            Anim_Mario_Fall(Transformation);
         }else
         {
-            Anim_Mario_Jump();
+            Anim_Mario_Jump(Transformation);
         }
 
     }else
     {
+        GetButton(J_A);
         if(abs(velocity.x) >= 1)
         {
             if((velocity.x < 0 && orientation == 0) || (velocity.x > 0 && orientation == 1))
             {
-                Anim_Mario_Slide();
+                Anim_Mario_Slide(Transformation);
                 animState = 0;
             }else
             {
-                Anim_Mario_Move(animState);
+                Anim_Mario_Move(Transformation,animState);
                 animState++;
                 animState = animState >= 6 ? 0 : animState;
             }
@@ -174,15 +175,19 @@ Vector2 Get_Mario_Velocity(void)
     return velocity;
 }
 
-Vector2 *Get_Mario_Velocity_ptr(void)
-{
-    return &velocity;
-}
-
 void Set_Mario_Velocity(int x,int y)
 {
     velocity.x = x;
     velocity.y = y;
+}
+
+int Set_Transformation(int i)
+{
+    if(i == 1)
+    {
+        Transformation = Transformation < i ? i : Transformation;
+    }
+    return Transformation;
 }
 
 Collision GetMarioCollision(void)

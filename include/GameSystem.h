@@ -7,6 +7,7 @@ void Add_Life(int i);
 int Get_Coin_Number(void);
 int Get_Life_Number(void);
 int GetButtonDown(unsigned char input);
+int GetButton(unsigned char input);
 void Set_Time(int i);
 int Get_Time(void);
 #endif

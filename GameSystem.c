@@ -3,10 +3,13 @@
 
 int Time = 1;
 int Coin_Number;
-int Lifes_Number;
+int Lifes_Number = 3;
+
+int GameMode = 1;
 
 unsigned char allInputsDown[9] = {0,0,0,0,0,0,0,0,0};
 unsigned char allInputs[9] = {NULL,J_RIGHT,J_LEFT,J_UP,J_DOWN,J_A,J_B,J_SELECT,J_START};
+
 void Add_Coin(int i)
 {
     Coin_Number += i;
@@ -41,6 +44,16 @@ int Get_Time(void)
 void Set_Time(int i)
 {
     Time = i;
+}
+
+int Get_GameMode(void)
+{
+    return GameMode;
+}
+
+void Set_GameMode(int i)
+{
+    GameMode = i;
 }
 
 int GetButtonDown(unsigned char input)

@@ -26,8 +26,7 @@ void ApplyPhysics(Collision *hitbox,Vector2 *velocity) BANKED
         velocity->y = 0;
         max.y=TileMapCollisionSide(hitbox,1);
         min.y=TileMapCollisionSide(hitbox,0);
-        max.x=TileMapCollisionSide(hitbox,3);
-        min.x=TileMapCollisionSide(hitbox,2);
+
         if(max.y == 1)
         {
             break;
@@ -64,8 +63,7 @@ void ApplyPhysics(Collision *hitbox,Vector2 *velocity) BANKED
         velocity->y = 0;
         max.y=TileMapCollisionSide(hitbox,1);
         min.y=TileMapCollisionSide(hitbox,0);
-        max.x=TileMapCollisionSide(hitbox,3);
-        min.x=TileMapCollisionSide(hitbox,2);
+
         if(min.y == 1)
         {
             break;
@@ -79,13 +77,14 @@ void ApplyPhysicsOnSide(Collision *hitbox,Vector2 *velocity,int side) BANKED
     switch(side)
     {
         case 0:
-        int A = TileMapCollisionSide(hitbox,0);
+        char A = TileMapCollisionSide(hitbox,0);
+
         if(A == 1 && velocity->y > 0)
         {
             velocity->y = 0;
         }
 
-        while(A == 3 )
+        while(A == 3)
         {
             hitbox->position.y--;
             velocity->y = 0;

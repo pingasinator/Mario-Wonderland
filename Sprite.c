@@ -14,6 +14,7 @@ unsigned char **Current_Palette;
 
 extern unsigned char Mushroom[];
 extern unsigned char FireFlower[];
+extern unsigned char Tanuki_Leaf[];
 extern unsigned char FireBall_H[];
 extern unsigned char FireBall_V[];
 extern unsigned char Obj_Block[];
@@ -48,6 +49,8 @@ extern unsigned char Mario_Great_Swim_0[];
 extern unsigned char Mario_Great_Swim_1[];
 extern unsigned char Mario_Fire[];
 
+extern unsigned char Mario_WorldMap_Small[];
+
 extern unsigned char Goomba_Idle[];
 extern unsigned char Goomba_Move[];
 extern unsigned char Goomba_Death[];
@@ -76,7 +79,6 @@ unsigned char Sprites[40] =
 
 int Add_Sprite(int size)
 {
-    
     for(int i = 10; i < 40;i++)
     {
         if(Sprites[i] == 0 && Sprites[i + size - 1] == 0)
@@ -152,10 +154,57 @@ void Set_Sprite_Tile(unsigned char Tile,int x,int y)
     
 }
 
+void Reset_Vram(void)
+{
+    HIDE_BKG;
+    HIDE_WIN;
+    HIDE_SPRITES;
+    Reset_Sprite_Vram();
+    Reset_BKG_Vram();
+}
+
+void Reset_Sprite_Vram(void)
+{
+    SWITCH_ROM(3);
+    Remove_Sprite(0,40);
+    for(int i = 0; i < 256;i++)
+    {
+        set_sprite_data(i,1,null);
+    }
+}
+
+void Reset_BKG_Vram(void)
+{   
+    SWITCH_ROM(3);
+    for(int i = 0; i < 128;i++)
+    {
+        set_bkg_data(i,1,null);
+    }
+
+    for(int x = 0; x < 32;x++)
+    {
+        for(int y =0; y < 32;y++)
+        {
+            set_bkg_tile_xy(x,y,0);
+        }
+    }
+}
+
+void Reset_Win_Vram(void)
+{
+
+}
+
+void init_Worldmap_Mario_Vram(void)
+{
+    SWITCH_ROM(3);
+     set_sprite_data(0,2,Mario_WorldMap_Small);
+}
+
 void init_Level_Vram(void)
 {
     SWITCH_ROM(2);
-    for(int z = 0; z < 3; z++)
+    for(int z = 0; z < 5; z++)
     {
         set_bkg_data(1 + z * 4,4,Default_Tiles[z]);
     }
@@ -171,8 +220,9 @@ void init_Objects_Vram(void)
     SWITCH_ROM(5);
     set_sprite_data(0x80,4,Mushroom);
     set_sprite_data(0x84,2,FireFlower);
-    set_sprite_data(0x86,2,FireBall_H);
-    set_sprite_data(0x88,2,FireBall_V);
+    set_sprite_data(0x86,4,Tanuki_Leaf);
+    set_sprite_data(0x8A,2,FireBall_H);
+    set_sprite_data(0x8C,2,FireBall_V);
     set_sprite_data(0x90,4,Obj_Block);
     set_sprite_data(0x94,4,Obj_Coin_0);
     set_sprite_data(0x98,1,Obj_Coin_1);
@@ -218,7 +268,7 @@ void init_Mario_Vram(void)
     set_sprite_data(0x5B,4,Mario_Great_Front);
     set_sprite_data(0x5F,6,Mario_Great_Swim_0);
     set_sprite_data(0x65,5,Mario_Great_Swim_1);
-    set_sprite_data(0x6A,2,Mario_Fire);
+    set_sprite_data(0x6A,3,Mario_Fire);
 }
 
 void init_HUD_Vram(void)

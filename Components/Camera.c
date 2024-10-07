@@ -33,6 +33,12 @@ Vector2 GetCamera(void)
     return Camera;
 }
 
+void Set_Camera_Position(int x,int y)
+{
+    Camera.x = x;
+    Camera.y = y;
+}
+
 void Update_Camera(void)
 {
     char *Tilemap = Get_Tilemap();

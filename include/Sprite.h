@@ -11,6 +11,13 @@ unsigned char Get_Tile(int x,int y);
 void Set_Tile(unsigned char Tile,int x,int y);
 unsigned char *Get_Tilemap(void);
 
+void Reset_Vram(void);
+void Reset_Sprite_Vram(void);
+void Reset_BKG_Vram(void);
+void Reset_Win_Vram(void);
+
+void init_Worldmap_Mario_Vram(void);
+
 void init_Level_Vram(void);
 void init_Objects_Vram(void);
 void init_Enemies_Vram(void);

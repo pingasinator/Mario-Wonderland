@@ -17,6 +17,7 @@ typedef struct
     Collision Hitbox;
 }Item;
 
+void Reset_Items(void);
 void Items_Update(void);
 void Create_Item(int type,int x,int y);
 void Mushroom_Update(Item* i);

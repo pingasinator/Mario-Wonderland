@@ -18,16 +18,16 @@ void Anim_Mario_Fire_Idle(void) BANKED
 
 void Anim_Mario_Fire_Slide(void) BANKED
 {
-    set_sprite_tile(0,0x4F);
-    set_sprite_tile(1,0x50);
-    set_sprite_tile(2,0x51);
-    set_sprite_tile(3,0x52);
+    set_sprite_tile(0,0X6A);
+    set_sprite_tile(1,0X6B);
+    set_sprite_tile(2,0x4F);
+    set_sprite_tile(3,0x50);
     set_sprite_tile(4,0);
-    set_sprite_tile(5,0x53);
-    set_sprite_tile(6,0x54);
+    set_sprite_tile(5,0x51);
+    set_sprite_tile(6,0x52);
     set_sprite_tile(7,0x1E);
-    set_sprite_tile(8,0x55);
-    set_sprite_tile(9,0x56);
+    set_sprite_tile(8,0x53);
+    set_sprite_tile(9,0x54);
 }
 
 void Anim_Mario_Fire_Fall(void) BANKED

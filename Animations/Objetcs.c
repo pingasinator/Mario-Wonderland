@@ -96,25 +96,51 @@ void Anim_Object_Brick(Object *o) BANKED
     }
 }
 
-void Anim_Object_Mushroom(Object *o) BANKED
+void Anim_Object_Fireball(Object *o) BANKED
 {
+
     if(o->Sprite != 0)
-    {
-        set_sprite_tile(o->Sprite,0x80);
-        set_sprite_tile(o->Sprite + 1,0x81);
-        set_sprite_tile(o->Sprite + 2,0x82);
-        set_sprite_tile(o->Sprite + 3,0x83);
-        move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y));
-        move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y));
-        move_sprite(o->Sprite + 2,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
-        move_sprite(o->Sprite + 3,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y) + 8);
+    {   
+        switch (o->animstate)
+        {
+            case 0:
+            set_sprite_tile(o->Sprite,0x8A);
+            set_sprite_tile(o->Sprite + 1,0x8B);
+            set_sprite_prop(o->Sprite,0);
+            set_sprite_prop(o->Sprite+ 1,0);
+            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x) - 8,-(GetCamera().y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
+            break;
+    
+            case 1:
+            set_sprite_tile(o->Sprite,0x8D);
+            set_sprite_tile(o->Sprite + 1,0x8C);
+            set_sprite_prop(o->Sprite,S_FLIPY + S_FLIPX);
+            set_sprite_prop(o->Sprite+ 1,S_FLIPY + S_FLIPX);
+            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y));
+            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
+            break;
+
+            case 2:
+            set_sprite_tile(o->Sprite,0x8B);
+            set_sprite_tile(o->Sprite + 1,0x8A);
+            set_sprite_prop(o->Sprite,S_FLIPX + S_FLIPY);
+            set_sprite_prop(o->Sprite + 1,S_FLIPX + S_FLIPY);
+            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y) + 8);
+            break;
+
+            case 3:
+            set_sprite_tile(o->Sprite,0x8D);
+            set_sprite_tile(o->Sprite + 1,0x8C);
+            set_sprite_prop(o->Sprite,0);
+            set_sprite_prop(o->Sprite + 1,0);
+            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 16);
+            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
+            break;
+        }
     }else
     {
-        o->Sprite = Add_Sprite(4);
+        o->Sprite = Add_Sprite(2);
     }
-}
-
-void Anim_Fireball(int animstate)
-{
-    
 }

@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include <gb\gb.h>
+#include <asm\sm83\string.h>
 
 #include <stdlib.h>
 
@@ -27,26 +28,34 @@ Enemy *currentEnemies;
 int Timer = 300;
 int milisec = 30;
 
+int EndofLevel = 0;
+
+void Reset_Level(void)
+{
+    
+    EndofLevel = 0;
+    Timer = 300;
+    milisec = 30;
+}
 
 void SetLevel(int LevelSelected)
 {
+    Reset_Vram();
+    Reset_Level();
+    Reset_Items();
+    Set_Camera_Position(0,16*29);
     init_Enemies_Vram();
     init_Level_Vram();
     init_Objects_Vram();
     init_Mario_Vram();
     init_HUD_Vram();
-    Timer = 300;
     SWITCH_ROM(19 + LevelSelected);
+    init_Mario(GetLevel(LevelSelected).Spawnpoint.x,GetLevel(LevelSelected).Spawnpoint.y);
 
-    for(int i = 0; i < 4096;i++)
-    {
-        Get_Tilemap()[i] = GetLevel(LevelSelected).Tilemap[i];
-    }
+    memcpy(Get_Tilemap(),GetLevel(LevelSelected).Tilemap,sizeof(uint8_t) * 4096);
 
-    for(int i=0;i<20;i++)
-    {
-        E[i] = GetLevel(LevelSelected).Enemies[i];
-    }
+    memcpy(E,GetLevel(LevelSelected).Enemies,20 * sizeof(Enemy));
+
 
     Vector2 camera;
     camera = GetCamera();
@@ -71,17 +80,38 @@ void Level_Update(void)
         Update_Enemy(E);
         Objects_Update();
         Items_Update();
+        Timer_Update();
         Anim_BKG_Update();
-        milisec--;
-        if(milisec <= 0)
+        if(EndofLevel)
         {
-            milisec = 30;
-            Timer--;
+            Set_GameMode(0);
+            break;
         }
+
         SHOW_SPRITES;
         SHOW_WIN;
         SHOW_BKG;
     }
+}
+
+void Timer_Update(void)
+{
+    milisec -= Get_Time();
+    if(milisec <= 0)
+    {
+        milisec = 30;
+        Timer--;
+    }
+
+    if(Timer <= 0)
+    {
+        Mario_Set_Death();
+    }
+}
+
+void Set_Level_End(void)
+{
+    EndofLevel = 1;
 }
 
 Level GetLevel(int i)

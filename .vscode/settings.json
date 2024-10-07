@@ -33,7 +33,8 @@
     "overworldpalette.h": "c",
     "smallmario.h": "c",
     "greatmario.h": "c",
-    "firemario.h": "c"
+    "firemario.h": "c",
+    "random": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

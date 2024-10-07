@@ -3,9 +3,22 @@
 #include "..\include\Physic.h"
 #include "..\include\Mario.h"
 #include "..\include\Camera.h"
+#include "..\include\GameSystem.h"
 
 Item nullItem = {.dir=0,.originalPosition={.x=0,.y=0},.position={.x=0,.y=0},.Sprite=0,.start=0,.type=0,.Used=0,.velocity={.x=0,.y=0},.Hitbox={.pixeloffset={.x=0,.y=0},.pixelsize={.x=0,.y=0},.position={.x=0,.y=0}}};
 Item AllItems[4];
+
+void Reset_Items(void)
+{
+    for(int i = 0; i < 4;i++)
+    {
+        if(AllItems[i].Sprite != 0)
+        {
+            AllItems[i].Sprite = Remove_Sprite(AllItems[i].Sprite,4);
+        }
+        AllItems[i] = nullItem;
+    }
+}
 
 void Items_Update(void)
 {
@@ -110,8 +123,8 @@ void Mushroom_Update(Item *i)
                 i->Sprite = Add_Sprite(4);
             }
 
-            i->velocity.y++;
-            i->velocity.x = i->dir;
+            i->velocity.y += Get_Time();
+            i->velocity.x = i->dir * Get_Time();
         
             Vector2 Rpos = {.x=i->position.x + Sign(i->dir) * 8,.y=i->position.y-1};
             Vector2 Rdir = {.x=0,.y=-1};

@@ -3,6 +3,7 @@
 #include "..\include\Mario.h"
 #include "..\include\Sprite.h"
 #include "..\include\Physic.h"
+#include "..\include\GameSystem.h"
 
 #include "..\include\Animations\Enemies.h"
 
@@ -15,7 +16,7 @@ void Update_Enemy(Enemy *e)
 
     for(int i= 0; i < 20;i++)
     {
-        if(!e[i].Destroyed)
+        if(!e[i].Destroyed &&! Mario_isDead())
         {
             switch(e->type)
             {
@@ -45,35 +46,32 @@ void Update_Goomba(Enemy *e)
         e->dir.x = 1;
         e->dead = 0;
         e->start = 1;
-    }   
+    }
 
     if(e->position.x > camera.x - 8 * 2 && e->position.x < camera.x + 22 * 8 && e->position.y > camera.y - 8 && e->position.y < camera.y + 19 * 8)
     {
-        if(e->Sprite_tile == 0)
-        {
-            e->Sprite_tile = Add_Sprite(e->Sprite_size);
-        }
+
         e->Hitbox.position = e->position;
 
         if(!e->dead)
         {
-            e->velocity.y++;
-            e->velocity.x = e->dir.x;
+            e->velocity.y += Get_Time();
+            e->velocity.x = e->dir.x * Get_Time();
 
             Anim_Goomba_Move(e);
 
-            e->animState++;
+            e->animState += Get_Time();
             e->animState = e->animState >= 10 ? 0 : e->animState;
 
-            if(OnCollisionSide(e->Hitbox,GetMarioCollision(),1) && Get_Mario_Velocity().y > 0)
+            if(OnCollisionSide(e->Hitbox,GetMarioCollision(),1) &&! Mario_isDead() && Get_Mario_Velocity().y > 0)
             {
                 Anim_Goomba_Death(e);
                 Set_Mario_Velocity(Get_Mario_Velocity().x,-10);
                 e->dead = 1;
 
-            }else if(OnCollision(e->Hitbox,GetMarioCollision()))
+            }else if(OnCollision(e->Hitbox,GetMarioCollision()) &&! Mario_isDead())
             {
-                Set_Transformation(0);
+                Mario_Hit();
             }
         }
 
@@ -87,19 +85,12 @@ void Update_Goomba(Enemy *e)
 
     e->position.x += e->velocity.x;
     e->position.y += e->velocity.y;
-    if(e->Sprite_tile != 0)
-    {
-        move_sprite(e->Sprite_tile,-(camera.x - e->position.x),-(camera.y - e->position.y));
-        move_sprite(e->Sprite_tile+1,-(camera.x - e->position.x)+8,-(camera.y - e->position.y));
-        move_sprite(e->Sprite_tile+2,-(camera.x - e->position.x),-(camera.y - e->position.y) + 8);
-        move_sprite(e->Sprite_tile+3,-(camera.x - e->position.x)+8,-(camera.y - e->position.y) + 8);
-    }
-
 
         if(e->dead)
         {
             e->velocity.x = 0;
             e->deathDelay--;
+            Anim_Goomba_Death(e);
             if(e->deathDelay <= 0)
             {
                 e->deathDelay = 0;
@@ -113,7 +104,6 @@ void Update_Goomba(Enemy *e)
         {
             e->Sprite_tile = Remove_Sprite(e->Sprite_tile,e->Sprite_size);
         }
-
     }
     
 }

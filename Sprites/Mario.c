@@ -12,7 +12,7 @@ const unsigned char null[] =
     0x00,0x00,
 };
 
-const unsigned char Small_Idle[] = 
+const unsigned char Mario_Small_Idle[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -69,7 +69,7 @@ const unsigned char Small_Idle[] =
     0xF8,0xF8
 };
 
-const unsigned char Small_Move_0[] = 
+const unsigned char Mario_Small_Move_0[] = 
 {
 
     0x1F,0x1E,
@@ -109,7 +109,7 @@ const unsigned char Small_Move_0[] =
     0xE0,0xE0
 };
 
-const unsigned char Small_Move_1[] =
+const unsigned char Mario_Small_Move_1[] =
 {
     0x1F,0x1E,
     0x3F,0x28,
@@ -148,7 +148,7 @@ const unsigned char Small_Move_1[] =
     0x80,0x80
 };
 
-const unsigned char Small_Move_2[] =
+const unsigned char Mario_Small_Move_2[] =
 {
     0x1F,0x1C,
     0x3F,0x28,
@@ -187,7 +187,7 @@ const unsigned char Small_Move_2[] =
     0xFC,0xFC
 };
 
-const unsigned char Small_Jump[] = 
+const unsigned char Mario_Small_Jump[] = 
 {
     0X00,0X00,
     0X00,0X00,
@@ -244,7 +244,7 @@ const unsigned char Small_Jump[] =
     0x00,0x00
 };
 
-const unsigned char Small_Fall[] = 
+const unsigned char Mario_Small_Fall[] = 
 {
 
     0x28,0x08,
@@ -257,7 +257,7 @@ const unsigned char Small_Fall[] =
     0xFC,0xA4
 };
 
-const unsigned char Small_Slide[] = 
+const unsigned char Mario_Small_Slide[] = 
 {
     0x3F,0x3C,
     0x3F,0x28,
@@ -305,7 +305,7 @@ const unsigned char Small_Slide[] =
     0x00,0x00
 };
 
-const unsigned char Small_Crounch[] = 
+const unsigned char Mario_Small_Crounch[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -344,7 +344,7 @@ const unsigned char Small_Crounch[] =
     0xF0,0xF0
 };
 
-const unsigned char Small_Front[] = 
+const unsigned char Mario_Small_Front[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -374,7 +374,7 @@ const unsigned char Small_Front[] =
     0x7F,0x7F
 };
 
-const unsigned char Dead[] = 
+const unsigned char Mario_Dead[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -404,7 +404,7 @@ const unsigned char Dead[] =
     0x30,0x30
 };
 
-const unsigned char Small_Swim_0[] = 
+const unsigned char Mario_Small_Swim_0[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -461,7 +461,7 @@ const unsigned char Small_Swim_0[] =
     0x80,0x80
 };
 
-const unsigned char Small_Swim_1[] = 
+const unsigned char Mario_Small_Swim_1[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -518,7 +518,7 @@ const unsigned char Small_Swim_1[] =
     0x00,0x00
 };
 
-const unsigned char Great_Idle[] = 
+const unsigned char Mario_Great_Idle[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -593,7 +593,7 @@ const unsigned char Great_Idle[] =
     0xF8,0xF8
 };
 
-const unsigned char Great_Move_0[] = 
+const unsigned char Mario_Great_Move_0[] = 
 {
     0x3F,0x3F,
     0x3F,0x3F,
@@ -614,7 +614,7 @@ const unsigned char Great_Move_0[] =
     0xE0,0xE0
 };
 
-const unsigned char Great_Move_1[] = 
+const unsigned char Mario_Great_Move_1[] = 
 {
     
     0x3F,0x30,
@@ -654,7 +654,7 @@ const unsigned char Great_Move_1[] =
     0xFC,0xFC
 };
 
-const unsigned char Great_Move_2[] = 
+const unsigned char Mario_Great_Move_2[] = 
 {
 
     0x1F,0x18,
@@ -694,7 +694,7 @@ const unsigned char Great_Move_2[] =
     0x00,0x00
 };
 
-const unsigned char Great_Jump[] = 
+const unsigned char Mario_Great_Jump[] = 
 {
 
     0x00,0x00,
@@ -772,7 +772,7 @@ const unsigned char Great_Jump[] =
     0x00,0x00
 };
 
-const unsigned char Great_Fall[] =
+const unsigned char Mario_Great_Fall[] =
 {
     0x1F,0x18,
     0x3F,0x3E,
@@ -784,7 +784,7 @@ const unsigned char Great_Fall[] =
     0x7F,0x4F
 };
 
-const unsigned char Great_Slide[] = 
+const unsigned char Mario_Great_Slide[] = 
 {
     0x09,0x08,
     0x17,0x11,
@@ -841,7 +841,7 @@ const unsigned char Great_Slide[] =
     0xC0,0xC0
 };
 
-const unsigned char Great_Crounch[] = 
+const unsigned char Mario_Great_Crounch[] = 
 {
     0x07,0x07,
     0x18,0x18,
@@ -880,7 +880,7 @@ const unsigned char Great_Crounch[] =
     0xFC,0xFC
 };
 
-const unsigned char Great_Front[] = 
+const unsigned char Mario_Great_Front[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -919,7 +919,7 @@ const unsigned char Great_Front[] =
     0x7F,0x7F,
 };
 
-const unsigned char Great_Swim_0[] = 
+const unsigned char Mario_Great_Swim_0[] = 
 {
     0x3F,0x30,
     0x1F,0x1E,
@@ -976,7 +976,7 @@ const unsigned char Great_Swim_0[] =
     0x00,0x00,
 };
 
-const unsigned char Great_Swim_1[] = 
+const unsigned char Mario_Great_Swim_1[] = 
 {
     0x1F,0x18,
     0x7F,0x7E,
@@ -1023,4 +1023,55 @@ const unsigned char Great_Swim_1[] =
     0x04,0x04,
     0x09,0x08,
     
+};
+
+const unsigned char Mario_Fire[] = 
+{
+    0x00,0x00,
+    0x0E,0x0E,
+    0x09,0x09,
+    0x08,0x08,
+    0x04,0x04,
+    0x02,0x02,
+    0x07,0x07,
+    0x08,0x08,
+
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x80,0x80,
+    0x40,0x40,
+    0xE0,0xE0,
+    0xB0,0xB0,
+    0xE8,0xE8,
+
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x80,0x80,
+    0x5C,0x5C,
+    0xFE,0xE2,
+    0xBF,0xB1,
+    0xEF,0xE1
+};
+
+const unsigned char Mario_WorldMap_Small[] = 
+{
+    0x01,0x01,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00,
+    0x00,0x00
 };

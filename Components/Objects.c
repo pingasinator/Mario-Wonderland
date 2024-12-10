@@ -5,13 +5,15 @@
 #include "..\include\GameSystem.h"
 #include "..\include\Mario.h"
 #include "..\include\Animations\Objects.h"
-#include "..\include\Physic.h"
 #include "..\include\Items.h"
+#include "..\include\Enemies.h"
 #include <gb\gb.h>
 
 
 Object nullObject = {.Sprite=0,.animstate=0,.Used=0,.returnToPoint=0,.type=0,.hitbox={.position={.x=0,.y=0},.pixelsize={.x=0,.y=0},.pixeloffset={.x=0,.y=0}}};
 Object AllObjects[10];
+
+extern char Mario_State;
 
 int FireballNumber = 0;
 
@@ -119,16 +121,16 @@ void FireBall_Update(Object *o) BANKED
     {
         Vector2 RayGround_point = {.x=o->hitbox.position.x,.y=o->hitbox.position.y+2};
         Vector2 RayGround_Dir = {.x=1,.y=0};
-        Vector2 RayWall_point_0 = {.x=o->hitbox.position.x + o->hitbox.pixeloffset.x,.y=o->hitbox.position.y - 8};
+        Vector2 RayWall_point_0 = {.x=o->hitbox.position.x + o->hitbox.pixeloffset.x + o->hitbox.pixelsize.x,.y=o->hitbox.position.y - 8};
         Vector2 RayWall_point_1 = {.x=o->hitbox.position.x,.y=o->hitbox.position.y - 8};
         Vector2 RayWall_Dir = {.x=0,.y=1};
         char onGround = Raycast(RayGround_point,RayGround_Dir,8);
-        char onWall = Raycast(RayWall_point_0,RayWall_Dir,8) || Raycast(RayWall_point_1,RayWall_Dir,8);
+        char onWall = Raycast(RayWall_point_0,RayWall_Dir,6) || Raycast(RayWall_point_1,RayWall_Dir,6);
 
         o->Velocity.x = o->dir * 7;
         o->Velocity.y++;
         o->Velocity.y = Clamp(o->Velocity.y,-5,5);
-
+        TilemapCollisionPhysicsSide(&o->hitbox,&o->Velocity,0);
         if(onGround)
         {
             o->Velocity.y = -5;
@@ -143,7 +145,21 @@ void FireBall_Update(Object *o) BANKED
         o->animstate = o->animstate >= 4 ? 0 : o->animstate;
         Anim_Object_Fireball(o);
 
+        for(int i = 0;i < 3;i++)
+        {
+            if(OnCollision(o->hitbox,Get_Enemies()[i].Hitbox) && !Get_Enemies()[i].Destroyed)
+            {
+                Get_Enemies()[i].dead = 1;
+                if(o->Sprite != 0)
+                {
+                    o->Sprite = Remove_Sprite(o->Sprite,2);
+                }
 
+                FireballNumber--;
+                *o = nullObject;
+                break;
+            }
+        }
 
         if(onWall)
         {
@@ -155,10 +171,11 @@ void FireBall_Update(Object *o) BANKED
             FireballNumber--;
             *o = nullObject;
         }
-
-        ApplyPhysicsOnSide(&o->hitbox,&o->Velocity,0);
+        
         o->hitbox.position.x += o->Velocity.x;
         o->hitbox.position.y += o->Velocity.y;
+        TilemapCollisionPhysicsSide(&o->hitbox,&o->Velocity,0);
+
     }else
     {
         o->Sprite = Remove_Sprite(o->Sprite,2);
@@ -244,7 +261,13 @@ void Q_Block(int Type,int x,int y) BANKED
                 break;
 
                 case 4:
-                Create_Item(2,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
+                if(Mario_State >= 1)
+                {
+                    Create_Item(2,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
+                }else
+                {
+                    Create_Item(1,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
+                }
                 break;
 
                 case 6:

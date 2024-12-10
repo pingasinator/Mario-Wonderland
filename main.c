@@ -5,8 +5,6 @@
 #include "include\Sprite.h"
 #include <gb\gb.h>
 
-
-
 void main(void)
 {
     while (1)

@@ -21,9 +21,7 @@
 extern Level Level_01;
 extern Level Level_02;
 
-Enemy E[20];
 
-Enemy *currentEnemies;
 
 int Timer = 300;
 int milisec = 30;
@@ -50,11 +48,11 @@ void SetLevel(int LevelSelected)
     init_Mario_Vram();
     init_HUD_Vram();
     SWITCH_ROM(19 + LevelSelected);
+    Set_All_Enemies(LevelSelected);
     init_Mario(GetLevel(LevelSelected).Spawnpoint.x,GetLevel(LevelSelected).Spawnpoint.y);
 
     memcpy(Get_Tilemap(),GetLevel(LevelSelected).Tilemap,sizeof(uint8_t) * 4096);
 
-    memcpy(E,GetLevel(LevelSelected).Enemies,20 * sizeof(Enemy));
 
 
     Vector2 camera;
@@ -77,7 +75,7 @@ void Level_Update(void)
         Update_Mario();
         Update_Camera();
         Update_HUD(Get_Life_Number(),Get_Coin_Number(),Timer);
-        Update_Enemy(E);
+        Update_Enemy();
         Objects_Update();
         Items_Update();
         Timer_Update();
@@ -103,7 +101,7 @@ void Timer_Update(void)
         Timer--;
     }
 
-    if(Timer <= 0)
+    if(Timer <= 0 &&! Mario_isDead())
     {
         Mario_Set_Death();
     }

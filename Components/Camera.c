@@ -83,8 +83,18 @@ void Update_Camera(void)
 
 void MoveCamera(int x,int y)
 {
-    Camera.x += x;
-    Camera.y += y;
+
+    for(int i = 0; i < Abs(x);i++)
+    {
+        Camera.x += Sign(x);
+        SHOW_BKG;
+    }
+
+    for(int i = 0; i < Abs(y);i++)
+    {
+        Camera.y += Sign(y);
+        SHOW_BKG;
+    }
 
     Camera.x = Clamp(Camera.x,0,128 * 16 - 10 * 16);
     Camera.y = Clamp(Camera.y,0,32 * 16 - 9 * 16);

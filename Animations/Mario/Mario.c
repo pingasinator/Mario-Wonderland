@@ -98,7 +98,7 @@ void Anim_Mario_Slide(int Transformation) BANKED
     }
 }
 
-void Anim_Mario_Death(Collision hitbox) BANKED
+void Anim_Mario_Death(Collision hitbox,int dir) BANKED
 {
     Vector2 camera;
     camera = GetCamera();
@@ -114,9 +114,21 @@ void Anim_Mario_Death(Collision hitbox) BANKED
     set_sprite_tile(8,0x28);
     set_sprite_tile(9,0x28);
 
-    set_sprite_prop(3,S_FLIPX);
+    switch(dir)
+    {
+        case 1:
+            set_sprite_prop(3,S_FLIPX);
     set_sprite_prop(6,S_FLIPX);
     set_sprite_prop(9,S_FLIPX);
+        break;
+
+        case -1:
+        set_sprite_prop(2,0);
+        set_sprite_prop(5,0);
+        set_sprite_prop(8,0);
+        break;
+    }
+
 
     move_sprite(0,-(camera.x - hitbox.position.x),-(camera.y - hitbox.position.y) - 8);
     move_sprite(1,-(camera.x - hitbox.position.x)+8,-(camera.y - hitbox.position.y) - 8);

@@ -1,6 +1,5 @@
 #include "..\include\Items.h"
 #include "..\include\Sprite.h"
-#include "..\include\Physic.h"
 #include "..\include\Mario.h"
 #include "..\include\Camera.h"
 #include "..\include\GameSystem.h"
@@ -131,7 +130,7 @@ void Mushroom_Update(Item *i)
 
             i->dir = Raycast(Rpos,Rdir,8) ? i->dir - 2 * Sign(i->dir) : i->dir;
             i->velocity.y = Clamp(i->velocity.y,-2,2);
-            ApplyPhysicsOnSide(&i->Hitbox,&i->velocity,0);
+            TilemapCollisionPhysics(&i->Hitbox,&i->velocity);
 
             i->position.x += i->velocity.x;
             i->position.y += i->velocity.y;

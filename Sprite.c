@@ -59,6 +59,7 @@ extern unsigned char Koopa_Move_0[];
 extern unsigned char Koopa_Move_1[];
 
 extern unsigned char Overworld_Ground[];
+extern unsigned char Overworld_Background[];
 
 extern unsigned char S_HUD_Life_Mario[];
 extern unsigned char S_HUD_Coin[];
@@ -113,7 +114,8 @@ void Set_Tile_Palette(int i)
         case 0:
         SWITCH_ROM(6);
         Current_Palette = OverworldPalette;
-        set_bkg_data(48,18,Overworld_Ground);
+        set_bkg_data(31,18,Overworld_Ground);
+        set_bkg_data(49,4,Overworld_Background);
         break;
     }
 }
@@ -140,10 +142,10 @@ void Set_Sprite_Tile(unsigned char Tile,int x,int y)
     y -= 32 * (y / 32);
     if(Tile >= 18)
     {
-        set_bkg_tile_xy(x,y,Current_Palette[Tile][0]);
-        set_bkg_tile_xy(x + 1,y,Current_Palette[Tile][1]);
-        set_bkg_tile_xy(x,y + 1,Current_Palette[Tile][2]);
-        set_bkg_tile_xy(x + 1,y + 1,Current_Palette[Tile][3]);
+        set_bkg_tile_xy(x,y,Current_Palette[Tile - 18][0]);
+        set_bkg_tile_xy(x + 1,y,Current_Palette[Tile - 18][1]);
+        set_bkg_tile_xy(x,y + 1,Current_Palette[Tile - 18][2]);
+        set_bkg_tile_xy(x + 1,y + 1,Current_Palette[Tile - 18][3]);
     }else
     {
         set_bkg_tile_xy(x,y,DefaultPalette[Tile][0]);
@@ -210,8 +212,8 @@ void init_Level_Vram(void)
     }
     set_bkg_data(21,5,Pipe_H);
     set_bkg_data(26,5,Pipe_V);
-    set_bkg_data(31,10,Tiny_Castle);
-    set_bkg_data(41,7,Flag);
+    set_bkg_data(64,10,Tiny_Castle);
+    set_bkg_data(74,7,Flag);
     set_bkg_data(0x7F,1,S_Full);
 }
 

@@ -2,7 +2,6 @@
 #include "..\include\Mario.h"
 #include "..\include\Camera.h"
 #include "..\include\GameSystem.h"
-#include "..\include\Physic.h" 
 #include "..\include\Sprite.h"
 #include "..\include\Objects.h"
 #include "..\include\Animations\Mario\Mario.h"
@@ -15,7 +14,7 @@ Vector2 velocity = {.x=0,.y=0};
 
 Collision hitbox = {.position={.x=0,.y=0},.pixeloffset={.x=-6,.y=-14},.pixelsize={.x=10,.y=18}};
 
-char Transformation = 0;
+char Mario_State = 0;
 char dead = 0;
 
 char deathJumpdelay = 30;
@@ -39,7 +38,7 @@ void init_Mario(int x,int y)
     hitbox.position.y = y;
     velocity.x = 0;
     velocity.y = 0;
-    Transformation = 0;
+    Mario_State = 0;
     dead = 0;
     deathJumpdelay = 30;
     DeathTime = 45;
@@ -55,17 +54,17 @@ void Update_Mario(void)
     camera = GetCamera();
     if(!dead)
     {
-            dir = GetButton(J_LEFT) ? -1 : GetButton(J_RIGHT) ? 1 : dir;
+        dir = GetButton(J_LEFT) ? -1 : GetButton(J_RIGHT) ? 1 : dir;
     
-        maxSpeed = GetButton(J_B) ? 7 : 5;
+        maxSpeed = GetButton(J_B) ? Get_Time() * 7 : Get_Time() * 5;
         RecoveryTime -= RecoveryTime > 0 ? 1 : 0;
     
-        velocity.x += GetButton(J_RIGHT) ? 2 : GetButton(J_LEFT) == 1 ? -2 : 0;
+        velocity.x += GetButton(J_RIGHT) ? Get_Time() * 2 : GetButton(J_LEFT) == 1 ? Get_Time() * -2 : 0;
 
         velocity.x -= Sign(velocity.x);
         velocity.y += 1;
 
-        if(GetButtonDown(J_B) && Transformation == 2)
+        if(GetButtonDown(J_B) && Mario_State == 2)
         {
             Make_FireBall(dir,hitbox.position.x + dir * 8,hitbox.position.y);
         }
@@ -80,10 +79,10 @@ void Update_Mario(void)
             velocity.y += !GetButton(J_A) * 2;
             if(velocity.y >= 1)
             {
-                Anim_Mario_Fall(Transformation);
+                Anim_Mario_Fall(Mario_State);
             }else
             {
-                Anim_Mario_Jump(Transformation);
+                Anim_Mario_Jump(Mario_State);
             }
 
         }else
@@ -93,34 +92,35 @@ void Update_Mario(void)
             {
                 if((velocity.x < 0 && dir == 1) || (velocity.x > 0 && dir == -1))
                 {
-                    Anim_Mario_Slide(Transformation);
+                    Anim_Mario_Slide(Mario_State);
                     animState = 0;
                 }else
                 {
-                    Anim_Mario_Move(Transformation,animState);
+                    Anim_Mario_Move(Mario_State,animState);
                     animState += Get_Time();
                     animState = animState >= 6 ? 0 : animState;
                 }
             }else
             {
-                Anim_Mario_Idle(Transformation);
+                Anim_Mario_Idle(Mario_State);
             }
 
             velocity.y = GetButtonDown(J_A) ? -10 : velocity.y;
         }
 
 
-        ApplyPhysics(&hitbox,&velocity);
+        TilemapCollisionPhysics(&hitbox,&velocity);
         Get_TileObject();
     
         velocity.y = Clamp(velocity.y,-10,5);
-        velocity.x = Clamp(velocity.x,-5,5);
+        velocity.x = Clamp(velocity.x,-maxSpeed,maxSpeed);
 
         hitbox.position.x += velocity.x;
         hitbox.position.y += velocity.y;
 
         hitbox.position.x = Clamp(hitbox.position.x,0,128*16);
 
+        TilemapCollisionPhysics(&hitbox,&velocity);
 
 
         MoveCamera(hitbox.position.x - (camera.x + 88),hitbox.position.y - (camera.y + 80));
@@ -145,7 +145,7 @@ void Update_Mario(void)
 
         }
         delay(30);
-        Anim_Mario_Death(hitbox);
+        Anim_Mario_Death(hitbox,dir);
     }
 
 }
@@ -231,6 +231,11 @@ Vector2 Get_Mario_Velocity(void)
     return velocity;
 }
 
+Vector2 Get_Mario_Position(void)
+{
+    return hitbox.position;
+}
+
 void Set_Mario_Velocity(int x,int y)
 {
     velocity.x = x;
@@ -246,13 +251,13 @@ int Set_Transformation(int i)
 {
     if(i == 1)
     {
-        Transformation = Transformation < i ? i : Transformation;
+        Mario_State = Mario_State < i ? i : Mario_State;
     }else
     {
-        Transformation = i;
+        Mario_State = i;
     }
 
-    return Transformation;
+    return Mario_State;
 }
 
 void Mario_Hit(void)
@@ -260,18 +265,18 @@ void Mario_Hit(void)
     if(RecoveryTime <= 0)
     {
         RecoveryTime = 30;
-        switch (Transformation)
+        switch (Mario_State)
         {
             case 0:
             Mario_Set_Death();
             break;
 
             case 1:
-            Transformation = 0;
+            Mario_State = 0;
             break;
     
             default:
-            Transformation = 1;
+            Mario_State = 1;
             break;
         }
     }
@@ -282,7 +287,7 @@ void Mario_Set_Death(void)
     dead = 1;
     Set_Time(0);
     Add_Life(-1);
-    Anim_Mario_Death(hitbox);
+    Anim_Mario_Death(hitbox,dir);
 }
 
 Collision GetMarioCollision(void)

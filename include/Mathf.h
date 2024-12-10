@@ -14,6 +14,7 @@ typedef struct
     Vector2 min;
 } Bound;
 
+int Abs(int i);
 int Sign(int i);
 int Clamp(int value, int min, int max);
 

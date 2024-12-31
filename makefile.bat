@@ -1,0 +1,1 @@
+lcc -Wm-yo32 -Wm-ya4 -Wm-yt0x1A -o MarioWonderLand.gb *.c .\Sprites\*.c .\Components\*.c .\Levels\*.c .\Animations\*.c .\Animations\Mario\*.c

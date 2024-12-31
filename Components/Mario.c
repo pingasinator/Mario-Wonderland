@@ -12,7 +12,7 @@
 
 Vector2 velocity = {.x=0,.y=0};
 
-Collision hitbox = {.position={.x=0,.y=0},.pixeloffset={.x=-6,.y=-14},.pixelsize={.x=10,.y=18}};
+Collision hitbox = {.position={.x=0,.y=0},.pixeloffset={.x=-6,.y=-14},.pixelsize={.x=10,.y=20}};
 
 char Mario_State = 0;
 char dead = 0;
@@ -72,7 +72,7 @@ void Update_Mario(void)
         Vector2 Raydir = {.x=0,.y=1};
         Vector2 v = {.x= hitbox.position.x + hitbox.pixeloffset.x + 2,.y=hitbox.position.y};
         Vector2 w = {.x= hitbox.position.x + hitbox.pixeloffset.x + hitbox.pixelsize.x - 2,.y=hitbox.position.y};
-        onGround = (Raycast(v,Raydir,5) || Raycast(w,Raydir,5));
+        onGround = (Raycast(v,Raydir,8) || Raycast(w,Raydir,8));
 
         if(!onGround)
         {
@@ -108,8 +108,6 @@ void Update_Mario(void)
             velocity.y = GetButtonDown(J_A) ? -10 : velocity.y;
         }
 
-
-        TilemapCollisionPhysics(&hitbox,&velocity);
         Get_TileObject();
     
         velocity.y = Clamp(velocity.y,-10,5);

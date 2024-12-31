@@ -78,7 +78,7 @@ void Update_Goomba(Enemy *e)
 
         if(!e->dead)
         {
-            e->dir.x = TileMapCollisionSide(&e->Hitbox,e->dir.x > 0 ? 3 : 2) ? e->dir.x - 2 * Sign(e->dir.x) : e->dir.x;
+            
             e->velocity.y += Get_Time();
             e->velocity.x = e->dir.x * Get_Time();
 
@@ -106,8 +106,8 @@ void Update_Goomba(Enemy *e)
     e->Hitbox.position.x += e->velocity.x;
     e->Hitbox.position.y += e->velocity.y;
 
-        TilemapCollisionPhysicsSide(&e->Hitbox,&e->velocity,0);
-
+    TilemapCollisionPhysicsSide(&e->Hitbox,&e->velocity,0);
+    e->dir.x = TileMapCollisionSide(&e->Hitbox,e->dir.x > 0 ? 3 : 2) ? e->dir.x - 2 * Sign(e->dir.x) : e->dir.x;
         if(e->dead)
         {
             e->velocity.x = 0;

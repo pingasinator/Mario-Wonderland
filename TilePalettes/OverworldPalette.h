@@ -23,17 +23,17 @@ char Ground_1[] =
 
 char Ground_2[] = 
 {
-    37,31,33,45
+    33,47,39,35
 };
 
 char Ground_3[] = 
 {
-    0,0,0,0
+    48,34,35,40
 };
 
 char Ground_4[] = 
 {
-    0,0,0,0
+    33,45,33,
 };
 
 char Ground_5[] = 
@@ -43,7 +43,7 @@ char Ground_5[] =
 
 char Ground_6[] = 
 {
-    38,39,33,34
+    37,38,33,34
 };
 
 char Ground_7[] = 

@@ -14,7 +14,7 @@ int TileMapCollisionSide(Collision *A,int side) BANKED
     int boundOut = 0;
     int boundIn = 0;
     int i = 0;
-
+ 
 
     switch(side)
     {
@@ -143,39 +143,67 @@ void TilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
     {
         int MinboundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y) / 16) * 128;
         int MaxboundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y) / 16) * 128;
-        if(Tilemap[MinboundIn] > 1  || Tilemap[MaxboundIn] > 1)
-        {            
-            Velocity->y = (Tilemap[MinboundIn] > 1 && Tilemap[MaxboundIn] < 1) && Velocity->y > 0 ? 0 : (Tilemap[MaxboundIn] > 1 && Tilemap[MinboundIn] < 1) && Velocity->y < 0 ? 0 : Velocity->y;
-            while((Tilemap[MinboundIn] > 1 && Tilemap[MaxboundIn] < 1) || (Tilemap[MaxboundIn] > 1 && Tilemap[MinboundIn] < 1))
+        if(Tilemap[MinboundIn] > 1 && Tilemap[(pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y - 8) / 16) * 128] <= 0)
+        {   
+            Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
+            for(int j = 8; j > 0;j--)
             {
-                A->position.y += Tilemap[MinboundIn] > 1 ? -1 : Tilemap[MaxboundIn] > 1 ? 1 : 0;
-                pos.x = A->position.x + A->pixeloffset.x;
-                MinboundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y) / 16) * 128;
-                MaxboundIn = (pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y) / 16) * 128;
+                if(Tilemap[(pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y - j) / 16) * 128] > 1)
+                {
+                    A->position.y -= j;
+                    break;
+                }
+            }
+        }
+
+        if(Tilemap[MaxboundIn] > 1 && Tilemap[(pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + 8) / 16) * 128] <= 0)
+        {   
+            Velocity->y = Velocity->y < 0 ? 0 : Velocity->y;
+            for(int j = 8; j > 0;j--)
+            {
+                if(Tilemap[(pos.x + i) / 16 + ((A->position.y + A->pixeloffset.y + A->pixelsize.y + j) / 16) * 128] > 1)
+                {
+                    A->position.y += j;
+                    break;
+                }
             }
         }
         i += i + 16 <= A->pixelsize.x ? 16 : i == A->pixelsize.x ? 1 : A->pixelsize.x - i;
     }
 
-    pos.x = A->position.x + A->pixeloffset.x;
     pos.y = A->position.y + A->pixeloffset.y;
 
-    while(i <= A->pixelsize.y)
+    while(i < A->pixelsize.y)
     {
         int MinboundIn = (A->position.x + A->pixeloffset.x) / 16 + ((pos.y + i) / 16) * 128;
         int MaxboundIn = (A->position.x + A->pixeloffset.x + A->pixelsize.x) / 16 + ((pos.y + i) / 16) * 128;
-        if(Tilemap[MinboundIn] > 1  || Tilemap[MaxboundIn] > 1)
+
+        if(Tilemap[MinboundIn] > 1 && Tilemap[(A->position.x + A->pixeloffset.x + 8) / 16 + ((pos.y + i) / 16) * 128] <= 0)
         {
-            while((Tilemap[MinboundIn] > 1 && Tilemap[MaxboundIn] < 1) || (Tilemap[MaxboundIn] > 1 && Tilemap[MinboundIn] < 1))
+            Velocity->x = Velocity->x < 0 ? 0 : Velocity->x;
+            for(int j = 8; j > 0;j--)
             {
-                A->position.x += Tilemap[MinboundIn] > 1 ? -1 : Tilemap[MaxboundIn] > 1 ? 1 : 0;
-                pos.y = A->position.y + A->pixeloffset.y;
-                Velocity->x = Tilemap[MinboundIn] > 1 && Velocity->x < 0 ? 0 : Tilemap[MaxboundIn] > 1 && Velocity->x > 0 ? 0 : Tilemap[MinboundIn] > 1  && Tilemap[MaxboundIn] > 1 ? 0 : Velocity->x;
-                MinboundIn = (A->position.x + A->pixeloffset.x + A->pixelsize.x) / 16 + ((pos.y + i) / 16) * 128;
-                MaxboundIn = (A->position.x + A->pixeloffset.x) / 16 + ((pos.y + i) / 16) * 128;
+                if(Tilemap[(A->position.x + A->pixeloffset.x + j) / 16 + ((pos.y + i) / 16) * 128] > 1)
+                {
+                    A->position.x += j;
+                    break;
+                }
             }
         }
-        i += i + 16 <= A->pixelsize.y ? 16 : i == A->pixelsize.y ? 1 : A->pixelsize.y - i;
+
+        if(Tilemap[MaxboundIn] > 1 && Tilemap[(A->position.x + A->pixeloffset.x + A->pixelsize.x- 8) / 16 + ((pos.y + i) / 16) * 128] <= 0)
+        {
+            Velocity->x = Velocity->x > 0 ? 0 : Velocity->x;
+            for(int j = 8; j > 0;j--)
+            {
+                if(Tilemap[(A->position.x + A->pixeloffset.x + A->pixelsize.x - j) / 16 + ((pos.y + i) / 16) * 128] > 1)
+                {
+                    A->position.x -= j;
+                    break;
+                }
+            }
+        }
+        i += i + 16 <= A->pixelsize.y ? 16 : A->pixelsize.y - i;
     }
 }
 

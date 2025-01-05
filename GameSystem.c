@@ -3,7 +3,7 @@
 
 int Time = 1;
 int Coin_Number;
-int Lifes_Number = 3;
+int Lifes = 3;
 
 int GameMode = 1;
 
@@ -28,12 +28,12 @@ int Get_Coin_Number(void)
 
 int Get_Life_Number(void)
 {
-    return Lifes_Number;
+    return Lifes;
 }
 
 void Add_Life(int i)
 {
-    Lifes_Number += i;
+    Lifes += i;
 }
 
 int Get_Time(void)
@@ -58,20 +58,26 @@ void Set_GameMode(int i)
 
 int GetButtonDown(unsigned char input)
 {
-    for(int i = 0;i < 9;i++)
+    unsigned char PressedInputs = joypad();
+    
+    for(int i = 8; i >= 0;i--)
     {
-        if(allInputs[i] == input && !allInputsDown[i])
+        if(PressedInputs >= allInputs[i])
         {
-
-            for(int j = 0;j < 9;j++)
+            if(input == allInputs[i])
             {
-                if(joypad() == input + allInputs[j] && allInputs[j] != input)
+                if(allInputsDown[i] == 0)
                 {
                     allInputsDown[i] = 1;
                     return 1;
                 }
+            }else
+            {
+                PressedInputs -= allInputs[i];
             }
-            break;
+        }else
+        {
+            allInputsDown[i] = 0;
         }
     }
     return 0;
@@ -79,20 +85,18 @@ int GetButtonDown(unsigned char input)
 
 int GetButton(unsigned char input)
 {
-    for(int i = 0; i < 9;i++)
+    unsigned char PressedInputs = joypad();
+    for(int i = 8; i >= 0;i--)
     {
-        if(joypad() == input + allInputs[i] && allInputs[i] !=  input)
+        if(PressedInputs >= allInputs[i])
         {
-            return 1;
-        }
-    }
-
-    for(int i = 0; i < 9;i++)
-    {
-        if(allInputs[i] == input && allInputsDown[i])
-        {
-            allInputsDown[i] = 0;
-            break;
+            if(input == allInputs[i])
+            {
+                return 1;
+            }else
+            {
+                PressedInputs -= allInputs[i];
+            }
         }
     }
     return 0;

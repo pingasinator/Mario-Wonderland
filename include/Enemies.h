@@ -12,12 +12,13 @@ typedef struct
     Vector2 dir;
     char Hiden;
     char type;
-    int animState;
-    int Sprite_tile;
-    int Sprite_size;
+    char animState;
+    char Sprite_tile;
+    char Sprite_size;
     Collision Hitbox;
-    int deathDelay;
-    int dead;
+    char deathDelay;
+    char dead;
+    char Knockback;
     char Destroyed;
 } Enemy;
 
@@ -32,5 +33,7 @@ void Start_Goomba(Enemy *e);
 
 void Koopa_Start(Enemy *e);
 void Koopa_Update(Enemy *e);
+
+void Enemy_KnockBack(Enemy *e,int dir);
 
 #endif

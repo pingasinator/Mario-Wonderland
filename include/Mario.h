@@ -11,11 +11,6 @@ void DisplayMario(void);
 int Get_Transformation(void);
 int Set_Transformation(int i);
 
-Collision GetMarioCollision(void);
-
-Vector2 Get_Mario_Velocity(void);
-Vector2 Get_Mario_Position(void);
-
 int Mario_isDead(void);
 void Mario_Set_Death(void);
 

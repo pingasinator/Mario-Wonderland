@@ -13,7 +13,10 @@
 Object nullObject = {.Sprite=0,.animstate=0,.Used=0,.returnToPoint=0,.type=0,.hitbox={.position={.x=0,.y=0},.pixelsize={.x=0,.y=0},.pixeloffset={.x=0,.y=0}}};
 Object AllObjects[10];
 
+extern Vector2 Camera;
 extern char Mario_State;
+
+extern unsigned char Tilemap[];
 
 int FireballNumber = 0;
 
@@ -40,6 +43,7 @@ void Objects_Update(void) BANKED
             switch(AllObjects[i].type)
             {
                 case 1:
+                case 5:
                 case 6:
                 Blocks_Update(i);
                 break;
@@ -63,13 +67,18 @@ void Blocks_Update(int i) BANKED
     {
         AllObjects[i].hitbox.position.y += AllObjects[i].returnToPoint ? 2 : -2;
 
-        if(AllObjects[i].type != 6)
+        switch(AllObjects[i].type)
         {
-            Anim_Object_Block(&AllObjects[i]);
-        }else
-        {
+            case 5:
+            case 6:
             Anim_Object_Brick(&AllObjects[i]);
+            break;
+
+            default:
+            Anim_Object_Block(&AllObjects[i]);
+            break;
         }
+
 
         if(AllObjects[i].hitbox.position.y < AllObjects[i].originalPosition.y - 4)
         {
@@ -80,12 +89,12 @@ void Blocks_Update(int i) BANKED
 
     if(AllObjects[i].returnToPoint && AllObjects[i].hitbox.position.y >= AllObjects[i].originalPosition.y)
     {
-        if(AllObjects[i].type != 6)
+        if(AllObjects[i].type != 5)
         {
-            Set_Tile(7,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+            Set_Tile(0x8A,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
         }else
         {
-            Set_Tile(6,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+            Set_Tile(0x85,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
         }
         AllObjects[i].Sprite = Remove_Sprite(AllObjects[i].Sprite,4);
         AllObjects[i] = nullObject;
@@ -107,7 +116,7 @@ void Coin_Update(int i) BANKED
 
     if(AllObjects[i].Velocity.y > 0 == 1 && AllObjects[i].hitbox.position.y >= AllObjects[i].originalPosition.y)
     {
-        Set_Tile(7,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+        Set_Tile(0x8A,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
         Remove_Sprite(AllObjects[i].Sprite,4);
         AllObjects[i] = nullObject;
     }
@@ -115,9 +124,7 @@ void Coin_Update(int i) BANKED
 
 void FireBall_Update(Object *o) BANKED
 {
-    Vector2 camera;
-    camera = GetCamera();
-    if(o->hitbox.position.x > camera.x - 8 * 2 && o->hitbox.position.x < camera.x + 22 * 8 && o->hitbox.position.y > camera.y - 8 && o->hitbox.position.y < camera.y + 19 * 8)
+    if(o->hitbox.position.x > Camera.x - 8 * 2 && o->hitbox.position.x < Camera.x + 22 * 8 && o->hitbox.position.y > Camera.y - 8 && o->hitbox.position.y < Camera.y + 19 * 8)
     {
         Vector2 RayGround_point = {.x=o->hitbox.position.x,.y=o->hitbox.position.y+2};
         Vector2 RayGround_Dir = {.x=1,.y=0};
@@ -149,7 +156,7 @@ void FireBall_Update(Object *o) BANKED
         {
             if(OnCollision(o->hitbox,Get_Enemies()[i].Hitbox) && !Get_Enemies()[i].Destroyed)
             {
-                Get_Enemies()[i].dead = 1;
+                Enemy_KnockBack(&Get_Enemies()[i],o->dir);
                 if(o->Sprite != 0)
                 {
                     o->Sprite = Remove_Sprite(o->Sprite,2);
@@ -241,7 +248,7 @@ void Q_Block(int Type,int x,int y) BANKED
     {
         if(AllObjects[i].Used == 0)
         {
-            Set_Tile(17,x,y);
+            Set_Tile(0x80,x,y);
             AllObjects[i].Sprite = Add_Sprite(4);
             AllObjects[i].hitbox.position.x = (x / 16) * 16;
             AllObjects[i].hitbox.position.y = (y / 16) * 16;
@@ -252,15 +259,15 @@ void Q_Block(int Type,int x,int y) BANKED
             Anim_Object_Block(&AllObjects[i]);
             switch (Type)
             {
-                case 2:
+                case 0x81:
                 Make_Coin(AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
                 break;
     
-                case 3:
+                case 0x82:
                 Create_Item(1,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
                 break;
 
-                case 4:
+                case 0x83:
                 if(Mario_State >= 1)
                 {
                     Create_Item(2,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
@@ -270,9 +277,34 @@ void Q_Block(int Type,int x,int y) BANKED
                 }
                 break;
 
-                case 6:
-                AllObjects[i].type = 6;
+                case 0x84:
+                if(Mario_State >= 1)
+                {
+                    Create_Item(3,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
+                }else
+                {
+                    Create_Item(1,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
+                }
+                break;
+
+                case 0x85:
+                AllObjects[i].type = 5;
                 Anim_Object_Brick(&AllObjects[i]);
+                break;
+
+                case 0x86:
+                AllObjects[i].type = 6;
+                Make_Coin(AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+                break;
+
+                case 0x87:
+                AllObjects[i].type = 6;
+                Create_Item(4,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
+                break;
+
+                case 0x88:
+                AllObjects[i].type = 6;
+                Create_Item(5,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
                 break;
             }
             break;

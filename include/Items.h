@@ -17,10 +17,12 @@ typedef struct
     Collision Hitbox;
 }Item;
 
-void Reset_Items(void);
-void Items_Update(void);
-void Create_Item(int type,int x,int y);
-void Mushroom_Update(Item* i);
-void FireFlower_Update(Item *i);
+void Reset_Items(void)BANKED;
+void Items_Update(void)BANKED;
+void Create_Item(int type,int x,int y)BANKED;
+void Mushroom_Update(Item* i)BANKED;
+void FireFlower_Update(Item *i)BANKED;
+void Leaf_Update(Item *i)BANKED;
+void Star_Update(Item *i)BANKED;
 
 #endif

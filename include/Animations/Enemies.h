@@ -6,4 +6,5 @@
 
 void Anim_Goomba_Move(Enemy *e) BANKED;
 void Anim_Goomba_Death(Enemy *e) BANKED;
+void Anim_Goomba_Knockback(Enemy *e)BANKED;
 #endif

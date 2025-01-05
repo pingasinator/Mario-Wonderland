@@ -7,6 +7,8 @@
 
 void main(void)
 {
+    OBP0_REG = 0xC4;
+    OBP1_REG = 0xE0;
     while (1)
     {
         if(Get_Life_Number() > 0)

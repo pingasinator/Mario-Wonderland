@@ -10,4 +10,5 @@ void Anim_Mario_Fall(int Transformation) BANKED;
 void Anim_Mario_Jump(int Transformation) BANKED;
 void Anim_Mario_Slide(int Transformation) BANKED;
 void Anim_Mario_Death(Collision hitbox,int dir) BANKED;
+void Anim_Mario_Star(void) BANKED;
 #endif

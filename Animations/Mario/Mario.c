@@ -5,8 +5,13 @@
 #include "..\..\include\Animations\Mario\SmallMario.h"
 #include "..\..\include\Animations\Mario\GreatMario.h"
 #include "..\..\include\Animations\Mario\FireMario.h"
+#include "..\..\include\Animations\Mario\RacoonMario.h"
 
-#pragma bank 10
+extern Vector2 Camera;
+extern int Time;
+int animstate_Star;
+
+#pragma bank 12
 
 void Anim_Mario_Idle(int Transformation) BANKED
 {
@@ -22,6 +27,10 @@ void Anim_Mario_Idle(int Transformation) BANKED
 
         case 2:
         Anim_Mario_Fire_Idle();
+        break;
+
+        case 3:
+        Anim_Mario_Racoon_Idle();
         break;
     }
 }
@@ -77,6 +86,10 @@ void Anim_Mario_Move(int Transformation,int animstate) BANKED
         case 2: 
         Anim_Mario_Fire_Move(animstate);
         break;
+
+        case 3:
+        Anim_Mario_Racoon_Move(animstate);
+        break;
     }
 }
 
@@ -100,8 +113,6 @@ void Anim_Mario_Slide(int Transformation) BANKED
 
 void Anim_Mario_Death(Collision hitbox,int dir) BANKED
 {
-    Vector2 camera;
-    camera = GetCamera();
 
     set_sprite_tile(0,0x00);
     set_sprite_tile(1,0x00);
@@ -130,14 +141,38 @@ void Anim_Mario_Death(Collision hitbox,int dir) BANKED
     }
 
 
-    move_sprite(0,-(camera.x - hitbox.position.x),-(camera.y - hitbox.position.y) - 8);
-    move_sprite(1,-(camera.x - hitbox.position.x)+8,-(camera.y - hitbox.position.y) - 8);
-    move_sprite(2,-(camera.x - hitbox.position.x),-(camera.y - hitbox.position.y));
-    move_sprite(3,-(camera.x - hitbox.position.x)+8,-(camera.y - hitbox.position.y));
-    move_sprite(4,-(camera.x - hitbox.position.x)-8,-(camera.y - hitbox.position.y) + 8);
-    move_sprite(5,-(camera.x - hitbox.position.x),-(camera.y - hitbox.position.y) + 8);
-    move_sprite(6,-(camera.x - hitbox.position.x)+8,-(camera.y - hitbox.position.y) + 8);
-    move_sprite(7,-(camera.x - hitbox.position.x)-8,-(camera.y - hitbox.position.y) + 16);
-    move_sprite(8,-(camera.x - hitbox.position.x),-(camera.y - hitbox.position.y) + 16);
-    move_sprite(9,-(camera.x - hitbox.position.x)+8,-(camera.y - hitbox.position.y) + 16);
+    move_sprite(0,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) - 8);
+    move_sprite(1,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) - 8);
+    move_sprite(2,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y));
+    move_sprite(3,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y));
+    move_sprite(4,-(Camera.x - hitbox.position.x)-8,-(Camera.y - hitbox.position.y) + 8);
+    move_sprite(5,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) + 8);
+    move_sprite(6,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) + 8);
+    move_sprite(7,-(Camera.x - hitbox.position.x)-8,-(Camera.y - hitbox.position.y) + 16);
+    move_sprite(8,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) + 16);
+    move_sprite(9,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) + 16);
+}
+
+void Anim_Mario_Star(void) BANKED
+{
+
+
+    switch (animstate_Star)
+    {
+        case 0:
+        for(int i = 0; i < 10;i++)
+        {
+            set_sprite_prop(i,S_PALETTE);
+        }
+        break;
+    
+        case 10:
+        for(int i = 0; i < 10;i++)
+        {
+            set_sprite_prop(i,S_PALETTE);
+        }
+        break;
+    }
+    animstate_Star += Time;
+    animstate_Star = animstate_Star >= 20 ? 0 : animstate_Star;
 }

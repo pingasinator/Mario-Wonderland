@@ -14,7 +14,6 @@ unsigned char *Get_Tilemap(void);
 void Reset_Vram(void);
 void Reset_Sprite_Vram(void);
 void Reset_BKG_Vram(void);
-void Reset_Win_Vram(void);
 
 void init_Worldmap_Mario_Vram(void);
 

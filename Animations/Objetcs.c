@@ -2,7 +2,9 @@
 #include "..\include\Sprite.h"
 #include "..\include\Camera.h"
 
-#pragma bank 18
+extern Vector2 Camera;
+
+#pragma bank 15
 
 void Anim_Object_Coin(Object *o) BANKED
 {
@@ -23,10 +25,10 @@ void Anim_Object_Coin(Object *o) BANKED
             set_sprite_tile(o->Sprite+3,0x97);
             set_sprite_prop(o->Sprite + 1,0);
 
-            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y));
-            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y));
-            move_sprite(o->Sprite + 2,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
-            move_sprite(o->Sprite + 3,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y));
+            move_sprite(o->Sprite + 1,-(Camera.x - o->hitbox.position.x) + 8,-(Camera.y - o->hitbox.position.y));
+            move_sprite(o->Sprite + 2,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite + 3,-(Camera.x - o->hitbox.position.x) + 8,-(Camera.y - o->hitbox.position.y) + 8);
         }
 
         break;
@@ -37,8 +39,8 @@ void Anim_Object_Coin(Object *o) BANKED
             set_sprite_tile(o->Sprite,0x98);
             set_sprite_tile(o->Sprite+1,0x98);
             set_sprite_prop(o->Sprite + 1,S_FLIPY);
-            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x) + 4,-(GetCamera().y - o->hitbox.position.y));
-            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x) + 4,-(GetCamera().y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x) + 4,-(Camera.y - o->hitbox.position.y));
+            move_sprite(o->Sprite + 1,-(Camera.x - o->hitbox.position.x) + 4,-(Camera.y - o->hitbox.position.y) + 8);
             move_sprite(o->Sprite + 2,0,0);
             move_sprite(o->Sprite + 3,0,0);
         }
@@ -51,8 +53,8 @@ void Anim_Object_Coin(Object *o) BANKED
             set_sprite_tile(o->Sprite+1,0x99);
             set_sprite_prop(o->Sprite + 1,S_FLIPY);
 
-            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x) + 4,-(GetCamera().y - o->hitbox.position.y));
-            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x) + 4,-(GetCamera().y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x) + 4,-(Camera.y - o->hitbox.position.y));
+            move_sprite(o->Sprite + 1,-(Camera.x - o->hitbox.position.x) + 4,-(Camera.y - o->hitbox.position.y) + 8);
             move_sprite(o->Sprite + 2,0,0);
             move_sprite(o->Sprite + 3,0,0);
         }
@@ -68,10 +70,10 @@ void Anim_Object_Block(Object *o) BANKED
         set_sprite_tile(o->Sprite + 1,0x91);
         set_sprite_tile(o->Sprite + 2,0x92);
         set_sprite_tile(o->Sprite + 3,0x93);
-        move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y) + 16);
-        move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x) + 16,-(GetCamera().y - o->hitbox.position.y) + 16);
-        move_sprite(o->Sprite + 2,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y) + 24);
-        move_sprite(o->Sprite + 3,-(GetCamera().x - o->hitbox.position.x) + 16,-(GetCamera().y - o->hitbox.position.y) + 24);
+        move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x) + 8,-(Camera.y - o->hitbox.position.y) + 16);
+        move_sprite(o->Sprite + 1,-(Camera.x - o->hitbox.position.x) + 16,-(Camera.y - o->hitbox.position.y) + 16);
+        move_sprite(o->Sprite + 2,-(Camera.x - o->hitbox.position.x) + 8,-(Camera.y - o->hitbox.position.y) + 24);
+        move_sprite(o->Sprite + 3,-(Camera.x - o->hitbox.position.x) + 16,-(Camera.y - o->hitbox.position.y) + 24);
     }else
     {
         o->Sprite = Add_Sprite(4);
@@ -86,10 +88,10 @@ void Anim_Object_Brick(Object *o) BANKED
         set_sprite_tile(o->Sprite + 1,0x9B);
         set_sprite_tile(o->Sprite + 2,0x9C);
         set_sprite_tile(o->Sprite + 3,0x9D);
-        move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y) + 16);
-        move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x) + 16,-(GetCamera().y - o->hitbox.position.y) + 16);
-        move_sprite(o->Sprite + 2,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y) + 24);
-        move_sprite(o->Sprite + 3,-(GetCamera().x - o->hitbox.position.x) + 16,-(GetCamera().y - o->hitbox.position.y) + 24);
+        move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x) + 8,-(Camera.y - o->hitbox.position.y) + 16);
+        move_sprite(o->Sprite + 1,-(Camera.x - o->hitbox.position.x) + 16,-(Camera.y - o->hitbox.position.y) + 16);
+        move_sprite(o->Sprite + 2,-(Camera.x - o->hitbox.position.x) + 8,-(Camera.y - o->hitbox.position.y) + 24);
+        move_sprite(o->Sprite + 3,-(Camera.x - o->hitbox.position.x) + 16,-(Camera.y - o->hitbox.position.y) + 24);
     }else
     {
         o->Sprite = Add_Sprite(4);
@@ -108,8 +110,8 @@ void Anim_Object_Fireball(Object *o) BANKED
             set_sprite_tile(o->Sprite + 1,0x8B);
             set_sprite_prop(o->Sprite,0);
             set_sprite_prop(o->Sprite+ 1,0);
-            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x) - 8,-(GetCamera().y - o->hitbox.position.y) + 8);
-            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x) - 8,-(Camera.y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite + 1,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y) + 8);
             break;
     
             case 1:
@@ -117,8 +119,8 @@ void Anim_Object_Fireball(Object *o) BANKED
             set_sprite_tile(o->Sprite + 1,0x8C);
             set_sprite_prop(o->Sprite,S_FLIPY + S_FLIPX);
             set_sprite_prop(o->Sprite+ 1,S_FLIPY + S_FLIPX);
-            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y));
-            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y));
+            move_sprite(o->Sprite + 1,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y) + 8);
             break;
 
             case 2:
@@ -126,8 +128,8 @@ void Anim_Object_Fireball(Object *o) BANKED
             set_sprite_tile(o->Sprite + 1,0x8A);
             set_sprite_prop(o->Sprite,S_FLIPX + S_FLIPY);
             set_sprite_prop(o->Sprite + 1,S_FLIPX + S_FLIPY);
-            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
-            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x) + 8,-(GetCamera().y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite + 1,-(Camera.x - o->hitbox.position.x) + 8,-(Camera.y - o->hitbox.position.y) + 8);
             break;
 
             case 3:
@@ -135,8 +137,8 @@ void Anim_Object_Fireball(Object *o) BANKED
             set_sprite_tile(o->Sprite + 1,0x8C);
             set_sprite_prop(o->Sprite,0);
             set_sprite_prop(o->Sprite + 1,0);
-            move_sprite(o->Sprite,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 16);
-            move_sprite(o->Sprite + 1,-(GetCamera().x - o->hitbox.position.x),-(GetCamera().y - o->hitbox.position.y) + 8);
+            move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y) + 16);
+            move_sprite(o->Sprite + 1,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y) + 8);
             break;
         }
     }else

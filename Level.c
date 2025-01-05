@@ -5,8 +5,6 @@
 #include "include\Sprite.h"
 #include "include\Objects.h"
 #include "include\GameSystem.h"
-#include "TilePalettes\TilePalettes.h"
-#include "TilePalettes\OverworldPalette.h"
 #include "include\Items.h"
 
 #include "include\Animations\BKG.h"
@@ -17,6 +15,7 @@
 
 #include <stdlib.h>
 
+extern Vector2 Camera;
 
 extern Level Level_01;
 extern Level Level_02;
@@ -53,16 +52,12 @@ void SetLevel(int LevelSelected)
 
     memcpy(Get_Tilemap(),GetLevel(LevelSelected).Tilemap,sizeof(uint8_t) * 4096);
 
-
-
-    Vector2 camera;
-    camera = GetCamera();
     Set_Tile_Palette(0);
     for(int y = 0;y < 32;y++)
     {
         for(int x = 0;x < 16;x++)
         {
-            Set_Sprite_Tile(Get_Tilemap()[camera.x / 16 + x  + y * 128],(camera.x / 16 * 2) + x * 2,y * 2);
+            Set_Sprite_Tile(Get_Tilemap()[Camera.x / 16 + x  + y * 128],(Camera.x / 16 * 2) + x * 2,y * 2);
         }
     }
 }

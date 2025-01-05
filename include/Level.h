@@ -9,7 +9,7 @@ typedef struct
     unsigned char *Tilemap;
     Enemy *Enemies;
     Vector2 Spawnpoint;
-    int EnemiesCount;
+    char EnemiesCount;
 } Level;
 
 void Reset_Level(void);

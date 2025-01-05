@@ -1,87 +1,15 @@
-#ifndef TilePalette_H
-#define TilePalette_H
+#include "Tiles\DefaultTiles.h"
 
-char *DefaultPalette[18] = 
+char *Overworld_Background_Palette[] = 
 {
-    T_null,T_Coin,T_Q_Block_P,T_Q_Block_P,T_Q_Block_P,T_Q_Block_P,T_Block_P,T_U_Block_P,T_Alt_Block_P,
-    T_Pipe_V_UL,T_Pipe_V_UR,T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_UR,T_Pipe_H_DR,T_Invisible_wall
+    T_null,T_Coin,T_Water_Top,T_Water,T_Lava_Top,T_Lava,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,T_Black
 };
 
-char T_null[4] = 
+unsigned char *Overworld_Ground_Palette[] = 
 {
-    0x00,0x00,0x00,0x00
+    T_null,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Brick,T_Brick,T_Brick,T_Brick,T_Alt_Block,T_Used_Block,T_Pipe_V_UL,T_Pipe_V_UR,T_Pipe_V_ML,T_Pipe_V_MR,T_Pipe_V_DL,T_Pipe_V_DR,
+    T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_MU,T_Pipe_H_MD,T_Pipe_H_DR,T_Pipe_H_UR,T_Pipe_V_UL,T_Pipe_V_UR,T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_DR,T_Pipe_H_UR,
+    T_Cloud,T_Overworld_Ground_0,T_Overworld_Ground_1,T_Overworld_Ground_2,T_Overworld_Ground_3,T_Overworld_Ground_4,T_Overworld_Ground_5,T_Overworld_Ground_6,T_Overworld_Ground_7,
+    T_Overworld_Ground_8,T_Overworld_Ground_9,T_Overworld_Ground_10,T_Overworld_Ground_11,T_Overworld_Ground_12,T_Overworld_Ground_13,T_Overworld_Ground_14,T_Overworld_Ground_15,
+    T_Overworld_Ground_16
 };
-
-char T_Invisible_wall[4] = 
-{
-    0,0,0,0
-};
-
-char T_Block_P[4] = 
-{
-    0x01,0x02,0x03,0x04
-};
-
-char T_U_Block_P[4] = 
-{
-    0x05,0x06,0x07,0x08
-};
-
-char T_Alt_Block_P[4] = 
-{
-    0x09,0x0A,0x0B,0x0C
-};
-
-char T_Q_Block_P[4] = 
-{
-    0x0D,0x0E,0x0F,0X10
-};
-
-char T_Coin[4] = 
-{
-    0x11,0x12,0x13,0x14
-};
-
-char T_Pipe_V_UL[4] = 
-{
-    0x1A,0x1B,0x1D,0x00
-};
-
-char T_Pipe_V_UR[4] = 
-{
-    0x1B,0x1C,0x00,0x1E
-};
-
-char T_Pipe_V_DL[4] = 
-{
-    0x1D,0x00,0x1A,0x1B
-};
-
-char T_Pipe_V_DR[4] = 
-{
-    0x00,0x1E,0X1B,0x1C
-};
-
-char T_Pipe_H_UL[4] = 
-{
-    0x15,0x16,0x17,0x00
-};
-
-char T_Pipe_H_DL[4] = 
-{
-    0x17,0x00,0x18,0x19
-};
-
-char T_Pipe_H_UR[4] = 
-{
-    0x16,0x15,0x00,0x17
-};
-
-char T_Pipe_H_DR[4] = 
-{
-    0x16,0x17,0x00,0x18
-};
-
-
-
-#endif

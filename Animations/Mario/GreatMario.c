@@ -1,6 +1,6 @@
 #include "..\..\include\Animations\Mario\GreatMario.h"
 
-#pragma bank 11
+#pragma bank 12
 
 void Anim_Mario_Great_Idle(void) BANKED
 {

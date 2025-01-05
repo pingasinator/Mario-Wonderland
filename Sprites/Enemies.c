@@ -1,7 +1,7 @@
 
-#pragma bank 4
+#pragma bank 2
 
-const unsigned char Goomba_Idle[] = 
+const unsigned char S_Goomba_Idle[] = 
 {
     0x07,0x07,
     0x38,0x3F,
@@ -40,7 +40,7 @@ const unsigned char Goomba_Idle[] =
     0x00,0x00
 };
 
-const unsigned char Goomba_Move[] = 
+const unsigned char S_Goomba_Move[] = 
 {
     0x3F,0x3F,
     0x3E,0x3F,
@@ -79,7 +79,7 @@ const unsigned char Goomba_Move[] =
     0x3F,0x3F
 };
 
-const unsigned char Goomba_Death[] = 
+const unsigned char S_Goomba_Death[] = 
 {
     0xFE,0xFE,
     0x43,0x43,
@@ -100,7 +100,7 @@ const unsigned char Goomba_Death[] =
     0x1F,0x1F
 };
 
-const unsigned char Koopa_Idle[] = 
+const unsigned char S_Koopa_Idle[] = 
 {
     0x00,0x00,
     0x00,0x00,
@@ -148,7 +148,7 @@ const unsigned char Koopa_Idle[] =
     0x3E,0x3E,
 };
 
-const unsigned char Koopa_Move_0[] = 
+const unsigned char S_Koopa_Move_0[] = 
 {
     0x6F,0x6D,
     0x2F,0x28,
@@ -160,7 +160,7 @@ const unsigned char Koopa_Move_0[] =
     0x1E,0x1E
 };
 
-const unsigned char Koopa_Move_1[] = 
+const unsigned char S_Koopa_Move_1[] = 
 {
     0xF8,0x58,
     0xFC,0x8C,

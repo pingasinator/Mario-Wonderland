@@ -1,6 +1,6 @@
 #include <gb\gb.h>
 
-#pragma bank 7
+#pragma bank 2
 
 const unsigned char S_HUD_Life_Mario[] = 
 {

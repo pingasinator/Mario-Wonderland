@@ -1,4 +1,4 @@
-#pragma bank 3
+#pragma bank 2
 
 const unsigned char S_Overworld_Ground[] = 
 {

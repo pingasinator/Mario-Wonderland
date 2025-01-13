@@ -8,6 +8,9 @@
 Vector2 Camera = {.x=16,.y=16*29};
 Vector2 oldCamera = {.x=0,.y=0};
 
+extern Level currentLevel;
+extern int currentLevel_Size;
+
 char c[] = 
 {
     0x6D,0x6E,0x73,0x73,0x00,0x6F,0x6E,0x73,0x73,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x72,0x73,0x73,0x73
@@ -43,14 +46,14 @@ void Update_Camera(void)BANKED
     {
         for(int i = 0;i < 11;i++)
         {
-            if(Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * 128 > 0 && Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * 128 < 4096)
+            if(Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length > 0 && Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length < 6144)
             {
-                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * 128],Camera.x / 16 * 2 - 2,Camera.y / 16 * 2 - 2 + i * 2);
+                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length],Camera.x / 16 * 2 - 2,Camera.y / 16 * 2 - 2 + i * 2);
             }
 
-            if(Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * 128 > 0 && Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * 128 < 4096)
+            if(Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * currentLevel.Length > 0 && Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * currentLevel.Length < 6144)
             {
-                Set_Sprite_Tile(Tilemap[Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * 128],Camera.x / 16 * 2 + 20,Camera.y / 16 * 2 - 2 + i * 2);
+                Set_Sprite_Tile(Tilemap[Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * currentLevel.Length],Camera.x / 16 * 2 + 20,Camera.y / 16 * 2 - 2 + i * 2);
             }
         }
         oldCamera.x = Camera.x / 16;
@@ -60,14 +63,14 @@ void Update_Camera(void)BANKED
     {
         for(int i = 0;i < 12;i++)
         {
-            if(Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * 128 > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * 128 < 4096)
+            if(Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length < 6144)
             {
-                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 - 2);
+                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 - 2);
             }
 
-            if(Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * 128 > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * 128 < 4096)
+            if(Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length < 6144)
             {
-                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * 128],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 + 18);
+                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 + 18);
             }
             
 
@@ -93,6 +96,6 @@ void MoveCamera(int x,int y)BANKED
         SHOW_BKG;
     }
 
-    Camera.x = Clamp(Camera.x,0,128 * 16 - 10 * 16);
+    Camera.x = Clamp(Camera.x,0,currentLevel.Length * 16 - 10 * 16);
     Camera.y = Clamp(Camera.y,0,32 * 16 - 9 * 16);
 }

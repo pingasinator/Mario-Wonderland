@@ -24,8 +24,6 @@ typedef struct
 
 void Update_Enemy(void);
 
-Enemy *Get_Enemies(void);
-void Set_All_Enemies(int Level);
 void Set_All_Enemies(int Level);
 
 void Update_Goomba(Enemy *e);

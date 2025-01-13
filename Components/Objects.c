@@ -16,6 +16,8 @@ Object AllObjects[10];
 extern Vector2 Camera;
 extern char Mario_State;
 
+extern Enemy* AllEnemies;
+
 extern unsigned char Tilemap[];
 
 int FireballNumber = 0;
@@ -154,9 +156,9 @@ void FireBall_Update(Object *o) BANKED
 
         for(int i = 0;i < 3;i++)
         {
-            if(OnCollision(o->hitbox,Get_Enemies()[i].Hitbox) && !Get_Enemies()[i].Destroyed)
+            if(OnCollision(o->hitbox,AllEnemies[i].Hitbox) && !AllEnemies[i].Destroyed)
             {
-                Enemy_KnockBack(&Get_Enemies()[i],o->dir);
+                Enemy_KnockBack(&AllEnemies[i],o->dir);
                 if(o->Sprite != 0)
                 {
                     o->Sprite = Remove_Sprite(o->Sprite,2);

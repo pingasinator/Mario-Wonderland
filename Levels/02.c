@@ -3,5 +3,5 @@
 #include "..\include\Level.h"
 #include "..\include\Enemies.h"
 
-#pragma bank 20
+#pragma bank 21
 

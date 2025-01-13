@@ -12,6 +12,8 @@
 
 extern Vector2 Camera;
 
+#pragma bank 26
+
 Vector2 Mario_Velocity = {.x=0,.y=0};
 
 Collision Mario_Hitbox = {.position={.x=0,.y=0},.pixeloffset={.x=-6,.y=-14},.pixelsize={.x=10,.y=20}};
@@ -36,7 +38,7 @@ char Mario_onGround = 0;
 
 char Mario_animState = 0;
 
-void init_Mario(int x,int y)
+void init_Mario(int x,int y)BANKED
 {
     Mario_Hitbox.position.x = x;
     Mario_Hitbox.position.y = y;
@@ -52,7 +54,7 @@ void init_Mario(int x,int y)
     Mario_animState = 0;
 }
 
-void Update_Mario(void)
+void Update_Mario(void)BANKED
 {
     
     if(!dead)
@@ -124,7 +126,7 @@ void Update_Mario(void)
         Mario_Hitbox.position.x += Mario_Velocity.x;
         Mario_Hitbox.position.y += Mario_Velocity.y;
 
-        Mario_Hitbox.position.x = Clamp(Mario_Hitbox.position.x,0,128*16);
+        Mario_Hitbox.position.x = Clamp(Mario_Hitbox.position.x,0,224*16);
 
         TilemapCollisionPhysics(&Mario_Hitbox,&Mario_Velocity);
 
@@ -156,7 +158,7 @@ void Update_Mario(void)
 
 }
 
-void Get_TileObject(void)
+void Get_TileObject(void)BANKED
 {
     
     for(int i = 0; i <= 1; i++)
@@ -205,7 +207,7 @@ void Get_TileObject(void)
    
 }
 
-void DisplayMario(void)
+void DisplayMario(void)BANKED
 {
     switch (Mario_dir)
     {
@@ -245,25 +247,25 @@ void DisplayMario(void)
     }
 }
 
-void Set_Mario_Position(int x,int y)
+void Set_Mario_Position(int x,int y)BANKED
 {
     Mario_Hitbox.position.x = x;
     Mario_Hitbox.position.y = y;
 }
 
 
-void Set_Mario_Velocity(int x,int y)
+void Set_Mario_Velocity(int x,int y)BANKED
 {
     Mario_Velocity.x = x;
     Mario_Velocity.y = y;
 }
 
-int Mario_isDead(void)
+int Mario_isDead(void)BANKED
 {
     return dead;
 }
 
-int Set_Transformation(int i)
+int Set_Transformation(int i)BANKED
 {
     if(i == 1)
     {
@@ -276,7 +278,7 @@ int Set_Transformation(int i)
     return Mario_State;
 }
 
-void Mario_Hit(void)
+void Mario_Hit(void)BANKED
 {
     if(Mario_RecoveryTime <= 0)
     {
@@ -298,7 +300,7 @@ void Mario_Hit(void)
     }
 }
 
-void Mario_Set_Death(void)
+void Mario_Set_Death(void)BANKED
 {
     dead = 1;
     Mario_State = 1;
@@ -307,7 +309,7 @@ void Mario_Set_Death(void)
     Anim_Mario_Death(Mario_Hitbox,Mario_dir);
 }
 
-Collision GetMarioCollision(void)
+Collision GetMarioCollision(void)BANKED
 {
     return Mario_Hitbox;
 }

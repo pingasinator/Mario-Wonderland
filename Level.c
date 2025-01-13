@@ -20,7 +20,8 @@ extern Vector2 Camera;
 extern Level Level_01;
 extern Level Level_02;
 
-
+Level currentLevel;
+int currentLevel_Size;
 
 int Timer = 300;
 int milisec = 30;
@@ -41,23 +42,25 @@ void SetLevel(int LevelSelected)
     Reset_Level();
     Reset_Items();
     Set_Camera_Position(0,16*29);
-    init_Enemies_Vram();
+    SWITCH_ROM(19 + LevelSelected);
+    currentLevel = GetLevel(LevelSelected);
+    currentLevel_Size = currentLevel.Length * currentLevel.Width;
+    Set_All_Enemies(LevelSelected);
+        init_Enemies_Vram();
     init_Level_Vram();
     init_Objects_Vram();
     init_Mario_Vram();
     init_HUD_Vram();
-    SWITCH_ROM(19 + LevelSelected);
-    Set_All_Enemies(LevelSelected);
     init_Mario(GetLevel(LevelSelected).Spawnpoint.x,GetLevel(LevelSelected).Spawnpoint.y);
 
-    memcpy(Get_Tilemap(),GetLevel(LevelSelected).Tilemap,sizeof(uint8_t) * 4096);
+    memcpy(Get_Tilemap(),GetLevel(LevelSelected).Tilemap,sizeof(uint8_t) * currentLevel_Size);
 
     Set_Tile_Palette(0);
     for(int y = 0;y < 32;y++)
     {
         for(int x = 0;x < 16;x++)
         {
-            Set_Sprite_Tile(Get_Tilemap()[Camera.x / 16 + x  + y * 128],(Camera.x / 16 * 2) + x * 2,y * 2);
+            Set_Sprite_Tile(Get_Tilemap()[Camera.x / 16 + x  + y * currentLevel.Length],(Camera.x / 16 * 2) + x * 2,y * 2);
         }
     }
 }

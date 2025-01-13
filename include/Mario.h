@@ -3,19 +3,19 @@
 #ifndef Mario_H
 #define Mario_H
 
-void init_Mario(int x,int y);
-void Update_Mario(void);
+void init_Mario(int x,int y)BANKED;
+void Update_Mario(void)BANKED;
 
-void DisplayMario(void);
+void DisplayMario(void)BANKED;
 
-int Get_Transformation(void);
-int Set_Transformation(int i);
+int Get_Transformation(void)BANKED;
+int Set_Transformation(int i)BANKED;
 
-int Mario_isDead(void);
-void Mario_Set_Death(void);
+int Mario_isDead(void)BANKED;
+void Mario_Set_Death(void)BANKED;
 
-void Set_Mario_Velocity(int x,int y);
-void Set_Mario_Position(int x,int y);
-void Get_TileObject(void);
-void Mario_Hit(void);
+void Set_Mario_Velocity(int x,int y)BANKED;
+void Set_Mario_Position(int x,int y)BANKED;
+void Get_TileObject(void)BANKED;
+void Mario_Hit(void)BANKED;
 #endif 

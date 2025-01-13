@@ -10,6 +10,8 @@ typedef struct
     Enemy *Enemies;
     Vector2 Spawnpoint;
     char EnemiesCount;
+    unsigned char Length;
+    unsigned char Width; 
 } Level;
 
 void Reset_Level(void);

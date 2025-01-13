@@ -37,7 +37,7 @@ void Anim_BKG_Update(void)
 
 void Anim_BKG_Coin(void)
 {
-    SWITCH_ROM(3);
+    SWITCH_ROM(2);
     switch (coin_animstate)
     {
         case 0:
@@ -63,7 +63,7 @@ void Anim_BKG_Coin(void)
 
 void Anim_Q_block(void)
 {
-    SWITCH_ROM(3);
+    SWITCH_ROM(2);
     switch(qblock_animstate)
     {
         case 0:
@@ -88,7 +88,7 @@ void Anim_Q_block(void)
 
 void Anim_Water(void)
 {
-    SWITCH_ROM(3);
+    SWITCH_ROM(2);
     switch(Water_animstate)
     {
         case 0:
@@ -113,7 +113,7 @@ void Anim_Water(void)
 
 void Anim_Lava(void)
 {
-    SWITCH_ROM(3);
+    SWITCH_ROM(2);
     switch(Lava_animstate)
     {
         case 0:

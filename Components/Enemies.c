@@ -33,11 +33,6 @@ void Set_All_Enemies(int Level)
     memcpy(AllEnemies,GetLevel(Level).Enemies,Length * sizeof(Enemy));
 }
 
-Enemy *Get_Enemies(void)
-{
-    return AllEnemies;
-}
-
 void Update_Enemy(void)
 {
 
@@ -71,6 +66,7 @@ void Update_Goomba(Enemy *e)
         e->dir.x = 1;
         e->dead = 0;
         e->start = 1;
+        e->Knockback = 0;
     }
 
     if(e->position.x > Camera.x - 8 * 2 && e->position.x < Camera.x + 22 * 8 && e->position.y > Camera.y - 8 && e->position.y < Camera.y + 20 * 8)

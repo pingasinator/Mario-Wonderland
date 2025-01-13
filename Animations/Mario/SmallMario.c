@@ -1,6 +1,6 @@
 #include "..\..\include\Animations\Mario\SmallMario.h"
 
-#pragma bank 13
+#pragma bank 12
 
 void Anim_Mario_Small_Idle(void) BANKED
 {

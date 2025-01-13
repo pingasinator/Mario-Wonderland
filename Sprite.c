@@ -1,6 +1,9 @@
 #include "include\Sprite.h"
+#include "include\Level.h"
 #include "TilePalettes\TilePalettes.h"
 #include <gb\gb.h>
+
+#pragma bank 2
 
 extern unsigned char *S_Default_Tiles[];
 extern unsigned char S_Pipe_H[];
@@ -69,6 +72,8 @@ extern unsigned char S_Koopa_Move_1[];
 extern unsigned char S_Overworld_Ground[];
 extern unsigned char S_Overworld_Background_Bush[];
 
+extern unsigned char S_Underground_Ground[];
+
 extern unsigned char S_HUD_Life_Mario[];
 extern unsigned char S_HUD_Coin[];
 extern unsigned char S_HUD_Star[];
@@ -76,7 +81,10 @@ extern unsigned char S_HUD_T[];
 extern unsigned char S_HUD_Font[];
 extern unsigned char S_HUD_X[];
 
+extern Level currentLevel;
+
 unsigned char Tilemap[4096];
+
 
 unsigned char Sprites[40] =
 {
@@ -86,7 +94,7 @@ unsigned char Sprites[40] =
     0,0,0,0,0,0,0,0,0,0
 };
 
-int Add_Sprite(int size)
+int Add_Sprite(int size) BANKED
 {
     for(int i = 10; i < 40;i++)
     {
@@ -103,7 +111,7 @@ int Add_Sprite(int size)
     return 0;
 }
 
-int Remove_Sprite(int Place,int size)
+int Remove_Sprite(int Place,int size) BANKED
 {
     for(int i = 0; i < size;i++)
     {
@@ -115,37 +123,44 @@ int Remove_Sprite(int Place,int size)
     return 0;
 }
 
-void Set_Tile_Palette(int i)
+void Set_Tile_Palette(int i) BANKED
 {
     switch(i)
     {
         case 0:
-        SWITCH_ROM(3);
+
         Current_Background_Palette = Overworld_Background_Palette;
         Current_Ground_Palette = Overworld_Ground_Palette;
         set_bkg_data(0x31,18,S_Overworld_Ground);
         set_bkg_data(0x43,4,S_Overworld_Background_Bush);
         break;
+
+        case 1:
+
+        Current_Background_Palette = Underground_Background_Palette;
+        Current_Ground_Palette = Underground_Ground_Palette;
+        set_bkg_data(0x31,18,S_Underground_Ground);
+        break;
     }
 }
 
-unsigned char *Get_Tilemap(void)
+unsigned char *Get_Tilemap(void) BANKED
 {
     return Tilemap;
 }
 
-unsigned char Get_Tile(int x,int y)
+unsigned char Get_Tile(int x,int y) BANKED
 {
-    return Tilemap[x/16 + y/16*128];
+    return Tilemap[x/16 + y/16*currentLevel.Length];
 }
 
-void Set_Tile(unsigned char Tile,int x,int y)
+void Set_Tile(unsigned char Tile,int x,int y) BANKED
 {
-    Tilemap[x/16 + y/16*128] = Tile;
+    Tilemap[x/16 + y/16*currentLevel.Length] = Tile;
     Set_Sprite_Tile(Tile,x/16*2,y/16*2);
 }
 
-void Set_Sprite_Tile(unsigned char Tile,int x,int y)
+void Set_Sprite_Tile(unsigned char Tile,int x,int y) BANKED
 {
     x -= 32 * (x / 32);
     y -= 32 * (y / 32);
@@ -165,7 +180,7 @@ void Set_Sprite_Tile(unsigned char Tile,int x,int y)
     
 }
 
-void Reset_Vram(void)
+void Reset_Vram(void) BANKED
 {
     HIDE_BKG;
     HIDE_WIN;
@@ -174,9 +189,9 @@ void Reset_Vram(void)
     Reset_BKG_Vram();
 }
 
-void Reset_Sprite_Vram(void)
+void Reset_Sprite_Vram(void) BANKED
 {
-    SWITCH_ROM(2);
+
     Remove_Sprite(0,40);
     for(int i = 0; i < 256;i++)
     {
@@ -184,9 +199,9 @@ void Reset_Sprite_Vram(void)
     }
 }
 
-void Reset_BKG_Vram(void)
+void Reset_BKG_Vram(void) BANKED
 {   
-    SWITCH_ROM(2);
+
     for(int i = 0; i < 128;i++)
     {
         set_bkg_data(i,1,S_null);
@@ -201,15 +216,15 @@ void Reset_BKG_Vram(void)
     }
 }
 
-void init_Worldmap_Mario_Vram(void)
+void init_Worldmap_Mario_Vram(void) BANKED
 {
-    SWITCH_ROM(3);
+
      set_sprite_data(0,2,S_Mario_WorldMap_Small);
 }
 
-void init_Level_Vram(void)
+void init_Level_Vram(void) BANKED
 {
-    SWITCH_ROM(3);
+
     for(int z = 0; z < 6; z++)
     {
         set_bkg_data(1 + z * 4,4,S_Default_Tiles[z]);
@@ -225,9 +240,9 @@ void init_Level_Vram(void)
     set_bkg_data(0x7F,1,S_Full);
 }
 
-void init_Objects_Vram(void)
+void init_Objects_Vram(void) BANKED
 {
-    SWITCH_ROM(2);
+
     set_sprite_data(0x80,4,S_Mushroom);
     set_sprite_data(0x84,2,S_FireFlower);
     set_sprite_data(0x86,4,S_Leaf);
@@ -241,9 +256,9 @@ void init_Objects_Vram(void)
     set_sprite_data(0x9A,4,S_Obj_Brick);
 }
 
-void init_Enemies_Vram(void)
+void init_Enemies_Vram(void) BANKED
 {
-    SWITCH_ROM(2);
+
     set_sprite_data(0xA4,4,S_Goomba_Idle);
     set_sprite_data(0xA8,4,S_Goomba_Move);
     set_sprite_data(0xAC,2,S_Goomba_Death);
@@ -252,9 +267,9 @@ void init_Enemies_Vram(void)
     set_sprite_data(0xB4,1,S_Koopa_Move_1);
 }
 
-void init_Mario_Vram(void)
+void init_Mario_Vram(void) BANKED
 {
-    SWITCH_ROM(2);
+
     set_sprite_data(0x00,1,S_null);
     set_sprite_data(0x01,6,S_Mario_Small_Idle);
     set_sprite_data(0x07,4,S_Mario_Small_Move_0);
@@ -283,9 +298,9 @@ void init_Mario_Vram(void)
     set_sprite_data(0x6D,2,S_Mario_Racoon);
 }
 
-void init_HUD_Vram(void)
+void init_HUD_Vram(void) BANKED
 {
-    SWITCH_ROM(2);
+
     set_bkg_data(0x6D,1,S_HUD_Life_Mario);
     set_bkg_data(0x6E,1,S_HUD_X);
     set_bkg_data(0x6F,1,S_HUD_Coin);

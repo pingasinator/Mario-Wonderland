@@ -11,6 +11,8 @@ Vector2 oldCamera = {.x=0,.y=0};
 extern Level currentLevel;
 extern int currentLevel_Size;
 
+extern unsigned char Tilemap[];
+
 char c[] = 
 {
     0x6D,0x6E,0x73,0x73,0x00,0x6F,0x6E,0x73,0x73,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x72,0x73,0x73,0x73
@@ -41,7 +43,6 @@ void Set_Camera_Position(int x,int y)BANKED
 
 void Update_Camera(void)BANKED
 {
-    char *Tilemap = Get_Tilemap();
     if(oldCamera.x != Camera.x / 16)
     {
         for(int i = 0;i < 11;i++)

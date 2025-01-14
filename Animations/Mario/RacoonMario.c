@@ -60,3 +60,31 @@ void Anim_Mario_Racoon_Move(int animstate) BANKED
         break;
     }
 }
+
+void Anim_Mario_Racoon_Jump(void) BANKED
+{
+    set_sprite_tile(0,0x34);
+    set_sprite_tile(1,0x46);
+    set_sprite_tile(2,0x47);
+    set_sprite_tile(3,0x48);
+    set_sprite_tile(4,0x4D);
+    set_sprite_tile(5,0x49);
+    set_sprite_tile(6,0x4A);
+    set_sprite_tile(7,0);
+    set_sprite_tile(8,0x4B);
+    set_sprite_tile(9,0x4C);
+}
+
+void Anim_Mario_Racoon_Fall(void) BANKED
+{
+    set_sprite_tile(0,0x6D);
+    set_sprite_tile(1,0x6E);
+    set_sprite_tile(2,0x36);
+    set_sprite_tile(3,0x37);
+    set_sprite_tile(4,0);
+    set_sprite_tile(5,0x4E);
+    set_sprite_tile(6,0x39);
+    set_sprite_tile(7,0);
+    set_sprite_tile(8,0x4B);
+    set_sprite_tile(9,0x4C);
+}

@@ -20,6 +20,12 @@ extern Vector2 Camera;
 extern Level Level_01;
 extern Level Level_02;
 
+extern unsigned char Tilemap[];
+
+extern char Time;
+extern char Coins;
+extern char Lifes;
+
 Level currentLevel;
 int currentLevel_Size;
 
@@ -53,14 +59,14 @@ void SetLevel(int LevelSelected)
     init_HUD_Vram();
     init_Mario(GetLevel(LevelSelected).Spawnpoint.x,GetLevel(LevelSelected).Spawnpoint.y);
 
-    memcpy(Get_Tilemap(),GetLevel(LevelSelected).Tilemap,sizeof(uint8_t) * currentLevel_Size);
+    memcpy(Tilemap,GetLevel(LevelSelected).Tilemap,sizeof(uint8_t) * currentLevel_Size);
 
     Set_Tile_Palette(0);
     for(int y = 0;y < 32;y++)
     {
         for(int x = 0;x < 16;x++)
         {
-            Set_Sprite_Tile(Get_Tilemap()[Camera.x / 16 + x  + y * currentLevel.Length],(Camera.x / 16 * 2) + x * 2,y * 2);
+            Set_Sprite_Tile(Tilemap[Camera.x / 16 + x  + y * currentLevel.Length],(Camera.x / 16 * 2) + x * 2,y * 2);
         }
     }
 }
@@ -72,7 +78,7 @@ void Level_Update(void)
     {
         Update_Mario();
         Update_Camera();
-        Update_HUD(Get_Life_Number(),Get_Coin_Number(),Timer);
+        Update_HUD(Lifes,Coins,Timer);
         Update_Enemy();
         Objects_Update();
         Items_Update();
@@ -92,7 +98,7 @@ void Level_Update(void)
 
 void Timer_Update(void)
 {
-    milisec -= Get_Time();
+    milisec -= Time;
     if(milisec <= 0)
     {
         milisec = 30;

@@ -13,6 +13,7 @@
 #include <asm\sm83\string.h>
 
 extern Vector2 Camera;
+extern char Time;
 
 extern Vector2 Mario_Velocity;
 extern Collision Mario_Hitbox;
@@ -20,7 +21,7 @@ extern char Mario_Star;
 extern char Mario_dir;
 
 Enemy *AllEnemies = NULL;
-int Length = 0;
+int Enemies_Number = 0;
 
 void Set_All_Enemies(int Level)
 {
@@ -28,15 +29,15 @@ void Set_All_Enemies(int Level)
     {
         free(AllEnemies);
     }
-    Length = GetLevel(Level).EnemiesCount;
-    AllEnemies = malloc(Length * sizeof(Enemy));
-    memcpy(AllEnemies,GetLevel(Level).Enemies,Length * sizeof(Enemy));
+    Enemies_Number = GetLevel(Level).EnemiesCount;
+    AllEnemies = malloc(Enemies_Number * sizeof(Enemy));
+    memcpy(AllEnemies,GetLevel(Level).Enemies,Enemies_Number * sizeof(Enemy));
 }
 
 void Update_Enemy(void)
 {
 
-    for(int i= 0; i < Length;i++)
+    for(int i= 0; i < Enemies_Number;i++)
     {
         if(!AllEnemies[i].Destroyed &&! Mario_isDead())
         {
@@ -78,13 +79,12 @@ void Update_Goomba(Enemy *e)
             if(!e->dead)
             {
             
-                e->velocity.y += Get_Time();
-                e->velocity.x = e->dir.x * Get_Time();
+                e->velocity.y += Time;
+                e->velocity.x = e->dir.x * Time;
 
                 Anim_Goomba_Move(e);
 
-                e->animState += Get_Time();
-                e->animState = e->animState >= 10 ? 0 : e->animState;
+
 
                 if(OnCollision(e->Hitbox,Mario_Hitbox) &&! Mario_isDead())  
                 {

@@ -2,10 +2,12 @@
 #include "..\include\GameSystem.h"
 #include <gb\gb.h>
 
-int coin_animstate = 0;
-int qblock_animstate = 0;
-int Water_animstate = 0;
-int Lava_animstate = 0;
+char coin_animstate = 0;
+char qblock_animstate = 0;
+char Water_animstate = 0;
+char Lava_animstate = 0;
+
+extern char Time;
 
 extern unsigned char S_Coin_0[];
 extern unsigned char S_Coin_1[];
@@ -57,7 +59,7 @@ void Anim_BKG_Coin(void)
         break;
     }
 
-    coin_animstate += Get_Time();
+    coin_animstate += Time;
     coin_animstate = coin_animstate >= 20 ? 0 : coin_animstate;
 }
 
@@ -82,7 +84,7 @@ void Anim_Q_block(void)
         set_bkg_data(0x0D,4,S_Block_Item_3);
         break;
     }
-    qblock_animstate += Get_Time();
+    qblock_animstate += Time;
     qblock_animstate = qblock_animstate >= 20 ? 0 : qblock_animstate;
 }
 
@@ -107,7 +109,7 @@ void Anim_Water(void)
         set_bkg_data(0x23,2,S_Water_3);
         break;
     }
-    Water_animstate += Get_Time();
+    Water_animstate += Time;
     Water_animstate = Water_animstate >= 20 ? 0 : Water_animstate;
 }
 
@@ -132,6 +134,6 @@ void Anim_Lava(void)
         set_bkg_data(0x25,2,S_Lava_3);
         break;
     }
-    Lava_animstate += Get_Time();
+    Lava_animstate += Time;
     Lava_animstate = Lava_animstate >= 20 ? 0 : Lava_animstate;
 }

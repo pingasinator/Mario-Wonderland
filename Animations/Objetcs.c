@@ -106,8 +106,8 @@ void Anim_Object_Fireball(Object *o) BANKED
         switch (o->animstate)
         {
             case 0:
-            set_sprite_tile(o->Sprite,0x8A);
-            set_sprite_tile(o->Sprite + 1,0x8B);
+            set_sprite_tile(o->Sprite,0x8C);
+            set_sprite_tile(o->Sprite + 1,0x8D);
             set_sprite_prop(o->Sprite,0);
             set_sprite_prop(o->Sprite+ 1,0);
             move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x) - 8,-(Camera.y - o->hitbox.position.y) + 8);
@@ -115,8 +115,8 @@ void Anim_Object_Fireball(Object *o) BANKED
             break;
     
             case 1:
-            set_sprite_tile(o->Sprite,0x8D);
-            set_sprite_tile(o->Sprite + 1,0x8C);
+            set_sprite_tile(o->Sprite,0x8F);
+            set_sprite_tile(o->Sprite + 1,0x8E);
             set_sprite_prop(o->Sprite,S_FLIPY + S_FLIPX);
             set_sprite_prop(o->Sprite+ 1,S_FLIPY + S_FLIPX);
             move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y));
@@ -124,8 +124,8 @@ void Anim_Object_Fireball(Object *o) BANKED
             break;
 
             case 2:
-            set_sprite_tile(o->Sprite,0x8B);
-            set_sprite_tile(o->Sprite + 1,0x8A);
+            set_sprite_tile(o->Sprite,0x8D);
+            set_sprite_tile(o->Sprite + 1,0x8C);
             set_sprite_prop(o->Sprite,S_FLIPX + S_FLIPY);
             set_sprite_prop(o->Sprite + 1,S_FLIPX + S_FLIPY);
             move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y) + 8);
@@ -133,8 +133,8 @@ void Anim_Object_Fireball(Object *o) BANKED
             break;
 
             case 3:
-            set_sprite_tile(o->Sprite,0x8D);
-            set_sprite_tile(o->Sprite + 1,0x8C);
+            set_sprite_tile(o->Sprite,0x8F);
+            set_sprite_tile(o->Sprite + 1,0x8E);
             set_sprite_prop(o->Sprite,0);
             set_sprite_prop(o->Sprite + 1,0);
             move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y) + 16);

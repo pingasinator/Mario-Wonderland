@@ -6,13 +6,16 @@
 #pragma bank 20
 
 
-Level Level_01 = {.Tilemap=Level_01_Tilemap,.Spawnpoint={.x=32,16*30},.Enemies=Level_01_Enemies,.EnemiesCount=3,.Length=128,.Width=32};
+Level Level_01 = {.Tilemap=Level_01_Tilemap,.Spawnpoint={.x=32,16*30},.Enemies=Level_01_Enemies,.EnemiesCount=6,.Length=128,.Width=32};
 
-const Enemy Level_01_Enemies[3] = 
+const Enemy Level_01_Enemies[6] = 
 {
     {.type=0,.start=0,.Destroyed=0,.position={.x=16 *5,.y=16*30}},
+    {.type=0,.start=0,.Destroyed=0,.position={.x=16 * 6,.y=16*30}},
+    {.type=0,.start=0,.Destroyed=0,.position={.x=16 * 7,.y=16*30}},
+    {.type=0,.start=0,.Destroyed=0,.position={.x=16 * 8,.y=16*30}},
+    {.type=0,.start=0,.Destroyed=0,.position={.x=16 * 9,.y=16*30}},
     {.type=0,.start=0,.Destroyed=0,.position={.x=16 * 10,.y=16*30}},
-    {.type=0,.start=0,.Destroyed=0,.position={.x=16 * 15,.y=16*30}}
 };
 
 const unsigned char Level_01_Tilemap[] = 

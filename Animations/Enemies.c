@@ -4,6 +4,7 @@
 #include <gb\gb.h>
 
 extern Vector2 Camera;
+extern char Time;
 
 #pragma bank 15
 
@@ -41,6 +42,9 @@ void Anim_Goomba_Move(Enemy *e) BANKED
     {
         e->Sprite_tile = Add_Sprite(4);
     }
+
+    e->animState += Time;
+    e->animState = e->animState >= 10 ? 0 : e->animState;
 }
 
 void Anim_Goomba_Death(Enemy *e) BANKED

@@ -16,7 +16,10 @@ Object AllObjects[10];
 extern Vector2 Camera;
 extern char Mario_State;
 
+extern char Coins;
+
 extern Enemy* AllEnemies;
+extern int Enemies_Number;
 
 extern unsigned char Tilemap[];
 
@@ -154,7 +157,7 @@ void FireBall_Update(Object *o) BANKED
         o->animstate = o->animstate >= 4 ? 0 : o->animstate;
         Anim_Object_Fireball(o);
 
-        for(int i = 0;i < 3;i++)
+        for(int i = 0;i < Enemies_Number;i++)
         {
             if(OnCollision(o->hitbox,AllEnemies[i].Hitbox) && !AllEnemies[i].Destroyed)
             {
@@ -196,7 +199,7 @@ void FireBall_Update(Object *o) BANKED
 void Use_Coin(int x,int y) BANKED
 {
     Set_Tile(0,x,y);
-    Add_Coin(1);
+    Coins++;
 }
 
 void Make_Coin(int x,int y) BANKED
@@ -205,7 +208,7 @@ void Make_Coin(int x,int y) BANKED
     {
         if(AllObjects[i].Used == 0)
         {
-            Add_Coin(1);
+            Coins++;
             AllObjects[i].Sprite = Add_Sprite(4);
             AllObjects[i].hitbox.position.x = (x / 16) * 16 + 8;
             AllObjects[i].hitbox.position.y = (y / 16) * 16 + 16;

@@ -10,7 +10,6 @@ void Set_Sprite_Tile(unsigned char Sprite,int x,int y)BANKED;
 void Set_Tile_Palette(int i)BANKED;
 unsigned char Get_Tile(int x,int y)BANKED;
 void Set_Tile(unsigned char Tile,int x,int y)BANKED;
-unsigned char *Get_Tilemap(void)BANKED;
 
 void Reset_Vram(void)BANKED;
 void Reset_Sprite_Vram(void)BANKED;

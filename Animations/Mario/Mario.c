@@ -50,6 +50,10 @@ void Anim_Mario_Fall(int Transformation) BANKED
         case 2:
         Anim_Mario_Fire_Fall();
         break;
+
+        case 3:
+        Anim_Mario_Racoon_Fall();
+        break;
     }
 }
 
@@ -67,6 +71,10 @@ void Anim_Mario_Jump(int Transformation) BANKED
 
         case 2:
         Anim_Mario_Fire_Jump();
+        break;
+
+        case 3:
+        Anim_Mario_Racoon_Jump();
         break;
     }
 }

@@ -11,6 +11,8 @@
 #include <stdlib.h>
 
 extern Vector2 Camera;
+extern char Time;
+extern char Lifes;
 
 #pragma bank 26
 
@@ -61,10 +63,10 @@ void Update_Mario(void)BANKED
     {
         Mario_dir = GetButton(J_LEFT) ? -1 : GetButton(J_RIGHT) ? 1 : Mario_dir;
     
-        Mario_maxSpeed = GetButton(J_B) ? Get_Time() * 8 : Get_Time() * 4;
+        Mario_maxSpeed = GetButton(J_B) ? Time * 8 : Time * 4;
         Mario_RecoveryTime -= Mario_RecoveryTime > 0 ? 1 : 0;
     
-        Mario_Velocity.x += GetButton(J_RIGHT) ? Get_Time() * 2 : GetButton(J_LEFT) == 1 ? Get_Time() * -2 : 0;
+        Mario_Velocity.x += GetButton(J_RIGHT) ? Time * 2 : GetButton(J_LEFT) == 1 ? Time * -2 : 0;
 
         Mario_Velocity.x -= Sign(Mario_Velocity.x);
         Mario_Velocity.y += 1;
@@ -107,7 +109,7 @@ void Update_Mario(void)BANKED
                 }else
                 {
                     Anim_Mario_Move(Mario_State,Mario_animState);
-                    Mario_animState += Get_Time();
+                    Mario_animState += Time;
                     Mario_animState = Mario_animState >= 6 ? 0 : Mario_animState;
                 }
             }else
@@ -304,8 +306,8 @@ void Mario_Set_Death(void)BANKED
 {
     dead = 1;
     Mario_State = 1;
-    Set_Time(0);
-    Add_Life(-1);
+    Time = 0;
+    Lifes -= 1;
     Anim_Mario_Death(Mario_Hitbox,Mario_dir);
 }
 

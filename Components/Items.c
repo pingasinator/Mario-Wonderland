@@ -7,6 +7,7 @@
 extern Vector2 Camera;
 extern int Lifes;
 
+extern char Time;
 extern char Mario_Star;
 
 extern Collision Mario_Hitbox;
@@ -187,8 +188,8 @@ void Mushroom_Update(Item *i)BANKED
                 i->Sprite = Add_Sprite(4);
             }
 
-            i->velocity.y += Get_Time();
-            i->velocity.x = i->dir * Get_Time();
+            i->velocity.y += Time;
+            i->velocity.x = i->dir * Time;
         
             Vector2 Rpos = {.x=i->position.x + Sign(i->dir) * 8,.y=i->position.y-1};
             Vector2 Rdir = {.x=0,.y=-1};
@@ -385,8 +386,8 @@ void Star_Update(Item *i)BANKED
                 i->Sprite = Add_Sprite(4);
             }
 
-            i->velocity.y += Get_Time();
-            i->velocity.x = i->dir * Get_Time() * 2;
+            i->velocity.y += Time;
+            i->velocity.x = i->dir * Time * 2;
         
             Vector2 Rpos = {.x=i->position.x + Sign(i->dir) * 8,.y=i->position.y-1};
             Vector2 Rdir = {.x=0,.y=-1};

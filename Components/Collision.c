@@ -5,12 +5,12 @@
 #include <gb\gb.h>
 
 extern Level currentLevel;
+extern unsigned char Tilemap[];
 
 #pragma bank 13
 
 int TileMapCollisionSide(Collision *A,int side) BANKED
 {
-    unsigned char* Tilemap = Get_Tilemap();
     Vector2 pos;
     pos.x = A->position.x + A->pixeloffset.x;
     pos.y = A->position.y + A->pixeloffset.y;
@@ -120,7 +120,6 @@ int Raycast(Vector2 point,Vector2 dir,int pixelSize) BANKED
 {
     dir.x = Clamp(dir.x,-1,1);
     dir.y = Clamp(dir.y,-1,1);
-    unsigned char *Tilemap = Get_Tilemap();
     int i=0;
     while(i <= pixelSize)
     {
@@ -211,7 +210,6 @@ void TilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
 
 void TilemapCollisionPhysicsSide(Collision *A,Vector2* Velocity,int side) BANKED
 {
-    unsigned char *Tilemap = Get_Tilemap();
     Vector2 pos;
     pos.x = A->position.x + A->pixeloffset.x;
     pos.y = A->position.y + A->pixeloffset.y;

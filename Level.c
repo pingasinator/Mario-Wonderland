@@ -44,6 +44,8 @@ void Reset_Level(void)
 
 void SetLevel(int LevelSelected)
 {
+    ENABLE_RAM;
+    SWITCH_RAM(2);
     Reset_Vram();
     Reset_Level();
     Reset_Items();
@@ -69,13 +71,18 @@ void SetLevel(int LevelSelected)
             Set_Sprite_Tile(Tilemap[Camera.x / 16 + x  + y * currentLevel.Length],(Camera.x / 16 * 2) + x * 2,y * 2);
         }
     }
+    DISABLE_RAM;
 }
 
 void Level_Update(void)
 {
     init_win(0);
+            SHOW_SPRITES;
+        SHOW_WIN;
+        SHOW_BKG;
     while (1)
     {
+        Input_Update();
         Update_Mario();
         Update_Camera();
         Update_HUD(Lifes,Coins,Timer);
@@ -90,9 +97,7 @@ void Level_Update(void)
             break;
         }
 
-        SHOW_SPRITES;
-        SHOW_WIN;
-        SHOW_BKG;
+
     }
 }
 

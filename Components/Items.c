@@ -173,10 +173,10 @@ void Mushroom_Update(Item *i)BANKED
         break;
     }
 
-        i->Hitbox.pixeloffset.x = -6;
-        i->Hitbox.pixeloffset.y = -16;
-        i->Hitbox.pixelsize.x = 14;
-        i->Hitbox.pixelsize.y = 14;
+        i->Hitbox.pixeloffset.x = 0;
+        i->Hitbox.pixeloffset.y = -8;
+        i->Hitbox.pixelsize.x = 8;
+        i->Hitbox.pixelsize.y = 8;
         i->Hitbox.position = i->position;
     
     if(!i->start)
@@ -191,12 +191,12 @@ void Mushroom_Update(Item *i)BANKED
             i->velocity.y += Time;
             i->velocity.x = i->dir * Time;
         
-            Vector2 Rpos = {.x=i->position.x + Sign(i->dir) * 8,.y=i->position.y-1};
+            Vector2 Rpos = {.x=i->position.x + Sign(i->dir) * 9,.y=i->position.y-1};
             Vector2 Rdir = {.x=0,.y=-1};
 
             i->dir = Raycast(Rpos,Rdir,8) ? i->dir - 2 * Sign(i->dir) : i->dir;
             i->velocity.y = Clamp(i->velocity.y,-2,2);
-            TilemapCollisionPhysics(&i->Hitbox,&i->velocity);
+            TilemapCollisionPhysicsSide(&i->Hitbox,&i->velocity,0);
 
             i->position.x += i->velocity.x;
             i->position.y += i->velocity.y;
@@ -259,7 +259,7 @@ void FireFlower_Update(Item *i)BANKED
     
     if(!i->start)
     {
-        if(i->position.x > Camera.x - 8 * 2 && i->position.x < Camera.x + 22 * 8)
+        if(i->position.x > Camera.x - 8 * 8 && i->position.x < Camera.x + 30 * 8)
         {
             if(i->Sprite == 0)
             {
@@ -276,6 +276,7 @@ void FireFlower_Update(Item *i)BANKED
 
         }else
         {
+            *i = nullItem;
             if(i->Sprite != 0)
             {
                 i->Sprite = Remove_Sprite(i->Sprite,4);

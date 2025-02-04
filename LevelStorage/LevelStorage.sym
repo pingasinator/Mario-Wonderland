@@ -7,6 +7,7 @@ Symbol Table
     .__.ABS.                                                    =  000000 G
     .__.CPU.                                                    =  000000 L
     .__.H$L.                                                    =  000000 L
+  1 _Tilemap                                                       000000 GR
 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
@@ -15,7 +16,7 @@ Hexadecimal [24-Bits]
 Area Table
 
    0 _CODE                                      size      0   flags    0
-   1 _DATA_0                                    size      0   flags    0
+   1 _DATA_0                                    size   1800   flags    0
    2 _INITIALIZED                               size      0   flags    0
    3 _DABS                                      size      0   flags    8
    4 _HOME                                      size      0   flags    0

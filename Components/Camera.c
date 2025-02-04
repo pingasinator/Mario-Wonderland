@@ -9,7 +9,6 @@ Vector2 Camera = {.x=16,.y=16*29};
 Vector2 oldCamera = {.x=0,.y=0};
 
 extern Level currentLevel;
-extern int currentLevel_Size;
 
 extern unsigned char Tilemap[];
 
@@ -43,6 +42,8 @@ void Set_Camera_Position(int x,int y)BANKED
 
 void Update_Camera(void)BANKED
 {
+    ENABLE_RAM;
+    SWITCH_RAM(2);
     if(oldCamera.x != Camera.x / 16)
     {
         for(int i = 0;i < 11;i++)
@@ -78,25 +79,18 @@ void Update_Camera(void)BANKED
         }
         oldCamera.y = Camera.y / 16;
     }
-
-    move_bkg(Camera.x,Camera.y);
+    DISABLE_RAM;
 }
 
 void MoveCamera(int x,int y)BANKED
 {
 
-    for(int i = 0; i < Abs(x);i++)
-    {
-        Camera.x += Sign(x);
-        SHOW_BKG;
-    }
-
-    for(int i = 0; i < Abs(y);i++)
-    {
-        Camera.y += Sign(y);
-        SHOW_BKG;
-    }
+    Camera.x += x;
+    Camera.y += y;
 
     Camera.x = Clamp(Camera.x,0,currentLevel.Length * 16 - 10 * 16);
-    Camera.y = Clamp(Camera.y,0,32 * 16 - 9 * 16);
+    Camera.y = Clamp(Camera.y,0,currentLevel.Width * 16 - 9 * 16);
+
+    vsync();
+    move_bkg(Camera.x,Camera.y);
 }

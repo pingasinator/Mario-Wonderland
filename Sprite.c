@@ -68,8 +68,14 @@ extern unsigned char S_Goomba_Death[];
 extern unsigned char S_Koopa_Idle[];
 extern unsigned char S_Koopa_Move_0[];
 extern unsigned char S_Koopa_Move_1[];
+extern unsigned char S_Koopa_Shell_0[];
+extern unsigned char S_Koopa_Shell_1[];
+extern unsigned char S_Koopa_Shell_2[];
+extern unsigned char S_Koopa_Shell_3[];
 
 extern unsigned char S_Overworld_Ground[];
+extern unsigned char S_Overworld_Background_Cloud[];
+extern unsigned char S_Overworld_Background_Cloud_1[];
 extern unsigned char S_Overworld_Background_Bush[];
 
 extern unsigned char S_Underground_Ground[];
@@ -83,7 +89,7 @@ extern unsigned char S_HUD_X[];
 
 extern Level currentLevel;
 
-unsigned char Tilemap[4096];
+extern unsigned char Tilemap[];
 
 
 unsigned char Sprites[40] =
@@ -132,7 +138,8 @@ void Set_Tile_Palette(int i) BANKED
         Current_Background_Palette = Overworld_Background_Palette;
         Current_Ground_Palette = Overworld_Ground_Palette;
         set_bkg_data(0x31,18,S_Overworld_Ground);
-        set_bkg_data(0x43,4,S_Overworld_Background_Bush);
+        set_bkg_data(0x43,12,S_Overworld_Background_Cloud);
+        set_bkg_data(0x4F,8,S_Overworld_Background_Cloud_1);
         break;
 
         case 1:
@@ -144,19 +151,21 @@ void Set_Tile_Palette(int i) BANKED
     }
 }
 
-unsigned char *Get_Tilemap(void) BANKED
-{
-    return Tilemap;
-}
-
 unsigned char Get_Tile(int x,int y) BANKED
 {
-    return Tilemap[x/16 + y/16*currentLevel.Length];
+    ENABLE_RAM;
+    SWITCH_RAM(2);
+    unsigned char tempTile = Tilemap[x/16 + y/16*currentLevel.Length];
+        DISABLE_RAM;
+    return tempTile;
 }
 
 void Set_Tile(unsigned char Tile,int x,int y) BANKED
 {
+    ENABLE_RAM;
+    SWITCH_RAM(2);
     Tilemap[x/16 + y/16*currentLevel.Length] = Tile;
+    DISABLE_RAM;
     Set_Sprite_Tile(Tile,x/16*2,y/16*2);
 }
 
@@ -264,7 +273,12 @@ void init_Enemies_Vram(void) BANKED
     set_sprite_data(0xAC,2,S_Goomba_Death);
     set_sprite_data(0xAE,5,S_Koopa_Idle);
     set_sprite_data(0xB3,1,S_Koopa_Move_0);
-    set_sprite_data(0xB4,1,S_Koopa_Move_1);
+    set_sprite_data(0xB4,3,S_Koopa_Move_1);
+    set_sprite_data(0xB7,2,S_Koopa_Shell_0);
+    set_sprite_data(0xB9,4,S_Koopa_Shell_1);
+    set_sprite_data(0xBD,2,S_Koopa_Shell_2);
+    set_sprite_data(0xBF,2,S_Koopa_Shell_3);
+
 }
 
 void init_Mario_Vram(void) BANKED

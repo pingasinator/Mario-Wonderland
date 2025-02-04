@@ -2,7 +2,8 @@
 
 const unsigned char *Overworld_Background_Palette[] = 
 {
-    T_null,T_Coin,T_Water_Top,T_Water,T_Lava_Top,T_Lava,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,T_Black
+    T_null,T_Grey_Light,T_Grey_Dark,T_Black,T_Coin,T_Lava_Top,T_Grey_Dark,T_Water_Top,T_Grey_Light,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,
+    T_Overworld_background_Cloud_0,T_Overworld_background_Cloud_1,T_Overworld_background_Cloud_2,T_Overworld_background_Cloud_3
 };
 
 const unsigned char *Overworld_Ground_Palette[] = 
@@ -25,5 +26,6 @@ const unsigned char *Underground_Ground_Palette[] =
 
 const unsigned char *Underground_Background_Palette[] = 
 {
-    T_null,T_Coin,T_Water_Top,T_Water,T_Lava_Top,T_Lava,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,T_Black
+    T_null,T_Grey_Light,T_Grey_Dark,T_Black,T_Coin,T_Water_Top,T_Grey_Light,T_Lava_Top,T_Grey_Dark,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,
+
 };

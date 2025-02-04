@@ -6,11 +6,10 @@
 
 typedef struct
 {
-    char start;
-    Vector2 position;
+    char State;
     Vector2 velocity;
     Vector2 dir;
-    char Hiden;
+    Vector2 SpawnPoint;
     char type;
     char animState;
     char Sprite_tile;
@@ -19,18 +18,17 @@ typedef struct
     char deathDelay;
     char dead;
     char Knockback;
-    char Destroyed;
+    char Enabled;
 } Enemy;
 
 void Update_Enemy(void);
 
 void Set_All_Enemies(int Level);
 
-void Update_Goomba(Enemy *e);
-void Start_Goomba(Enemy *e);
+void Update_Goomba(int i);
 
 void Koopa_Start(Enemy *e);
-void Koopa_Update(Enemy *e);
+void Update_Koopa(int i);
 
 void Enemy_KnockBack(Enemy *e,int dir);
 

@@ -133,32 +133,26 @@ void Anim_Mario_Death(Collision hitbox,int dir) BANKED
     set_sprite_tile(8,0x28);
     set_sprite_tile(9,0x28);
 
-    switch(dir)
-    {
-        case 1:
-            set_sprite_prop(3,S_FLIPX);
+    set_sprite_prop(2,0);
+    set_sprite_prop(3,S_FLIPX);
+    set_sprite_prop(4,0);
+    set_sprite_prop(5,0);
     set_sprite_prop(6,S_FLIPX);
+    set_sprite_prop(7,0);
+    set_sprite_prop(8,0);
     set_sprite_prop(9,S_FLIPX);
-        break;
-
-        case -1:
-        set_sprite_prop(2,0);
-        set_sprite_prop(5,0);
-        set_sprite_prop(8,0);
-        break;
-    }
 
 
-    move_sprite(0,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) - 8);
-    move_sprite(1,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) - 8);
-    move_sprite(2,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y));
-    move_sprite(3,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y));
-    move_sprite(4,-(Camera.x - hitbox.position.x)-8,-(Camera.y - hitbox.position.y) + 8);
-    move_sprite(5,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) + 8);
-    move_sprite(6,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) + 8);
-    move_sprite(7,-(Camera.x - hitbox.position.x)-8,-(Camera.y - hitbox.position.y) + 16);
-    move_sprite(8,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) + 16);
-    move_sprite(9,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) + 16);
+    move_sprite(0,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) - 16);
+    move_sprite(1,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) - 16);
+    move_sprite(2,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y)- 8);
+    move_sprite(3,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y)- 8);
+    move_sprite(4,-(Camera.x - hitbox.position.x)-8,-(Camera.y - hitbox.position.y));
+    move_sprite(5,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y));
+    move_sprite(6,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y));
+    move_sprite(7,-(Camera.x - hitbox.position.x)-8,-(Camera.y - hitbox.position.y) + 8);
+    move_sprite(8,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) + 8);
+    move_sprite(9,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) + 8);
 }
 
 void Anim_Mario_Star(void) BANKED

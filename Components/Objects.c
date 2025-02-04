@@ -15,13 +15,12 @@ Object AllObjects[10];
 
 extern Vector2 Camera;
 extern char Mario_State;
+extern Collision Mario_Hitbox;
 
 extern char Coins;
 
 extern Enemy* AllEnemies;
 extern int Enemies_Number;
-
-extern unsigned char Tilemap[];
 
 int FireballNumber = 0;
 
@@ -50,6 +49,7 @@ void Objects_Update(void) BANKED
                 case 1:
                 case 5:
                 case 6:
+                case 8:
                 Blocks_Update(i);
                 break;
 
@@ -60,10 +60,22 @@ void Objects_Update(void) BANKED
                 case 7:
                 FireBall_Update(&AllObjects[i]);
                 break;
+
+                case 16:
+
+                break;
             }
         }
     }
 
+}
+
+void EndBlock(Object *o)
+{
+    if(OnCollision(o->hitbox,Mario_Hitbox))
+    {
+
+    }
 }
 
 void Blocks_Update(int i) BANKED
@@ -77,6 +89,10 @@ void Blocks_Update(int i) BANKED
             case 5:
             case 6:
             Anim_Object_Brick(&AllObjects[i]);
+            break;
+
+            case 8:
+
             break;
 
             default:
@@ -94,14 +110,24 @@ void Blocks_Update(int i) BANKED
 
     if(AllObjects[i].returnToPoint && AllObjects[i].hitbox.position.y >= AllObjects[i].originalPosition.y)
     {
-        if(AllObjects[i].type != 5)
+
+        switch (AllObjects[i].type)
         {
-            Set_Tile(0x8A,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
-        }else
-        {
+            case 5:
             Set_Tile(0x85,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+            AllObjects[i].Sprite = Remove_Sprite(AllObjects[i].Sprite,4);
+            break;
+
+            case 8:
+            Set_Tile(0x00,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+            break;
+        
+            default:
+            Set_Tile(0x8A,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
+            AllObjects[i].Sprite = Remove_Sprite(AllObjects[i].Sprite,4);
+            break;
         }
-        AllObjects[i].Sprite = Remove_Sprite(AllObjects[i].Sprite,4);
+
         AllObjects[i] = nullObject;
     }
 }
@@ -119,7 +145,7 @@ void Coin_Update(int i) BANKED
         AllObjects[i].animstate = AllObjects[i].animstate >= 6 ? 0 : AllObjects[i].animstate;
 
 
-    if(AllObjects[i].Velocity.y > 0 == 1 && AllObjects[i].hitbox.position.y >= AllObjects[i].originalPosition.y)
+    if(AllObjects[i].Velocity.y > 0 && AllObjects[i].hitbox.position.y >= AllObjects[i].originalPosition.y)
     {
         Set_Tile(0x8A,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
         Remove_Sprite(AllObjects[i].Sprite,4);
@@ -142,7 +168,6 @@ void FireBall_Update(Object *o) BANKED
         o->Velocity.x = o->dir * 7;
         o->Velocity.y++;
         o->Velocity.y = Clamp(o->Velocity.y,-5,5);
-        TilemapCollisionPhysicsSide(&o->hitbox,&o->Velocity,0);
         if(onGround)
         {
             o->Velocity.y = -5;
@@ -159,7 +184,7 @@ void FireBall_Update(Object *o) BANKED
 
         for(int i = 0;i < Enemies_Number;i++)
         {
-            if(OnCollision(o->hitbox,AllEnemies[i].Hitbox) && !AllEnemies[i].Destroyed)
+            if(AllEnemies[i].Enabled && OnCollision(o->hitbox,AllEnemies[i].Hitbox) &&! AllEnemies[i].Knockback)
             {
                 Enemy_KnockBack(&AllEnemies[i],o->dir);
                 if(o->Sprite != 0)
@@ -186,7 +211,6 @@ void FireBall_Update(Object *o) BANKED
         
         o->hitbox.position.x += o->Velocity.x;
         o->hitbox.position.y += o->Velocity.y;
-        TilemapCollisionPhysicsSide(&o->hitbox,&o->Velocity,0);
 
     }else
     {
@@ -293,8 +317,15 @@ void Q_Block(int Type,int x,int y) BANKED
                 break;
 
                 case 0x85:
-                AllObjects[i].type = 5;
-                Anim_Object_Brick(&AllObjects[i]);
+                if(Mario_State >= 1)
+                {
+                    AllObjects[i].type = 8;
+                    AllObjects[i].Sprite = Remove_Sprite(AllObjects[i].Sprite,4);
+                }else
+                {
+                    AllObjects[i].type = 5;
+                    Anim_Object_Brick(&AllObjects[i]);
+                }
                 break;
 
                 case 0x86:

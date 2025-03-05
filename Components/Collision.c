@@ -208,7 +208,6 @@ void TilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
             }
         }
     }
-
 }
 
 void TilemapCollisionPhysicsSide(Collision *A,Vector2* Velocity,int side) BANKED

@@ -7,6 +7,7 @@
 #include "..\include\Animations\Objects.h"
 #include "..\include\Items.h"
 #include "..\include\Enemies.h"
+#include "..\include\Level.h"
 #include <gb\gb.h>
 
 
@@ -21,6 +22,8 @@ extern char Coins;
 
 extern Enemy* AllEnemies;
 extern int Enemies_Number;
+
+extern Level currentLevel;
 
 int FireballNumber = 0;
 
@@ -60,21 +63,8 @@ void Objects_Update(void) BANKED
                 case 7:
                 FireBall_Update(&AllObjects[i]);
                 break;
-
-                case 16:
-
-                break;
             }
         }
-    }
-
-}
-
-void EndBlock(Object *o)
-{
-    if(OnCollision(o->hitbox,Mario_Hitbox))
-    {
-
     }
 }
 

@@ -1,6 +1,6 @@
 
 #include "include\Level.h"
-#include "include\Worldmap.h"
+#include "include\World.h"
 #include "include\GameSystem.h"
 #include "include\Sprite.h"
 #include <gb\gb.h>
@@ -18,7 +18,7 @@ void main(void)
             switch(Get_GameMode())
             {
                 case 0:
-                WorldMap_Update();
+                World_Update();
                 break;
 
                 case 1:
@@ -27,7 +27,7 @@ void main(void)
             }
         }else
         {
-
+            GameOverScreen();
         }
     }
 }

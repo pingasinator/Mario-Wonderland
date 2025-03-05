@@ -119,7 +119,7 @@ void Anim_Mario_Slide(int Transformation) BANKED
     }
 }
 
-void Anim_Mario_Death(Collision hitbox,int dir) BANKED
+void Anim_Mario_Death(Collision hitbox) BANKED
 {
 
     set_sprite_tile(0,0x00);

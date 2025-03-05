@@ -8,6 +8,7 @@
 #include "include\Items.h"
 
 #include "include\Animations\BKG.h"
+#include "include\Animations\Objects.h"
 
 #include <stdio.h>
 #include <gb\gb.h>
@@ -20,6 +21,8 @@ extern Vector2 Camera;
 extern Level Level_01;
 extern Level Level_02;
 
+extern Collision Mario_Hitbox;
+
 extern unsigned char Tilemap[];
 
 extern char Time;
@@ -27,6 +30,7 @@ extern char Coins;
 extern char Lifes;
 
 Level currentLevel;
+EndLevelObject currentEndLevelObject;
 int currentLevel_Size;
 
 int Timer = 300;
@@ -50,11 +54,12 @@ void SetLevel(int LevelSelected)
     Reset_Level();
     Reset_Items();
     Set_Camera_Position(0,16*29);
-    SWITCH_ROM(19 + LevelSelected);
+    SWITCH_ROM(20);
     currentLevel = GetLevel(LevelSelected);
     currentLevel_Size = currentLevel.Length * currentLevel.Width;
     Set_All_Enemies(LevelSelected);
-        init_Enemies_Vram();
+    currentEndLevelObject = currentLevel.Endblock;
+    init_Enemies_Vram();
     init_Level_Vram();
     init_Objects_Vram();
     init_Mario_Vram();
@@ -63,7 +68,7 @@ void SetLevel(int LevelSelected)
 
     memcpy(Tilemap,GetLevel(LevelSelected).Tilemap,sizeof(uint8_t) * currentLevel_Size);
 
-    Set_Tile_Palette(0);
+    Set_Tile_Palette(currentLevel.Palette);
     for(int y = 0;y < 32;y++)
     {
         for(int x = 0;x < 16;x++)
@@ -77,9 +82,9 @@ void SetLevel(int LevelSelected)
 void Level_Update(void)
 {
     init_win(0);
-            SHOW_SPRITES;
-        SHOW_WIN;
-        SHOW_BKG;
+    SHOW_SPRITES;
+    SHOW_WIN;
+    SHOW_BKG;
     while (1)
     {
         Input_Update();
@@ -91,13 +96,33 @@ void Level_Update(void)
         Items_Update();
         Timer_Update();
         Anim_BKG_Update();
+        EndBlock_Update();
         if(EndofLevel)
         {
             Set_GameMode(0);
             break;
         }
+    }
+}
 
+void EndBlock_Update(void)
+{
+    if(currentEndLevelObject.hitbox.position.x > Camera.x && currentEndLevelObject.hitbox.position.x < Camera.x + 22 * 8)
+    {
+        Anim_Object_EndBlock(&currentEndLevelObject);
+        Collision c;
+        c = currentEndLevelObject.hitbox;
+        if(OnCollision(Mario_Hitbox,c))
+        {
+            EndofLevel = 1;
+        }
 
+    }else
+    {
+        if(currentEndLevelObject.Sprite != 0)
+        {
+            currentEndLevelObject.Sprite = Remove_Sprite(currentEndLevelObject.Sprite,4);
+        }
     }
 }
 

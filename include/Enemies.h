@@ -27,7 +27,6 @@ void Set_All_Enemies(int Level);
 
 void Update_Goomba(int i);
 
-void Koopa_Start(Enemy *e);
 void Update_Koopa(int i);
 
 void Enemy_KnockBack(Enemy *e,int dir);

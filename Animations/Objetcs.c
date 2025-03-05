@@ -146,3 +146,59 @@ void Anim_Object_Fireball(Object *o) BANKED
         o->Sprite = Add_Sprite(2);
     }
 }
+
+void Anim_Object_EndBlock(EndLevelObject *o) BANKED
+{
+    if(o->Sprite != 0)
+    {
+        switch (o->animstate)
+        {
+            case 0:
+            set_sprite_prop(o->Sprite + 1,0);
+            set_sprite_prop(o->Sprite + 3,0);
+            set_sprite_tile(o->Sprite,0x80);
+            set_sprite_tile(o->Sprite+1,0x81);
+            set_sprite_tile(o->Sprite+2,0x82);
+            set_sprite_tile(o->Sprite+3,0x83);
+            break;
+    
+            case 4:
+            set_sprite_prop(o->Sprite + 1,S_FLIPX);
+            set_sprite_prop(o->Sprite + 3,S_FLIPX);
+            set_sprite_tile(o->Sprite,0x84);
+            set_sprite_tile(o->Sprite+1,0x84);
+            set_sprite_tile(o->Sprite+2,0x85);
+            set_sprite_tile(o->Sprite+3,0x85);
+            break;
+
+            case 8:
+            set_sprite_prop(o->Sprite + 1,0);
+            set_sprite_prop(o->Sprite + 3,0);
+            set_sprite_tile(o->Sprite,0x86);
+            set_sprite_tile(o->Sprite+1,0x87);
+            set_sprite_tile(o->Sprite+2,0x88);
+            set_sprite_tile(o->Sprite+3,0x89);
+            break;
+
+            case 12:
+            set_sprite_prop(o->Sprite + 1,S_FLIPX);
+            set_sprite_prop(o->Sprite + 3,S_FLIPX);
+            set_sprite_tile(o->Sprite,0x8A);
+            set_sprite_tile(o->Sprite+1,0x8A);
+            set_sprite_tile(o->Sprite+2,0x8B);
+            set_sprite_tile(o->Sprite+3,0x8B);
+            break;
+        }
+
+        move_sprite(o->Sprite,-(Camera.x - o->hitbox.position.x) - 8,-(Camera.y - o->hitbox.position.y));
+        move_sprite(o->Sprite+1,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y));
+        move_sprite(o->Sprite+2,-(Camera.x - o->hitbox.position.x) - 8,-(Camera.y - o->hitbox.position.y) + 8);
+        move_sprite(o->Sprite+3,-(Camera.x - o->hitbox.position.x),-(Camera.y - o->hitbox.position.y) + 8);
+    }else
+    {
+        o->Sprite = Add_Sprite(4);
+    }
+
+    o->animstate++;
+    o->animstate = o->animstate >= 16 ? 0 : o->animstate;
+}

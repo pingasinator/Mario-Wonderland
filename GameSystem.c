@@ -7,6 +7,9 @@ char Lifes = 3;
 
 char GameMode = 0;
 
+extern unsigned char LastPoint;
+extern unsigned char World_Dir; 
+
 unsigned char allInputsDown[9] = {0,0,0,0,0,0,0,0,0};
 unsigned char allInputsPressed[9] = {0,0,0,0,0,0,0,0,0};
 unsigned char allInputs[9] = {NULL,J_RIGHT,J_LEFT,J_UP,J_DOWN,J_A,J_B,J_SELECT,J_START};
@@ -40,6 +43,26 @@ void Input_Update(void)
         }else
         {
             allInputsPressed[i] = 0;
+        }
+    }
+}
+
+void Save(void)
+{
+    ENABLE_RAM;
+    SWITCH_RAM(1);
+    LastPoint = World_Dir;
+    DISABLE_RAM;
+}
+
+void Pause(void)
+{
+    while(1)
+    {
+        Input_Update();
+        if(allInputsDown[8])
+        {
+            break;
         }
     }
 }

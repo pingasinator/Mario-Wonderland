@@ -17,6 +17,15 @@ typedef struct
     char type;
 }Object;
 
+typedef struct 
+{
+    char enabled;
+    Collision hitbox;
+    char Sprite;
+    char animstate;
+    char type;
+}EndLevelObject;
+
 void Use_Coin(int x,int y) BANKED;
 void Objects_Update(void) BANKED;
 void Coin_Update(int i) BANKED;

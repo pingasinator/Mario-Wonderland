@@ -1,6 +1,7 @@
 #ifndef DefaultTiles_H
 #define DefaultTiles_H
 
+#pragma bank 2
 //The Hexa values are the emplacement in the Vram
 
 //{Top_Left, Top_Right, Bottom_Left, Bottom_Right}
@@ -85,9 +86,9 @@ const unsigned char T_Overworld_Ground_9[] = {45,46,35,36};
 
 const unsigned char T_Overworld_Ground_10[] = {0x31,0x32,0x3F,0x40};
 
-const unsigned char T_Overworld_Ground_11[] = {0x31,0x32,0x3F,0x40};
+const unsigned char T_Overworld_Ground_11[] = {0x3F,0x3B,0x41,0x42};
 
-const unsigned char T_Overworld_Ground_12[] = {0x31,0x32,0x3F,0x40};
+const unsigned char T_Overworld_Ground_12[] = {0x3C,0x40,0x41,0x42};
 
 const unsigned char T_Overworld_Ground_13[] = {0x3F,0x40,0x41,0x42};
 
@@ -96,8 +97,6 @@ const unsigned char T_Overworld_Ground_14[] = {0x31,0x32,0x3F,0x40};
 const unsigned char T_Overworld_Ground_15[] = {0x31,0x32,0x3F,0x40};
 
 const unsigned char T_Overworld_Ground_16[] = {0x3F,0x40,0x3E,0x42};
-
-const unsigned char T_Overworld_background_Bush[] = {0x00,0x00,0x00,0x00};
 
 const unsigned char T_Overworld_background_Cloud_0[] = {0x43,0x44,0x45,0x00};
 
@@ -127,7 +126,7 @@ const unsigned char T_Underground_Ground_8[] = {0x00,0x00,0x00,0x00};
 
 const unsigned char T_Underground_Ground_9[] = {0x00,0x00,0x00,0x00};
 
-const unsigned char T_Underground_Ground_10[] = {0x00,0x00,0x00,0x00};
+const unsigned char T_Underground_Ground_10[] = {0x32,0x33,0x00,0x00};
 
 const unsigned char T_Underground_Ground_11[] = {0x00,0x00,0x00,0x00};
 
@@ -139,4 +138,37 @@ const unsigned char T_Underground_Ground_14[] = {0x00,0x00,0x00,0x00};
 
 const unsigned char T_Underground_Ground_15[] = {0x00,0x00,0x00,0x00};
 
+const unsigned char T_Airship_Ground_0[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_1[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_2[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_3[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_4[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_5[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_6[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_7[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_8[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_9[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_10[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_11[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_12[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_13[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_14[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_15[] = {0x00,0x00,0x00,0x00};
+
+const unsigned char T_Airship_Ground_16[] = {0x00,0x00,0x00,0x00};
 #endif

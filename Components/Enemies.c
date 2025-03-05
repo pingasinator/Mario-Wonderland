@@ -78,7 +78,7 @@ void Update_Enemy(void)
         if((AllEnemies[i].SpawnPoint.x > Camera.x + 22 * 8 && AllEnemies[i].SpawnPoint.x < Camera.x + 26 * 8 )  || (AllEnemies[i].SpawnPoint.x < Camera.x && AllEnemies[i].SpawnPoint.x > Camera.x - 8 * 4) &&! AllEnemies[i].dead)
         {
             AllEnemies[i].Enabled = 1;
-        }
+        } 
         if(AllEnemies[i].Enabled &&! Mario_dead)
         {
             switch(AllEnemies[i].type)
@@ -143,9 +143,9 @@ void Update_Goomba(int i)
                 Anim_Goomba_Death(&AllEnemies[i]);
                 if(AllEnemies[i].deathDelay <= 0)
                 {
+                    AllEnemies[i].Enabled = 0;
                     AllEnemies[i].deathDelay = 0;
                     AllEnemies[i].Sprite_tile = Remove_Sprite(AllEnemies[i].Sprite_tile,AllEnemies[i].Sprite_size);
-                    free(&AllEnemies[i]);
                 }
             }
         }else

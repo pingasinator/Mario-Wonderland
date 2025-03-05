@@ -2,6 +2,8 @@
 #include "..\include\GameSystem.h"
 #include <gb\gb.h>
 
+#pragma bank 2
+
 char coin_animstate = 0;
 char qblock_animstate = 0;
 char Water_animstate = 0;
@@ -29,7 +31,7 @@ extern unsigned char S_Water_1[];
 extern unsigned char S_Water_2[];
 extern unsigned char S_Water_3[];
 
-void Anim_BKG_Update(void)
+void Anim_BKG_Update(void) BANKED
 {
     Anim_BKG_Coin();
     Anim_Q_block();
@@ -37,7 +39,7 @@ void Anim_BKG_Update(void)
     Anim_Lava();
 }
 
-void Anim_BKG_Coin(void)
+void Anim_BKG_Coin(void)BANKED
 {
     SWITCH_ROM(2);
     switch (coin_animstate)
@@ -63,7 +65,7 @@ void Anim_BKG_Coin(void)
     coin_animstate = coin_animstate >= 20 ? 0 : coin_animstate;
 }
 
-void Anim_Q_block(void)
+void Anim_Q_block(void)BANKED
 {
     SWITCH_ROM(2);
     switch(qblock_animstate)
@@ -88,7 +90,7 @@ void Anim_Q_block(void)
     qblock_animstate = qblock_animstate >= 20 ? 0 : qblock_animstate;
 }
 
-void Anim_Water(void)
+void Anim_Water(void)BANKED
 {
     SWITCH_ROM(2);
     switch(Water_animstate)
@@ -113,7 +115,7 @@ void Anim_Water(void)
     Water_animstate = Water_animstate >= 20 ? 0 : Water_animstate;
 }
 
-void Anim_Lava(void)
+void Anim_Lava(void)BANKED
 {
     SWITCH_ROM(2);
     switch(Lava_animstate)

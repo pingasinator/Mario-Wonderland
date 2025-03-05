@@ -1,6 +1,5 @@
 #include "include\Sprite.h"
 #include "include\Level.h"
-#include "TilePalettes\TilePalettes.h"
 #include <gb\gb.h>
 
 #pragma bank 2
@@ -60,7 +59,7 @@ extern unsigned char S_Mario_Great_Swim_1[];
 extern unsigned char S_Mario_Fire[];
 extern unsigned char S_Mario_Racoon[];
 
-extern unsigned char S_Mario_WorldMap_Small[];
+extern unsigned char S_Mario_World_Small[];
 
 extern unsigned char S_Goomba_Idle[];
 extern unsigned char S_Goomba_Move[];
@@ -80,12 +79,24 @@ extern unsigned char S_Overworld_Background_Bush[];
 
 extern unsigned char S_Underground_Ground[];
 
+extern unsigned char S_Airship_Ground[];
+
+extern unsigned char S_World_Overworld[];
+extern unsigned char S_World_HUD[];
+
 extern unsigned char S_HUD_Life_Mario[];
 extern unsigned char S_HUD_Coin[];
 extern unsigned char S_HUD_Star[];
 extern unsigned char S_HUD_T[];
 extern unsigned char S_HUD_Font[];
 extern unsigned char S_HUD_X[];
+
+extern unsigned char *Overworld_Background_Palette[];
+extern unsigned char *Overworld_Ground_Palette[];
+extern unsigned char *Underground_Background_Palette[];
+extern unsigned char *Underground_Ground_Palette[];
+extern unsigned char *Airship_Ground_Palette[];
+extern unsigned char *Airship_Background_Palette[];
 
 extern Level currentLevel;
 
@@ -134,7 +145,6 @@ void Set_Tile_Palette(int i) BANKED
     switch(i)
     {
         case 0:
-
         Current_Background_Palette = Overworld_Background_Palette;
         Current_Ground_Palette = Overworld_Ground_Palette;
         set_bkg_data(0x31,18,S_Overworld_Ground);
@@ -143,10 +153,19 @@ void Set_Tile_Palette(int i) BANKED
         break;
 
         case 1:
-
         Current_Background_Palette = Underground_Background_Palette;
         Current_Ground_Palette = Underground_Ground_Palette;
         set_bkg_data(0x31,18,S_Underground_Ground);
+        break;
+
+        case 2:
+
+        break;
+
+        case 4:
+        Current_Background_Palette = Airship_Background_Palette;
+        Current_Ground_Palette = Airship_Ground_Palette;
+        set_bkg_data(0x31,18,S_Airship_Ground);
         break;
     }
 }
@@ -156,7 +175,7 @@ unsigned char Get_Tile(int x,int y) BANKED
     ENABLE_RAM;
     SWITCH_RAM(2);
     unsigned char tempTile = Tilemap[x/16 + y/16*currentLevel.Length];
-        DISABLE_RAM;
+    DISABLE_RAM;
     return tempTile;
 }
 
@@ -225,10 +244,21 @@ void Reset_BKG_Vram(void) BANKED
     }
 }
 
-void init_Worldmap_Mario_Vram(void) BANKED
+void init_World_Vram(void) BANKED
+{
+    set_bkg_data(0x00,96,S_World_Overworld);
+    set_bkg_data(0x6D,19,S_World_HUD);
+}
+
+void init_World_Mario_Vram(void) BANKED
 {
 
-     set_sprite_data(0,2,S_Mario_WorldMap_Small);
+    set_sprite_data(0,32,S_Mario_World_Small);
+}
+
+void init_World_BKG(unsigned char *World_Tilemap)BANKED
+{
+    set_bkg_tiles(0,0,20,18,World_Tilemap);
 }
 
 void init_Level_Vram(void) BANKED

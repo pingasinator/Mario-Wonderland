@@ -15,14 +15,15 @@ void Reset_Vram(void)BANKED;
 void Reset_Sprite_Vram(void)BANKED;
 void Reset_BKG_Vram(void)BANKED;
 
+void Set_Mario_Palette(int i)NONBANKED;
+
 void init_World_Vram(void) BANKED;
 void init_World_Mario_Vram(void)BANKED;
 
-void init_World_BKG(unsigned char *World_Tilemap)BANKED;
+void init_World_BKG(int i)BANKED;
 
 void init_Level_Vram(void)BANKED;
 void init_Objects_Vram(void)BANKED;
 void init_Enemies_Vram(void)BANKED;
-void init_Mario_Vram(void)BANKED;
 void init_HUD_Vram(void)BANKED;
 #endif

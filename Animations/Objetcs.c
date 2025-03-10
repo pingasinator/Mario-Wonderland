@@ -4,7 +4,7 @@
 
 extern Vector2 Camera;
 
-#pragma bank 15
+#pragma bank 12
 
 void Anim_Object_Coin(Object *o) BANKED
 {

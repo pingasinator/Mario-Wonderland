@@ -12,6 +12,8 @@
 #include <gb\gb.h>
 #include <asm\sm83\string.h>
 
+#pragma bank 11
+
 extern Vector2 Camera;
 extern char Time;
 
@@ -20,12 +22,13 @@ extern Collision Mario_Hitbox;
 extern char Mario_Star;
 extern char Mario_dir;
 extern char Mario_dead;
+extern char Mario_Win;
 
 Enemy *AllEnemies = NULL;
 int Enemies_Number = 0;
 
 
-void Set_All_Enemies(int Level)
+void Set_All_Enemies(int Level)NONBANKED
 {
     if(AllEnemies != NULL)
     {
@@ -70,7 +73,7 @@ void Set_All_Enemies(int Level)
     }
 }
 
-void Update_Enemy(void)
+void Update_Enemy(void)BANKED
 {
 
     for(int i= 0; i < Enemies_Number;i++)
@@ -79,7 +82,7 @@ void Update_Enemy(void)
         {
             AllEnemies[i].Enabled = 1;
         } 
-        if(AllEnemies[i].Enabled &&! Mario_dead)
+        if(AllEnemies[i].Enabled &&! Mario_dead &&! Mario_Win)
         {
             switch(AllEnemies[i].type)
             {
@@ -95,7 +98,7 @@ void Update_Enemy(void)
     }
 }
 
-void Update_Goomba(int i)
+void Update_Goomba(int i)BANKED
 {
         if(!AllEnemies[i].Knockback)
         {
@@ -105,14 +108,11 @@ void Update_Goomba(int i)
                 AllEnemies[i].velocity.y += Time;
                 AllEnemies[i].velocity.x = AllEnemies[i].dir.x * Time;
 
-                Vector2 Raypoint = {.x=AllEnemies[i].Hitbox.position.x + AllEnemies[i].Hitbox.pixeloffset.x + AllEnemies[i].dir.x * (AllEnemies[i].Hitbox.pixelsize.x + 1),.y=AllEnemies[i].Hitbox.position.y + AllEnemies[i].Hitbox.pixeloffset.y  + 7};
-                Vector2 Raydir = {.x=0,.y=-1};
-
                 Anim_Goomba_Move(&AllEnemies[i]);
 
-                AllEnemies[i].dir.x = Raycast(Raypoint,Raydir,14) ? AllEnemies[i].dir.x - 2 * Sign(AllEnemies[i].dir.x) : AllEnemies[i].dir.x;
+                AllEnemies[i].dir.x = Get_Tile(AllEnemies[i].Hitbox.position.x + AllEnemies[i].Hitbox.pixeloffset.x + AllEnemies[i].dir.x * (AllEnemies[i].Hitbox.pixelsize.x + 1),AllEnemies[i].Hitbox.position.y + AllEnemies[i].Hitbox.pixeloffset.y) >= 0x80 ? AllEnemies[i].dir.x - 2 * Sign(AllEnemies[i].dir.x) : AllEnemies[i].dir.x;
 
-                if(!Mario_dead && OnCollision(AllEnemies[i].Hitbox,Mario_Hitbox))  
+                if(!Mario_dead && !Mario_Win && OnCollision(AllEnemies[i].Hitbox,Mario_Hitbox))  
                 {
                     if(Mario_Star)
                     {
@@ -169,7 +169,7 @@ void Update_Goomba(int i)
     }
 }
 
-void Update_Koopa(int i)
+void Update_Koopa(int i)BANKED
 {
 
     if(!AllEnemies[i].Knockback)
@@ -187,7 +187,7 @@ void Update_Koopa(int i)
 
                 AllEnemies[i].dir.x = Raycast(Raypoint,Raydir,14) ? AllEnemies[i].dir.x - 2 * Sign(AllEnemies[i].dir.x) : AllEnemies[i].dir.x;
 
-                if(OnCollision(AllEnemies[i].Hitbox,Mario_Hitbox) &&! Mario_dead)  
+                if(OnCollision(AllEnemies[i].Hitbox,Mario_Hitbox) &&! Mario_dead &&! Mario_Win)  
                 {
                     if(Mario_Star)
                     {
@@ -292,12 +292,12 @@ void Update_Koopa(int i)
     }
 }
 
-void Update_HamBro(int i)
+void Update_HamBro(int i)BANKED
 {
     
 }
 
-void Enemy_KnockBack(Enemy *e,int dir)
+void Enemy_KnockBack(Enemy *e,int dir)BANKED
 {
     e->dead = 1;
     e->Knockback = 1;

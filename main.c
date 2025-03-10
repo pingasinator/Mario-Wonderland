@@ -6,11 +6,13 @@
 #include <gb\gb.h>
 
 extern char Lifes;
+extern unsigned char allInputsDown[];
 
 void main(void)
 {
     OBP0_REG = 0xC4;
     OBP1_REG = 0xE0;
+    Load_Save(0);
     while (1)
     {
         if(Lifes > 0)
@@ -35,4 +37,11 @@ void main(void)
 void GameOverScreen(void)
 {
     Reset_Vram();
+
+    if(allInputsDown[8])
+    {
+        Set_GameMode(0);
+        Lifes = 3;
+        Save();
+    }
 }

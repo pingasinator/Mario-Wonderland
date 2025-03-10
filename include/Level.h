@@ -15,6 +15,7 @@ typedef struct
     unsigned char Width;
     EndLevelObject Endblock;
     unsigned char Palette;
+    unsigned char LevelID;
 } Level;
 
 void EndBlock_Update(void);

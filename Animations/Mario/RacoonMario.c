@@ -88,3 +88,8 @@ void Anim_Mario_Racoon_Fall(void) BANKED
     set_sprite_tile(8,0x4B);
     set_sprite_tile(9,0x4C);
 }
+
+void Anim_Mario_Racoon_Win(int animstate) BANKED
+{
+    
+}

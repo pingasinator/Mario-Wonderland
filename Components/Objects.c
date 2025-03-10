@@ -19,6 +19,7 @@ extern char Mario_State;
 extern Collision Mario_Hitbox;
 
 extern char Coins;
+extern char Lifes;
 
 extern Enemy* AllEnemies;
 extern int Enemies_Number;
@@ -214,6 +215,12 @@ void Use_Coin(int x,int y) BANKED
 {
     Set_Tile(0,x,y);
     Coins++;
+    if(Coins >= 100)
+    {
+        Coins = 0;
+        Lifes++;
+        Lifes = Clamp(Lifes,0,99);
+    }
 }
 
 void Make_Coin(int x,int y) BANKED
@@ -223,6 +230,12 @@ void Make_Coin(int x,int y) BANKED
         if(AllObjects[i].Used == 0)
         {
             Coins++;
+            if(Coins >= 100)
+            {
+                Coins = 0;
+                Lifes++;
+                Lifes = Clamp(Lifes,0,99);
+            }
             AllObjects[i].Sprite = Add_Sprite(4);
             AllObjects[i].hitbox.position.x = (x / 16) * 16 + 8;
             AllObjects[i].hitbox.position.y = (y / 16) * 16 + 16;

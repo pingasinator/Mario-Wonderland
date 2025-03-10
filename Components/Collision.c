@@ -140,36 +140,41 @@ void TilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
 
     for(int i = A->pixelsize.x - 1;i >= 0 ;i-= 8)
     {
-
-        if((Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - 8) < 0x80) || (Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - 8) < 0x80))
+        if(pos.y + A->pixelsize.y > 0 && pos.y + A->pixelsize.y < currentLevel.Width * 16)
         {
-            
-            for(int j = 0; j < 9;j++)
+            if((Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - 8) < 0x80) || (Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - 8) < 0x80))
             {
-                if((Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - j) < 0x80) || (Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - j) < 0x80))
+                
+                for(int j = 0; j < 9;j++)
                 {
-                    Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
-
-                    A->position.y -= (j - 1);
-                    pos.y = A->position.y + A->pixeloffset.y;
-                    break;
+                    if((Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - j) < 0x80) || (Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - j) < 0x80))
+                    {
+                        Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
+    
+                        A->position.y -= (j - 1);
+                        pos.y = A->position.y + A->pixeloffset.y;
+                        break;
+                    }
                 }
             }
         }
 
-        pos.y = A->position.y + A->pixeloffset.y;
 
-        if((Get_Tile(pos.x + i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + 8) < 0x80) || (Get_Tile(pos.x - i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + 8) < 0x80))
+        pos.y = A->position.y + A->pixeloffset.y;
+        if(pos.y - A->pixelsize.y > 0 && pos.y - A->pixelsize.y < currentLevel.Width * 16)
         {
-            
-            for(int j = 0; j < 9;j++)
+            if((Get_Tile(pos.x + i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + 8) < 0x80) || (Get_Tile(pos.x - i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + 8) < 0x80))
             {
-                if((Get_Tile(pos.x + i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + j) < 0x80) || (Get_Tile(pos.x - i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + j) < 0x80))
+            
+                for(int j = 0; j < 9;j++)
                 {
-                    Velocity->y = Velocity->y < 0 ? 0 : Velocity->y;
-                    A->position.y += (j - 1);
-                    pos.y = A->position.y + A->pixeloffset.y;
-                    break;
+                    if((Get_Tile(pos.x + i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + j) < 0x80) || (Get_Tile(pos.x - i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + j) < 0x80))
+                    {
+                        Velocity->y = Velocity->y < 0 ? 0 : Velocity->y;
+                        A->position.y += (j - 1);
+                        pos.y = A->position.y + A->pixeloffset.y;
+                        break;
+                    }
                 }
             }
         }
@@ -177,33 +182,38 @@ void TilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
 
     for(int i = A->pixelsize.y - 1;i >= 0 ;i-= 8)
     {
-
-        if((Get_Tile(pos.x + A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 8,pos.y + i) < 0x80) || (Get_Tile(pos.x + A->pixelsize.x,pos.y - i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 8,pos.y - i) < 0x80))
+        if(pos.x + A->pixelsize.x > 0 && pos.x + A->pixelsize.x < currentLevel.Length * 16)
         {
-            
-            for(int j = 0; j < 9;j++)
+            if((Get_Tile(pos.x + A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 8,pos.y + i) < 0x80) || (Get_Tile(pos.x + A->pixelsize.x,pos.y - i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 8,pos.y - i) < 0x80))
             {
-                if((Get_Tile(pos.x + A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - j,pos.y + i) < 0x80) || (Get_Tile(pos.x + A->pixelsize.x,pos.y - i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - j,pos.y - i) < 0x80))
+            
+                for(int j = 0; j < 9;j++)
                 {
-                    Velocity->x = Velocity->x > 0 ? 0 : Velocity->x;
-                    A->position.x -= j;
-                    pos.x = A->position.x + A->pixeloffset.x;
-                    break;
+                    if((Get_Tile(pos.x + A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - j,pos.y + i) < 0x80) || (Get_Tile(pos.x + A->pixelsize.x,pos.y - i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - j,pos.y - i) < 0x80))
+                    {
+                        Velocity->x = Velocity->x > 0 ? 0 : Velocity->x;
+                        A->position.x -= j;
+                        pos.x = A->position.x + A->pixeloffset.x;
+                        break;
+                    }
                 }
             }
         }
 
-        if((Get_Tile(pos.x - A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 8,pos.y + i) < 0x80) || (Get_Tile(pos.x - A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 8,pos.y + i) < 0x80))
+        if(pos.x - A->pixelsize.x > 0 && pos.x - A->pixelsize.x < currentLevel.Length * 16)
         {
-            
-            for(int j = 0; j < 9;j++)
+            if((Get_Tile(pos.x - A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 8,pos.y + i) < 0x80) || (Get_Tile(pos.x - A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 8,pos.y + i) < 0x80))
             {
-                if((Get_Tile(pos.x - A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + j,pos.y + i) < 0x80) || (Get_Tile(pos.x - A->pixelsize.x,pos.y - i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + j,pos.y - i) < 0x80))
+            
+                for(int j = 0; j < 9;j++)
                 {
-                    Velocity->x = Velocity->x < 0 ? 0 : Velocity->x;
-                    A->position.x += j;
-                    pos.x = A->position.x + A->pixeloffset.x;
-                    break;
+                    if((Get_Tile(pos.x - A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + j,pos.y + i) < 0x80) || (Get_Tile(pos.x - A->pixelsize.x,pos.y - i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + j,pos.y - i) < 0x80))
+                    {
+                        Velocity->x = Velocity->x < 0 ? 0 : Velocity->x;
+                        A->position.x += j;
+                        pos.x = A->position.x + A->pixeloffset.x;
+                        break;
+                    }
                 }
             }
         }
@@ -223,12 +233,14 @@ void TilemapCollisionPhysicsSide(Collision *A,Vector2* Velocity,int side) BANKED
         case 0:
             for(int i = A->pixelsize.x - 1;i >= 0 ;i-= 16)
             {
-
-                while(Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 || Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 )
+                if(pos.y + A->pixelsize.y > 0 && pos.y + A->pixelsize.y < currentLevel.Width * 16)
                 {
-                    Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
-                    A->position.y -= 1;
-                    pos.y = A->position.y + A->pixeloffset.y;
+                    while(Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 || Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 )
+                    {
+                        Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
+                        A->position.y -= 1;
+                        pos.y = A->position.y + A->pixeloffset.y;
+                    }
                 }
             }
         break;

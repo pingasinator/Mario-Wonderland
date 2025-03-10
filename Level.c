@@ -18,10 +18,13 @@
 
 extern Vector2 Camera;
 
-extern Level Level_01;
-extern Level Level_02;
+extern Level Level_11;
+extern Level Level_12;
+extern Level Level_13;
+extern Level Level_14;
 
 extern Collision Mario_Hitbox;
+extern char Mario_Win;
 
 extern unsigned char Tilemap[];
 
@@ -53,8 +56,9 @@ void SetLevel(int LevelSelected)
     Reset_Vram();
     Reset_Level();
     Reset_Items();
+    Set_Mario_Palette(0);
     Set_Camera_Position(0,16*29);
-    SWITCH_ROM(20);
+    SWITCH_ROM(20 + LevelSelected / 2);
     currentLevel = GetLevel(LevelSelected);
     currentLevel_Size = currentLevel.Length * currentLevel.Width;
     Set_All_Enemies(LevelSelected);
@@ -62,7 +66,6 @@ void SetLevel(int LevelSelected)
     init_Enemies_Vram();
     init_Level_Vram();
     init_Objects_Vram();
-    init_Mario_Vram();
     init_HUD_Vram();
     init_Mario(GetLevel(LevelSelected).Spawnpoint.x,GetLevel(LevelSelected).Spawnpoint.y);
 
@@ -114,7 +117,9 @@ void EndBlock_Update(void)
         c = currentEndLevelObject.hitbox;
         if(OnCollision(Mario_Hitbox,c))
         {
-            EndofLevel = 1;
+            Mario_Win = 1;
+            Set_Level_Clear(currentLevel.LevelID);
+            Save();
         }
 
     }else
@@ -128,7 +133,7 @@ void EndBlock_Update(void)
 
 void Timer_Update(void)
 {
-    milisec -= Time;
+    milisec -= Time * !Mario_Win &&! Mario_isDead();
     if(milisec <= 0)
     {
         milisec = 30;
@@ -151,13 +156,20 @@ Level GetLevel(int i)
     switch(i)
     {
         case 1:
-        return Level_01;
+        return Level_11;
         break;
 
         case 2:
-        return Level_02;
+        return Level_12;
+        break;
+
+        case 3:
+        return Level_13;
+        break;
+
+        case 4:
+        return Level_14;
         break;
     }
-
-    return Level_01;
+    return Level_11;
 }

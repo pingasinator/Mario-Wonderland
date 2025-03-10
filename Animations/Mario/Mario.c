@@ -1,4 +1,5 @@
 #include <gb\gb.h>
+#include "..\..\include\Sprite.h"
 #include "..\..\include\Camera.h"
 #include "..\..\include\collision.h"
 #include "..\..\include\Animations\Mario\Mario.h"
@@ -10,11 +11,18 @@
 extern Vector2 Camera;
 extern int Time;
 int animstate_Star;
+extern unsigned char currentMarioPalette;
 
 #pragma bank 12
 
-void Anim_Mario_Idle(int Transformation) BANKED
+void Anim_Mario_Idle(int Transformation) NONBANKED
 {
+    if(currentMarioPalette != Transformation)
+    {
+        Set_Mario_Palette(Transformation);
+        SWITCH_ROM(10);
+    }
+
     switch(Transformation)
     {
         case 0:
@@ -33,10 +41,18 @@ void Anim_Mario_Idle(int Transformation) BANKED
         Anim_Mario_Racoon_Idle();
         break;
     }
+
+
 }
 
-void Anim_Mario_Fall(int Transformation) BANKED
+void Anim_Mario_Fall(int Transformation) NONBANKED
 {
+    if(currentMarioPalette != Transformation)
+    {
+        Set_Mario_Palette(Transformation);
+        SWITCH_ROM(10);
+    }
+
     switch (Transformation)
     {
         case 0:
@@ -55,10 +71,18 @@ void Anim_Mario_Fall(int Transformation) BANKED
         Anim_Mario_Racoon_Fall();
         break;
     }
+
+
 }
 
-void Anim_Mario_Jump(int Transformation) BANKED
+void Anim_Mario_Jump(int Transformation) NONBANKED
 {
+    if(currentMarioPalette != Transformation)
+    {
+        Set_Mario_Palette(Transformation);
+        SWITCH_ROM(10);
+    }
+
     switch (Transformation)
     {
         case 0:
@@ -79,8 +103,14 @@ void Anim_Mario_Jump(int Transformation) BANKED
     }
 }
 
-void Anim_Mario_Move(int Transformation,int animstate) BANKED
+void Anim_Mario_Move(int Transformation,int animstate) NONBANKED
 {
+    if(currentMarioPalette != Transformation)
+    {
+        Set_Mario_Palette(Transformation);
+        SWITCH_ROM(10);
+    }
+
     switch(Transformation)
     {
         case 0:
@@ -101,8 +131,14 @@ void Anim_Mario_Move(int Transformation,int animstate) BANKED
     }
 }
 
-void Anim_Mario_Slide(int Transformation) BANKED
+void Anim_Mario_Slide(int Transformation) NONBANKED
 {
+    if(currentMarioPalette != Transformation)
+    {
+        Set_Mario_Palette(Transformation);
+        SWITCH_ROM(10);
+    }
+
     switch(Transformation)
     {
         case 0:
@@ -119,28 +155,32 @@ void Anim_Mario_Slide(int Transformation) BANKED
     }
 }
 
-void Anim_Mario_Death(Collision hitbox) BANKED
+void Anim_Mario_Death(Collision hitbox) NONBANKED
 {
+    if(currentMarioPalette != 0)
+    {
+        Set_Mario_Palette(0);
+    }
 
     set_sprite_tile(0,0x00);
     set_sprite_tile(1,0x00);
-    set_sprite_tile(2,0x26);
-    set_sprite_tile(3,0x26);
+    set_sprite_tile(2,0x3E);
+    set_sprite_tile(3,0x3F);
     set_sprite_tile(4,0x00);
-    set_sprite_tile(5,0x27);
-    set_sprite_tile(6,0x27);
+    set_sprite_tile(5,0x4E);
+    set_sprite_tile(6,0x4F);
     set_sprite_tile(7,0x00);
-    set_sprite_tile(8,0x28);
-    set_sprite_tile(9,0x28);
+    set_sprite_tile(8,0x5E);
+    set_sprite_tile(9,0x5F);
 
-    set_sprite_prop(2,0);
-    set_sprite_prop(3,S_FLIPX);
-    set_sprite_prop(4,0);
-    set_sprite_prop(5,0);
-    set_sprite_prop(6,S_FLIPX);
-    set_sprite_prop(7,0);
-    set_sprite_prop(8,0);
-    set_sprite_prop(9,S_FLIPX);
+    set_sprite_prop(2,0x00);
+    set_sprite_prop(3,0x00);
+    set_sprite_prop(4,0x00);
+    set_sprite_prop(5,0x00);
+    set_sprite_prop(6,0x00);
+    set_sprite_prop(7,0x00);
+    set_sprite_prop(8,0x00);
+    set_sprite_prop(9,0x00);
 
 
     move_sprite(0,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) - 16);
@@ -153,9 +193,36 @@ void Anim_Mario_Death(Collision hitbox) BANKED
     move_sprite(7,-(Camera.x - hitbox.position.x)-8,-(Camera.y - hitbox.position.y) + 8);
     move_sprite(8,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) + 8);
     move_sprite(9,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) + 8);
+
+    SWITCH_ROM(10);
 }
 
-void Anim_Mario_Star(void) BANKED
+void Anim_Mario_Win(int Transformation,int animstate) NONBANKED
+{
+    
+    if(currentMarioPalette != Transformation)
+    {
+        Set_Mario_Palette(Transformation);
+        SWITCH_ROM(10);
+    }
+
+    switch (Transformation)
+    {
+        case 0:
+        Anim_Mario_Small_Win(animstate);
+        break;
+
+        case 1:
+        Anim_Mario_Great_Win(animstate);
+        break;
+
+        case 2:
+        Anim_Mario_Racoon_Win(animstate);
+        break;
+    }
+}
+
+void Anim_Mario_Star(void) NONBANKED
 {
 
 

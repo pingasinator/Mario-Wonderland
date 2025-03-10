@@ -33,31 +33,9 @@ extern unsigned char S_Obj_Coin_2[];
 extern unsigned char S_Obj_Brick[];
 
 extern unsigned char S_null[];
-extern unsigned char S_Mario_Small_Idle[];
-extern unsigned char S_Mario_Small_Move_0[];
-extern unsigned char S_Mario_Small_Move_1[];
-extern unsigned char S_Mario_Small_Move_2[];
-extern unsigned char S_Mario_Small_Jump[];
-extern unsigned char S_Mario_Small_Fall[];
-extern unsigned char S_Mario_Small_Slide[];
-extern unsigned char S_Mario_Small_Crounch[];
-extern unsigned char S_Mario_Small_Front[];
-extern unsigned char S_Mario_Dead[];
-extern unsigned char S_Mario_Small_Swim_0[];
-extern unsigned char S_Mario_Small_Swim_1[];
-extern unsigned char S_Mario_Great_Idle[];
-extern unsigned char S_Mario_Great_Move_0[];
-extern unsigned char S_Mario_Great_Move_1[];
-extern unsigned char S_Mario_Great_Move_2[];
-extern unsigned char S_Mario_Great_Jump[];
-extern unsigned char S_Mario_Great_Fall[];
-extern unsigned char S_Mario_Great_Slide[];
-extern unsigned char S_Mario_Great_Crounch[];
-extern unsigned char S_Mario_Great_Front[];
-extern unsigned char S_Mario_Great_Swim_0[];
-extern unsigned char S_Mario_Great_Swim_1[];
-extern unsigned char S_Mario_Fire[];
-extern unsigned char S_Mario_Racoon[];
+extern unsigned char S_Mario[];
+extern unsigned char S_Mario_Small[];
+extern unsigned char S_Mario_Great[];
 
 extern unsigned char S_Mario_World_Small[];
 
@@ -102,6 +80,10 @@ extern Level currentLevel;
 
 extern unsigned char Tilemap[];
 
+extern unsigned char BKG_World_1_Tilemap[];
+
+
+unsigned char currentMarioPalette;
 
 unsigned char Sprites[40] =
 {
@@ -252,13 +234,12 @@ void init_World_Vram(void) BANKED
 
 void init_World_Mario_Vram(void) BANKED
 {
-
-    set_sprite_data(0,32,S_Mario_World_Small);
+    set_sprite_data(0,56,S_Mario_World_Small);
 }
 
-void init_World_BKG(unsigned char *World_Tilemap)BANKED
+void init_World_BKG(int i)BANKED
 {
-    set_bkg_tiles(0,0,20,18,World_Tilemap);
+    set_bkg_tiles(0,0,20,18,BKG_World_1_Tilemap);
 }
 
 void init_Level_Vram(void) BANKED
@@ -311,35 +292,30 @@ void init_Enemies_Vram(void) BANKED
 
 }
 
-void init_Mario_Vram(void) BANKED
+void Set_Mario_Palette(int i) NONBANKED
 {
+    currentMarioPalette = i;
+    for(int i = 0; i < 10; i++)
+    {
+        hide_sprite(i);
+    }
 
-    set_sprite_data(0x00,1,S_null);
-    set_sprite_data(0x01,6,S_Mario_Small_Idle);
-    set_sprite_data(0x07,4,S_Mario_Small_Move_0);
-    set_sprite_data(0x0B,4,S_Mario_Small_Move_1);
-    set_sprite_data(0x0F,4,S_Mario_Small_Move_2);
-    set_sprite_data(0x13,6,S_Mario_Small_Jump);
-    set_sprite_data(0x19,1,S_Mario_Small_Fall);
-    set_sprite_data(0x1A,5,S_Mario_Small_Slide);
-    set_sprite_data(0x1F,4,S_Mario_Small_Crounch);
-    set_sprite_data(0x23,3,S_Mario_Small_Front);
-    set_sprite_data(0x26,3,S_Mario_Dead);
-    set_sprite_data(0x29,6,S_Mario_Small_Swim_0);
-    set_sprite_data(0x2F,6,S_Mario_Small_Swim_1);
-    set_sprite_data(0x34,8,S_Mario_Great_Idle);
-    set_sprite_data(0x3C,2,S_Mario_Great_Move_0);
-    set_sprite_data(0x3E,4,S_Mario_Great_Move_1);
-    set_sprite_data(0x42,4,S_Mario_Great_Move_2);
-    set_sprite_data(0x46,8,S_Mario_Great_Jump);
-    set_sprite_data(0x4E,1,S_Mario_Great_Fall);
-    set_sprite_data(0x4F,8,S_Mario_Great_Slide);
-    set_sprite_data(0x57,4,S_Mario_Great_Crounch);
-    set_sprite_data(0x5B,4,S_Mario_Great_Front);
-    set_sprite_data(0x5F,6,S_Mario_Great_Swim_0);
-    set_sprite_data(0x65,5,S_Mario_Great_Swim_1);
-    set_sprite_data(0x6A,3,S_Mario_Fire);
-    set_sprite_data(0x6D,2,S_Mario_Racoon);
+    SWITCH_ROM(3);
+    switch (i)
+    {
+        case 0:
+        set_sprite_data(0x00,128,S_Mario_Small);
+        break;
+
+        case 1:
+        set_sprite_data(0x00,128,S_Mario_Great);
+        break;
+    
+        default:
+        set_sprite_data(0x00,128,S_Mario_Small);
+        break;
+    }
+
 }
 
 void init_HUD_Vram(void) BANKED

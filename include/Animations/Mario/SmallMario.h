@@ -8,5 +8,5 @@ void Anim_Mario_Small_Slide(void) BANKED;
 void Anim_Mario_Small_Fall(void) BANKED;
 void Anim_Mario_Small_Move(int animstate) BANKED;
 void Anim_Mario_Small_Jump(void) BANKED;
-
+void Anim_Mario_Small_Win(int animstate) BANKED;
 #endif

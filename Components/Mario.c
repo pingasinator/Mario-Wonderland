@@ -25,9 +25,9 @@ Vector2 Mario_Velocity = {.x=0,.y=0};
 
 Collision Mario_Hitbox = {.position={.x=0,.y=0},.pixeloffset={.x=0,.y=-10},.pixelsize={.x=7,.y=10}};
 
-char Mario_State = 0;
+unsigned char Mario_State = 0;
 char Mario_dead = 0;
-
+char Mario_isRunnig = 0;
 char Mario_Win = 0;
 
 char deathJumpdelay = 30;
@@ -57,7 +57,6 @@ void init_Mario(int x,int y)BANKED
     Mario_Hitbox.position.y = y;
     Mario_Velocity.x = 0;
     Mario_Velocity.y = 0;
-    Mario_State = 0;
     Mario_dead = 0;
     deathJumpdelay = 30;
     DeathTime = 45;
@@ -88,6 +87,7 @@ void Update_Mario(void)BANKED
             if(WalkDelay <= 0)
             {
                 Mario_Velocity.x += allInputsPressed[1] ? Time * 2 : allInputsPressed[2] ? Time * -2 : 0;
+                Mario_Velocity.x = Clamp(Mario_Velocity.x,-Mario_maxSpeed,Mario_maxSpeed);
                 WalkDelay = 2;
             }
         }else
@@ -129,7 +129,7 @@ void Update_Mario(void)BANKED
             Mario_Update_GroundMovement();
         }
 
-        Get_TileObject();
+
         Mario_Update_Physics();
 
         MoveCamera( Mario_Hitbox.position.x > Camera.x + 96 ? Mario_Hitbox.position.x - (Camera.x + 96) : Mario_Hitbox.position.x < Camera.x + 80 ? Mario_Hitbox.position.x - (Camera.x + 80) : 0,
@@ -138,7 +138,9 @@ void Update_Mario(void)BANKED
         if(Mario_Hitbox.position.y > currentLevel.Width * 16)
         {
             Mario_dead = 1;
+            Mario_State = 0;
             Lifes--;
+            Time = 0;
         }
 
         if(allInputsDown[8])
@@ -175,8 +177,11 @@ void Get_TileObject(void)BANKED
 { 
     for(int i = -1; i <= 1; i++)
     {
-        unsigned char c = Get_Tile((Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x),(Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y - Mario_Hitbox.pixelsize.y * 2));
-        switch (c)
+        unsigned char c_Up = Get_Tile((Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x),(Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y - Mario_Hitbox.pixelsize.y * 2));
+        unsigned char c_Down = Get_Tile((Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x),(Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y + Mario_Hitbox.pixelsize.y));
+        unsigned char c_Mid = Get_Tile((Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x),(Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y));
+
+        switch (c_Up)
         {
             case 0x04:
             Use_Coin((Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x),(Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y - Mario_Hitbox.pixelsize.y * 2));
@@ -192,28 +197,35 @@ void Get_TileObject(void)BANKED
             case 0x88:
             if(Mario_Velocity.y < 0)
             {
-                Q_Block(c,Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x,Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y - Mario_Hitbox.pixelsize.y * 2);
+                Q_Block(c_Up,Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x,Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y - Mario_Hitbox.pixelsize.y * 2);
             }
             break;
         }  
 
-        unsigned char c_Down = Get_Tile((Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x),(Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y + Mario_Hitbox.pixelsize.y));
         switch (c_Down)
         {
-            case 0x04:
-            Use_Coin((Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x),(Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y + Mario_Hitbox.pixelsize.y));
-            break;
 
             case 0x02:
             case 0x03:
 
             break;
 
+            case 0x04:
+            Use_Coin((Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x),(Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y + Mario_Hitbox.pixelsize.y));
+            break;
+
             case 0x05:
             case 0x06:
             Mario_Set_Death();
             break;
-        }  
+        }
+
+        switch (c_Mid)
+        {
+            case 0x04:
+            Use_Coin((Mario_Hitbox.position.x + Mario_Hitbox.pixeloffset.x + i * Mario_Hitbox.pixelsize.x),(Mario_Hitbox.position.y + Mario_Hitbox.pixeloffset.y));
+            break;
+        }
     }
 }
 
@@ -246,10 +258,23 @@ void Mario_Update_AirMovement(void) BANKED
     
     if(Mario_Velocity.y > 0)
     {
-        Anim_Mario_Fall(Mario_State);
+        if(Mario_isRunnig)
+        {
+            Anim_Mario_Jump_Run(Mario_State);
+        }else
+        {
+            Anim_Mario_Fall(Mario_State);
+        }
     }else
     {
-        Anim_Mario_Jump(Mario_State);
+        if(Mario_isRunnig)
+        {
+            Anim_Mario_Jump_Run(Mario_State);
+        }else
+        {
+            Anim_Mario_Jump(Mario_State);
+        }
+
     }
 }
 
@@ -263,8 +288,17 @@ void Mario_Update_GroundMovement(void) BANKED
             Mario_animState = 0;
         }else
         {
-            Anim_Mario_Move(Mario_State,Mario_animState);
-            Mario_animState += Time;
+            if(Abs(Mario_Velocity.x) >= 4 )
+            {
+                Mario_isRunnig = 1;
+                Anim_Mario_Run(Mario_State,Mario_animState);
+            }else
+            {
+                Mario_isRunnig = 0;
+                Anim_Mario_Move(Mario_State,Mario_animState);
+            }
+
+            Mario_animState += Time * (allInputsPressed[6] ? 2 : 1);
             Mario_animState = Mario_animState >= 6 ? 0 : Mario_animState;
         }
     }else
@@ -308,7 +342,7 @@ void Mario_Update_Physics(void) BANKED
 
     Mario_Hitbox.position.x = Clamp(Mario_Hitbox.position.x,0,currentLevel.Length*16);
 
-    TilemapCollisionPhysics(&Mario_Hitbox,&Mario_Velocity);
+    MarioTilemapCollisionPhysics(&Mario_Hitbox,&Mario_Velocity);
 }
 
 void Set_Mario_Position(int x,int y)BANKED
@@ -375,7 +409,7 @@ void Mario_Hit(void)BANKED
 void Mario_Set_Death(void)BANKED
 {
     Mario_dead = 1;
-    Mario_State = 1;
+    Mario_State = 0;
     Time = 0;
     Lifes -= 1;
     Anim_Mario_Death(Mario_Hitbox);

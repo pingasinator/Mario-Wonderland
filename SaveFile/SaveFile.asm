@@ -57,11 +57,11 @@ _SaveFile_1_World_7_Levels::
 _SaveFile_1_World_8_Levels::
 	.ds 4
 _SaveFile_1::
-	.ds 7
+	.ds 8
 _SaveFile_2::
-	.ds 7
+	.ds 8
 _SaveFile_3::
-	.ds 7
+	.ds 8
 ;--------------------------------------------------------
 ; ram data
 ;--------------------------------------------------------

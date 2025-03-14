@@ -33,4 +33,5 @@ void Blocks_Update(int i) BANKED;
 void Q_Block(int Type,int x,int y) BANKED;
 void Make_FireBall(int dir,int x,int y) BANKED;
 void FireBall_Update(Object *o) BANKED;
+void TileObject_Update(unsigned char Tile,int X,int Y,Vector2 Velocity,int side) BANKED;
 #endif

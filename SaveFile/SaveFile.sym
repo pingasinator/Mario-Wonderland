@@ -17,8 +17,8 @@ Symbol Table
   1 _SaveFile_1_World_6_Levels                                     000015 GR
   1 _SaveFile_1_World_7_Levels                                     000019 GR
   1 _SaveFile_1_World_8_Levels                                     00001D GR
-  1 _SaveFile_2                                                    000028 GR
-  1 _SaveFile_3                                                    00002F GR
+  1 _SaveFile_2                                                    000029 GR
+  1 _SaveFile_3                                                    000031 GR
   1 _SavedPoint                                                    000000 GR
   2 _World_1                                                       000066 GR
   2 _World_1_Points                                                000000 GR
@@ -49,7 +49,7 @@ Hexadecimal [24-Bits]
 Area Table
 
    0 _CODE                                      size      0   flags    0
-   1 _DATA_1                                    size     36   flags    0
+   1 _DATA_1                                    size     39   flags    0
    2 _INITIALIZED                               size     8E   flags    0
    3 _DABS                                      size      0   flags    8
    4 _HOME                                      size      0   flags    0

@@ -103,6 +103,26 @@ void Anim_Mario_Jump(int Transformation) NONBANKED
     }
 }
 
+void Anim_Mario_Jump_Run(int Transformation) NONBANKED
+{
+    if(currentMarioPalette != Transformation)
+    {
+        Set_Mario_Palette(Transformation);
+        SWITCH_ROM(10);
+    }
+
+    switch (Transformation)
+    {
+        case 0:
+        Anim_Mario_Small_Jump_Run();
+        break;
+
+        case 1:
+        Anim_Mario_Great_Jump_Run();
+        break;
+    }
+}
+
 void Anim_Mario_Move(int Transformation,int animstate) NONBANKED
 {
     if(currentMarioPalette != Transformation)
@@ -127,6 +147,26 @@ void Anim_Mario_Move(int Transformation,int animstate) NONBANKED
 
         case 3:
         Anim_Mario_Racoon_Move(animstate);
+        break;
+    }
+}
+
+void Anim_Mario_Run(int Transformation,int animstate) NONBANKED
+{
+    if(currentMarioPalette != Transformation)
+    {
+        Set_Mario_Palette(Transformation);
+        SWITCH_ROM(10);
+    }
+
+    switch (Transformation)
+    {
+        case 0:
+        Anim_Mario_Small_Run(animstate);
+        break;
+
+        case 1:
+        Anim_Mario_Great_Run(animstate);
         break;
     }
 }

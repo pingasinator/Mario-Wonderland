@@ -244,6 +244,8 @@ void Update_Koopa(int i)BANKED
             Vector2 Raydir_Shell = {.x=0,.y=-1};
             AllEnemies[i].dir.x = Raycast(Raypoint_Shell,Raydir_Shell,14) ? AllEnemies[i].dir.x * -1 : AllEnemies[i].dir.x;
             AllEnemies[i].velocity.x = AllEnemies[i].dir.x * 7;
+            AllEnemies[i].velocity.y++;
+            AllEnemies[i].velocity.y = Clamp(AllEnemies[i].velocity.y,-4,4);
             if(OnCollisionSide(AllEnemies[i].Hitbox,Mario_Hitbox,1) && Mario_Velocity.y > 0)
             {
                 AllEnemies[i].velocity.x = 0;

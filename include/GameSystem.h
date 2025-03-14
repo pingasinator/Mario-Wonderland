@@ -11,6 +11,7 @@ typedef struct
     unsigned char **Levels;
     unsigned char Coins;
     unsigned char Lifes;
+    unsigned char MarioState;
 }SaveFile;
 
 int Get_GameMode(void);

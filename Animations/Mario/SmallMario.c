@@ -91,6 +91,51 @@ void Anim_Mario_Small_Move(int animstate) BANKED
     }
 }
 
+void Anim_Mario_Small_Run(int animstate) BANKED
+{
+    switch(animstate)
+    {
+        case 0:
+        set_sprite_tile(0,0x00);
+        set_sprite_tile(1,0x00);
+        set_sprite_tile(2,0x32);
+        set_sprite_tile(3,0x33);
+        set_sprite_tile(4,0x00);
+        set_sprite_tile(5,0x42);
+        set_sprite_tile(6,0x43);
+        set_sprite_tile(7,0x00);
+        set_sprite_tile(8,0x52);
+        set_sprite_tile(9,0x53);
+        break;
+
+        case 2:
+        set_sprite_tile(0,0x00);
+        set_sprite_tile(1,0x00);
+        set_sprite_tile(2,0x34);
+        set_sprite_tile(3,0x35);
+        set_sprite_tile(4,0x00);
+        set_sprite_tile(5,0x44);
+        set_sprite_tile(6,0x45);
+        set_sprite_tile(7,0x00);
+        set_sprite_tile(8,0x54);
+        set_sprite_tile(9,0x55);
+        break;
+
+        case 4:
+        set_sprite_tile(0,0x00);
+        set_sprite_tile(1,0x00);
+        set_sprite_tile(2,0x36);
+        set_sprite_tile(3,0x37);
+        set_sprite_tile(4,0x00);
+        set_sprite_tile(5,0x46);
+        set_sprite_tile(6,0x47);
+        set_sprite_tile(7,0x00);
+        set_sprite_tile(8,0x56);
+        set_sprite_tile(9,0x57);
+        break;
+    }
+}
+
 void Anim_Mario_Small_Jump(void) BANKED
 {
     set_sprite_tile(0,0x00);
@@ -103,6 +148,20 @@ void Anim_Mario_Small_Jump(void) BANKED
     set_sprite_tile(7,0x00);
     set_sprite_tile(8,0x28);
     set_sprite_tile(9,0x29);
+}
+
+void Anim_Mario_Small_Jump_Run(void) BANKED
+{
+    set_sprite_tile(0,0x00);
+    set_sprite_tile(1,0x00);
+    set_sprite_tile(2,0x38);
+    set_sprite_tile(3,0x39);
+    set_sprite_tile(4,0x00);
+    set_sprite_tile(5,0x48);
+    set_sprite_tile(6,0x49);
+    set_sprite_tile(7,0x00);
+    set_sprite_tile(8,0x58);
+    set_sprite_tile(9,0x59);
 }
 
 void Anim_Mario_Small_Win(int animstate) BANKED

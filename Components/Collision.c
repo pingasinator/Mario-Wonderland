@@ -220,6 +220,114 @@ void TilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
     }
 }
 
+void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
+{
+    
+    Vector2 pos;
+    pos.x = A->position.x + A->pixeloffset.x;
+    pos.y = A->position.y + A->pixeloffset.y;
+
+    unsigned char c_Right;
+    unsigned char c_Left;
+    unsigned char c_Mid;
+    unsigned char c_Up;
+    unsigned char c_Down;
+    int i = 0;
+
+    for(int i = A->pixelsize.x - 1;i >= 0 ;i-= 8)
+    {
+        if(pos.y + A->pixelsize.y > 0 && pos.y + A->pixelsize.y < currentLevel.Width * 16)
+        {
+            c_Right = Get_Tile(pos.x + i,pos.y + A->pixelsize.y);
+            c_Left = Get_Tile(pos.x - i,pos.y + A->pixelsize.y);
+            c_Mid = Get_Tile(pos.x + i,pos.y);
+            TileObject_Update(c_Right,pos.x + i,pos.y + A->pixelsize.y,*Velocity,0);
+            TileObject_Update(c_Left,pos.x - i,pos.y + A->pixelsize.y,*Velocity,0);
+            TileObject_Update(c_Mid,pos.x + i,pos.y,*Velocity,0);
+            if((c_Right >= 0x80 && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - 8) < 0x80) || (c_Left >= 0x80 && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - 8) < 0x80))
+            {
+                for(int j = 0; j < 9;j++)
+                {
+                    if((Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - j) < 0x80) || (Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - j) < 0x80))
+                    {
+                        Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
+    
+                        A->position.y -= (j - 1);
+                        pos.y = A->position.y + A->pixeloffset.y;
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        pos.y = A->position.y + A->pixeloffset.y;
+        if(pos.y - A->pixelsize.y > 0 && pos.y - A->pixelsize.y < currentLevel.Width * 16)
+        {
+            c_Right = Get_Tile(pos.x + i,pos.y - A->pixelsize.y);
+            c_Left = Get_Tile(pos.x - i,pos.y - A->pixelsize.y);
+            TileObject_Update(c_Right,pos.x + i,pos.y - A->pixelsize.y,*Velocity,1);
+            TileObject_Update(c_Left,pos.x - i,pos.y - A->pixelsize.y,*Velocity,1);
+            if((c_Right >= 0x80 && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + 8) < 0x80) || (c_Left >= 0x80 && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + 8) < 0x80))
+            {
+                for(int j = 0; j < 9;j++)
+                {
+                    if((Get_Tile(pos.x + i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + j) < 0x80) || (Get_Tile(pos.x - i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + j) < 0x80))
+                    {
+                        Velocity->y = Velocity->y < 0 ? 0 : Velocity->y;
+                        A->position.y += (j - 1);
+                        pos.y = A->position.y + A->pixeloffset.y;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    for(int i = A->pixelsize.y - 1;i >= 0 ;i-= 8)
+    {
+        if(pos.x + A->pixelsize.x > 0 && pos.x + A->pixelsize.x < currentLevel.Length * 16)
+        {
+            c_Down = Get_Tile(pos.x + A->pixelsize.x,pos.y + i);
+            c_Up = Get_Tile(pos.x + A->pixelsize.x,pos.y - i);
+            if((c_Down >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 8,pos.y + i) < 0x80) || (c_Up >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 8,pos.y - i) < 0x80))
+            {
+            
+                for(int j = 0; j < 9;j++)
+                {
+                    if((Get_Tile(pos.x + A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - j,pos.y + i) < 0x80) || (Get_Tile(pos.x + A->pixelsize.x,pos.y - i) >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - j,pos.y - i) < 0x80))
+                    {
+                        Velocity->x = Velocity->x > 0 ? 0 : Velocity->x;
+                        A->position.x -= j;
+                        pos.x = A->position.x + A->pixeloffset.x;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(pos.x - A->pixelsize.x > 0 && pos.x - A->pixelsize.x < currentLevel.Length * 16)
+        {
+            c_Down = Get_Tile(pos.x - A->pixelsize.x,pos.y + i);
+            c_Up = Get_Tile(pos.x - A->pixelsize.x,pos.y + i);
+            if((c_Down >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 8,pos.y + i) < 0x80) || (c_Up >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 8,pos.y + i) < 0x80))
+            {
+            
+                for(int j = 0; j < 9;j++)
+                {
+                    if((Get_Tile(pos.x - A->pixelsize.x,pos.y + i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + j,pos.y + i) < 0x80) || (Get_Tile(pos.x - A->pixelsize.x,pos.y - i) >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + j,pos.y - i) < 0x80))
+                    {
+                        Velocity->x = Velocity->x < 0 ? 0 : Velocity->x;
+                        A->position.x += j;
+                        pos.x = A->position.x + A->pixeloffset.x;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
 void TilemapCollisionPhysicsSide(Collision *A,Vector2* Velocity,int side) BANKED
 {
     ENABLE_RAM;

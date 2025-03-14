@@ -6,7 +6,7 @@
 extern Vector2 Camera;
 extern char Time;
 
-#pragma bank 12
+#pragma bank 9
 
 void Anim_Goomba_Move(Enemy *e) BANKED
 {

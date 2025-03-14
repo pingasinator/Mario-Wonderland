@@ -20,6 +20,8 @@ SaveFile *saveFiles_List[] = {&SaveFile_1,&SaveFile_2,&SaveFile_3};
 extern unsigned char SavedPoint;
 extern unsigned char World_Dir; 
 
+extern unsigned char Mario_State;
+
 unsigned char allInputsDown[9] = {0,0,0,0,0,0,0,0,0};
 unsigned char allInputsPressed[9] = {0,0,0,0,0,0,0,0,0};
 unsigned char allInputs[9] = {NULL,J_RIGHT,J_LEFT,J_UP,J_DOWN,J_A,J_B,J_SELECT,J_START};
@@ -64,6 +66,7 @@ void Save(void)
     currentSaveFile->Coins = Coins;
     currentSaveFile->Lifes = Lifes;
     currentSaveFile->LastLevel = World_Dir;
+    currentSaveFile->MarioState = Mario_State;
     DISABLE_RAM;
 }
 
@@ -102,6 +105,7 @@ void Load_Save(int i)
     currentSaveFile = saveFiles_List[i];
     Lifes = currentSaveFile->Lifes;
     Coins = currentSaveFile->Coins;
+    Mario_State = currentSaveFile->MarioState;
     DISABLE_RAM;
 }
 

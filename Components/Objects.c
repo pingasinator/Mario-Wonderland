@@ -223,6 +223,30 @@ void Use_Coin(int x,int y) BANKED
     }
 }
 
+void TileObject_Update(unsigned char Tile,int X,int Y,Vector2 Velocity,int side) BANKED
+{
+    switch(Tile)
+    {
+        case 0x04:
+        Use_Coin(X,Y);
+        break;
+
+        case 0x81:
+        case 0x82:
+        case 0x83:
+        case 0x84:
+        case 0x85:
+        case 0x86:
+        case 0x87:
+        case 0x88:
+        if(Velocity.y < 0 && side == 1)
+        {
+            Q_Block(Tile,X,Y);
+        }
+        break;
+    }
+}
+
 void Make_Coin(int x,int y) BANKED
 {
     for(int i = 0;i < 10;i++)

@@ -13,6 +13,8 @@ extern char Lifes;
 extern unsigned char allInputsDown[];
 extern unsigned char SavedPoint;
 
+extern char GameMode;
+
 extern SaveFile *currentSaveFile;
 extern SaveFile SaveFile_1;
 
@@ -109,7 +111,7 @@ void World_Update(void)
                         Anim_Mario_World_EnterLevel();
                         delay(500);
                         SetLevel(currentPoint.Level);
-                        Set_GameMode(1);
+                        GameMode = 1;
                         Save();
                         goto EOL;
                         break;

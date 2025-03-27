@@ -33,9 +33,9 @@ extern unsigned char S_Obj_Coin_2[];
 extern unsigned char S_Obj_Brick[];
 
 extern unsigned char S_null[];
-extern unsigned char S_Mario[];
 extern unsigned char S_Mario_Small[];
 extern unsigned char S_Mario_Great[];
+extern unsigned char S_Mario_Fire[];
 
 extern unsigned char S_Mario_World_Small[];
 
@@ -61,6 +61,9 @@ extern unsigned char S_Airship_Ground[];
 
 extern unsigned char S_World_Overworld[];
 extern unsigned char S_World_HUD[];
+
+extern unsigned char S_GBDK[];
+extern unsigned char BKG_GBDK[];
 
 extern unsigned char S_HUD_Life_Mario[];
 extern unsigned char S_HUD_Coin[];
@@ -292,6 +295,12 @@ void init_Enemies_Vram(void) BANKED
 
 }
 
+void init_GBDK_Title(void) BANKED
+{
+    set_bkg_data(0,66,S_GBDK);
+    set_bkg_tiles(0,0,20,32,BKG_GBDK);
+}
+
 void Set_Mario_Palette(int i) NONBANKED
 {
     currentMarioPalette = i;
@@ -309,6 +318,10 @@ void Set_Mario_Palette(int i) NONBANKED
 
         case 1:
         set_sprite_data(0x00,128,S_Mario_Great);
+        break;
+
+        case 2:
+        set_sprite_data(0x00,128,S_Mario_Fire);
         break;
     
         default:

@@ -9,6 +9,7 @@ extern int Lifes;
 
 extern char Time;
 extern char Mario_Star;
+extern char Mario_dead;
 
 extern Collision Mario_Hitbox;
 
@@ -201,7 +202,7 @@ void Mushroom_Update(Item *i)BANKED
             i->position.x += i->velocity.x;
             i->position.y += i->velocity.y;
 
-            if(OnCollision(i->Hitbox,Mario_Hitbox) &&! Mario_isDead())
+            if(OnCollision(i->Hitbox,Mario_Hitbox) &&! Mario_dead)
             {
                 if(i->type == 1)
                 {

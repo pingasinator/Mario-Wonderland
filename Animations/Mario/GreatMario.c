@@ -100,7 +100,7 @@ void Anim_Mario_Great_Run(int animstate) BANKED
         set_sprite_tile(2,0x12);
         set_sprite_tile(3,0x13);
         set_sprite_tile(4,0x56);
-        set_sprite_tile(5,0x57);
+        set_sprite_tile(5,0x67);
         set_sprite_tile(6,0x58);
         set_sprite_tile(7,0x00);
         set_sprite_tile(8,0x36);
@@ -113,7 +113,7 @@ void Anim_Mario_Great_Run(int animstate) BANKED
         set_sprite_tile(2,0x12);
         set_sprite_tile(3,0x13);
         set_sprite_tile(4,0x66);
-        set_sprite_tile(5,0x67);
+        set_sprite_tile(5,0x57);
         set_sprite_tile(6,0x68);
         set_sprite_tile(7,0x46);
         set_sprite_tile(8,0x47);

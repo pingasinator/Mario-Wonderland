@@ -1,4 +1,5 @@
 #include "World.h"
+#include <gb\gb.h>
 
 #ifndef Game_System_H
 #define Game_System_H
@@ -14,10 +15,9 @@ typedef struct
     unsigned char MarioState;
 }SaveFile;
 
-int Get_GameMode(void);
-void Set_GameMode(int i);
 void Input_Update(void);
 void CheckSaveFiles(void);
+void GBDKTitleScreen(void);
 void Load_Save(int i);
 void Save(void);
 void Pause(void);

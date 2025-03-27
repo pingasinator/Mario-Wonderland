@@ -22,6 +22,8 @@ void init_World_Mario_Vram(void)BANKED;
 
 void init_World_BKG(int i)BANKED;
 
+void init_GBDK_Title(void) BANKED;
+
 void init_Level_Vram(void)BANKED;
 void init_Objects_Vram(void)BANKED;
 void init_Enemies_Vram(void)BANKED;

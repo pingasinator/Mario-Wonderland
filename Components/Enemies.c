@@ -120,7 +120,7 @@ void Update_Goomba(int i)BANKED
                     }else if( Mario_Velocity.y > 0 && Mario_Hitbox.position.y < AllEnemies[i].Hitbox.position.y)
                     {
                         Anim_Goomba_Death(&AllEnemies[i]);
-                        Set_Mario_Velocity(Mario_Velocity.x,-8);
+                        Mario_Velocity.y = -8;
                         AllEnemies[i].dead = 1;
                     }else
                     {
@@ -194,7 +194,7 @@ void Update_Koopa(int i)BANKED
                         Enemy_KnockBack(&AllEnemies[i],Mario_dir);
                     }else if( Mario_Velocity.y > 0 && Mario_Hitbox.position.y < AllEnemies[i].Hitbox.position.y)
                     {
-                        Set_Mario_Velocity(Mario_Velocity.x,-10);
+                        Mario_Velocity.y = -10;
                         AllEnemies[i].State = 1;
                         AllEnemies[i].Sprite_tile = Remove_Sprite(AllEnemies[i].Sprite_tile,5);
                         AllEnemies[i].Sprite_tile = Add_Sprite(4);
@@ -226,7 +226,7 @@ void Update_Koopa(int i)BANKED
 
             if(OnCollisionSide(AllEnemies[i].Hitbox,Mario_Hitbox,1) && Mario_Velocity.y > 0)
             {
-                Set_Mario_Velocity(0,-8);
+                Mario_Velocity.y = -10;
             }
 
             if(AllEnemies[i].animState >= 60)
@@ -250,7 +250,7 @@ void Update_Koopa(int i)BANKED
             {
                 AllEnemies[i].velocity.x = 0;
                 AllEnemies[i].State = 1;
-                Set_Mario_Velocity(0,-10);
+                Mario_Velocity.y = -10;
             }else if((OnCollisionSide(AllEnemies[i].Hitbox,Mario_Hitbox,2) && AllEnemies[i].dir.x < 0) || (OnCollisionSide(AllEnemies[i].Hitbox,Mario_Hitbox,3) && AllEnemies[i].dir.x > 0))
             {
                 Mario_Hit();

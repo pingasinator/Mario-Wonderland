@@ -26,16 +26,6 @@ unsigned char allInputsDown[9] = {0,0,0,0,0,0,0,0,0};
 unsigned char allInputsPressed[9] = {0,0,0,0,0,0,0,0,0};
 unsigned char allInputs[9] = {NULL,J_RIGHT,J_LEFT,J_UP,J_DOWN,J_A,J_B,J_SELECT,J_START};
 
-int Get_GameMode(void)
-{
-    return GameMode;
-}
-
-void Set_GameMode(int i)
-{
-    GameMode = i;
-}
-
 void Input_Update(void)
 {
     unsigned char PressedInputs = joypad();

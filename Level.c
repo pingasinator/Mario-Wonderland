@@ -25,6 +25,9 @@ extern Level Level_14;
 
 extern Collision Mario_Hitbox;
 extern char Mario_Win;
+extern char Mario_dead;
+
+extern char GameMode;
 
 extern unsigned char Tilemap[];
 
@@ -102,7 +105,7 @@ void Level_Update(void)
         EndBlock_Update();
         if(EndofLevel)
         {
-            Set_GameMode(0);
+            GameMode = 0;
             break;
         }
     }
@@ -133,14 +136,14 @@ void EndBlock_Update(void)
 
 void Timer_Update(void)
 {
-    milisec -= Time * !Mario_Win &&! Mario_isDead();
+    milisec -= Time * !Mario_Win &&! Mario_dead;
     if(milisec <= 0)
     {
         milisec = 30;
         Timer--;
     }
 
-    if(Timer <= 0 &&! Mario_isDead())
+    if(Timer <= 0 &&! Mario_dead)
     {
         Mario_Set_Death();
     }

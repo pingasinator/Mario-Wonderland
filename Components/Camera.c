@@ -28,11 +28,11 @@ void Update_HUD(int Lifes,int Coin,int Timer)BANKED
     Coin -= 10 * (Coin / 10);
     c[8] = 0x73 + Coin;
 
-    c[10] = 0x71 - (Mario_runningProg >= 10);
-    c[11] = 0x71 - (Mario_runningProg >= 20);
-    c[12] = 0x71 - (Mario_runningProg >= 30);
-    c[13] = 0x71 - (Mario_runningProg >= 40);
-    c[14] = 0x71 - (Mario_runningProg >= 50);
+    c[10] = 0x71 - (Mario_runningProg >= 20);
+    c[11] = 0x71 - (Mario_runningProg >= 40);
+    c[12] = 0x71 - (Mario_runningProg >= 60);
+    c[13] = 0x71 - (Mario_runningProg >= 80);
+    c[14] = 0x71 - (Mario_runningProg >= 100);
 
     c[17] = 0x73 + Timer / 100;
     Timer -= 100 * (Timer / 100);
@@ -59,12 +59,12 @@ void Update_Camera(void)BANKED
         {
             if(Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length > 0 && Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length < 6144)
             {
-                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length],Camera.x / 16 * 2 - 2,Camera.y / 16 * 2 - 2 + i * 2);
+                Display_Tile(Tilemap[Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length],Camera.x / 16 * 2 - 2,Camera.y / 16 * 2 - 2 + i * 2);
             }
 
-            if(Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * currentLevel.Length > 0 && Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * currentLevel.Length < 6144)
+            if(Camera.x / 16 + 11 + (Camera.y / 16 - 1 + i) * currentLevel.Length > 0 && Camera.x / 16 + 11 + (Camera.y / 16 - 1 + i) * currentLevel.Length < 6144)
             {
-                Set_Sprite_Tile(Tilemap[Camera.x / 16 + 10 + (Camera.y / 16 - 1 + i) * currentLevel.Length],Camera.x / 16 * 2 + 20,Camera.y / 16 * 2 - 2 + i * 2);
+                Display_Tile(Tilemap[Camera.x / 16 + 11 + (Camera.y / 16 - 1 + i) * currentLevel.Length],Camera.x / 16 * 2 + 22,Camera.y / 16 * 2 - 2 + i * 2);
             }
         }
         oldCamera.x = Camera.x / 16;
@@ -72,16 +72,16 @@ void Update_Camera(void)BANKED
         
     if(oldCamera.y != Camera.y / 16)
     {
-        for(int i = 0;i < 12;i++)
+        for(int i = 0;i < 13;i++)
         {
             if(Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length < 6144)
             {
-                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 - 2);
+                Display_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 - 2);
             }
 
             if(Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length < 6144)
             {
-                Set_Sprite_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 + 18);
+                Display_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 + 18);
             }
             
 

@@ -2,6 +2,7 @@
 #include "..\..\include\Sprite.h"
 #include "..\..\include\Camera.h"
 #include "..\..\include\collision.h"
+#include "..\..\include\GameSystem.h"
 #include "..\..\include\Animations\Mario\Mario.h"
 #include "..\..\include\Animations\Mario\SmallMario.h"
 #include "..\..\include\Animations\Mario\GreatMario.h"
@@ -10,20 +11,97 @@
 
 extern Vector2 Camera;
 extern int Time;
-int animstate_Star;
 extern unsigned char currentMarioPalette;
+extern unsigned char allInputsPressed[];
+extern char Mario_isRunning;
+extern Collision Mario_Hitbox;
+extern unsigned char Mario_Transformation;
+
+int animstate_Star;
+unsigned char Mario_animState;
+unsigned char Mario_Animator_State;
 
 #pragma bank 12
 
-void Anim_Mario_Idle(int Transformation) NONBANKED
+void Anim_Mario_Update(void) NONBANKED
 {
-    if(currentMarioPalette != Transformation)
+    if(currentMarioPalette != Mario_Transformation)
     {
-        Set_Mario_Palette(Transformation);
+        Set_Mario_Palette(Mario_Transformation);
         SWITCH_ROM(10);
     }
 
-    switch(Transformation)
+    switch (Mario_Animator_State)
+    {
+        case Animator_Mario_State_Idle:
+        Mario_animState = 0;
+        Anim_Mario_Idle();
+        break;
+    
+        case Animator_Mario_State_Move:
+        Anim_Mario_Move(Mario_animState);
+        Mario_animState += Time * (allInputsPressed[Joy_Button_B] || Mario_isRunning ? 2 : 1);
+        Mario_animState = Mario_animState >= 6 ? 0 : Mario_animState;
+        break;
+
+        case Animator_Mario_State_Run:
+        Anim_Mario_Run(Mario_animState);
+        Mario_animState += Time * (allInputsPressed[Joy_Button_B] || Mario_isRunning ? 2 : 1);
+        Mario_animState = Mario_animState >= 6 ? 0 : Mario_animState;
+        break;
+
+        case Animator_Mario_State_Jump:
+        Mario_animState = 0;
+        Anim_Mario_Jump();
+        break;
+
+        case Animator_Mario_State_Jump_Run:
+        Anim_Mario_Jump_Run();
+        break;
+
+        case Animator_Mario_State_Fall:
+        Mario_animState = 0;
+        Anim_Mario_Fall();
+        break;
+
+        case Animator_Mario_State_Slide:
+        Mario_animState = 0;
+        Anim_Mario_Slide();
+        break;
+
+        case Animator_Mario_State_Death:
+        Mario_animState = 0;
+        Anim_Mario_Death();
+        break;
+
+        case Animator_Mario_State_Win:
+        Mario_animState++;
+        Mario_animState = Clamp(Mario_animState,0,60);
+        Anim_Mario_Win(Mario_animState);
+        break;
+
+        case Animator_Mario_State_Racoon_Fly:
+        Anim_Mario_Racoon_Fly(Mario_animState);
+        Mario_animState++;
+        Mario_animState = Mario_animState >= 6 ? 0 : Mario_animState;
+        break;
+
+        case Animator_Mario_State_Racoon_Glide:
+        Anim_Mario_Racoon_Glide(Mario_animState);
+        Mario_animState++;
+        Mario_animState = Mario_animState >= 6 ? 0 : Mario_animState;
+        break;
+
+
+    }
+
+    DisplayMario();
+}
+
+void Anim_Mario_Idle(void) BANKED
+{
+
+    switch(Mario_Transformation)
     {
         case 0:
         Anim_Mario_Small_Idle();
@@ -45,15 +123,10 @@ void Anim_Mario_Idle(int Transformation) NONBANKED
 
 }
 
-void Anim_Mario_Fall(int Transformation) NONBANKED
+void Anim_Mario_Fall(void) BANKED
 {
-    if(currentMarioPalette != Transformation)
-    {
-        Set_Mario_Palette(Transformation);
-        SWITCH_ROM(10);
-    }
 
-    switch (Transformation)
+    switch (Mario_Transformation)
     {
         case 0:
         Anim_Mario_Small_Fall();
@@ -75,15 +148,9 @@ void Anim_Mario_Fall(int Transformation) NONBANKED
 
 }
 
-void Anim_Mario_Jump(int Transformation) NONBANKED
+void Anim_Mario_Jump(void) BANKED
 {
-    if(currentMarioPalette != Transformation)
-    {
-        Set_Mario_Palette(Transformation);
-        SWITCH_ROM(10);
-    }
-
-    switch (Transformation)
+    switch (Mario_Transformation)
     {
         case 0:
         Anim_Mario_Small_Jump();
@@ -103,15 +170,9 @@ void Anim_Mario_Jump(int Transformation) NONBANKED
     }
 }
 
-void Anim_Mario_Jump_Run(int Transformation) NONBANKED
+void Anim_Mario_Jump_Run(void) BANKED
 {
-    if(currentMarioPalette != Transformation)
-    {
-        Set_Mario_Palette(Transformation);
-        SWITCH_ROM(10);
-    }
-
-    switch (Transformation)
+    switch (Mario_Transformation)
     {
         case 0:
         Anim_Mario_Small_Jump_Run();
@@ -120,18 +181,20 @@ void Anim_Mario_Jump_Run(int Transformation) NONBANKED
         case 1:
         Anim_Mario_Great_Jump_Run();
         break;
+
+        case 2:
+        Anim_Mario_Fire_Jump_Run();
+        break;
+
+        case 3:
+        Anim_Mario_Racoon_Jump_Run();
+        break;
     }
 }
 
-void Anim_Mario_Move(int Transformation,int animstate) NONBANKED
+void Anim_Mario_Move(int animstate) BANKED
 {
-    if(currentMarioPalette != Transformation)
-    {
-        Set_Mario_Palette(Transformation);
-        SWITCH_ROM(10);
-    }
-
-    switch(Transformation)
+    switch(Mario_Transformation)
     {
         case 0:
         Anim_Mario_Small_Move(animstate);
@@ -151,15 +214,9 @@ void Anim_Mario_Move(int Transformation,int animstate) NONBANKED
     }
 }
 
-void Anim_Mario_Run(int Transformation,int animstate) NONBANKED
+void Anim_Mario_Run(int animstate) BANKED
 {
-    if(currentMarioPalette != Transformation)
-    {
-        Set_Mario_Palette(Transformation);
-        SWITCH_ROM(10);
-    }
-
-    switch (Transformation)
+    switch (Mario_Transformation)
     {
         case 0:
         Anim_Mario_Small_Run(animstate);
@@ -168,18 +225,20 @@ void Anim_Mario_Run(int Transformation,int animstate) NONBANKED
         case 1:
         Anim_Mario_Great_Run(animstate);
         break;
+
+        case 2:
+        Anim_Mario_Fire_Run(animstate);
+        break;
+
+        case 3:
+        Anim_Mario_Racoon_Run(animstate);
+        break;
     }
 }
 
-void Anim_Mario_Slide(int Transformation) NONBANKED
+void Anim_Mario_Slide(void) BANKED
 {
-    if(currentMarioPalette != Transformation)
-    {
-        Set_Mario_Palette(Transformation);
-        SWITCH_ROM(10);
-    }
-
-    switch(Transformation)
+    switch(Mario_Transformation)
     {
         case 0:
         Anim_Mario_Small_Slide();
@@ -192,10 +251,14 @@ void Anim_Mario_Slide(int Transformation) NONBANKED
         case 2:
         Anim_Mario_Fire_Slide();
         break;
+
+        case 3:
+        Anim_Mario_Racoon_Slide();
+        break;
     }
 }
 
-void Anim_Mario_Death(Collision hitbox) NONBANKED
+void Anim_Mario_Death(void) NONBANKED
 {
     if(currentMarioPalette != 0)
     {
@@ -223,30 +286,23 @@ void Anim_Mario_Death(Collision hitbox) NONBANKED
     set_sprite_prop(9,0x00);
 
 
-    move_sprite(0,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) - 16);
-    move_sprite(1,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) - 16);
-    move_sprite(2,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y)- 8);
-    move_sprite(3,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y)- 8);
-    move_sprite(4,-(Camera.x - hitbox.position.x)-8,-(Camera.y - hitbox.position.y));
-    move_sprite(5,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y));
-    move_sprite(6,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y));
-    move_sprite(7,-(Camera.x - hitbox.position.x)-8,-(Camera.y - hitbox.position.y) + 8);
-    move_sprite(8,-(Camera.x - hitbox.position.x),-(Camera.y - hitbox.position.y) + 8);
-    move_sprite(9,-(Camera.x - hitbox.position.x)+8,-(Camera.y - hitbox.position.y) + 8);
+    move_sprite(0,-(Camera.x - Mario_Hitbox.position.x),-(Camera.y - Mario_Hitbox.position.y) - 16);
+    move_sprite(1,-(Camera.x - Mario_Hitbox.position.x)+8,-(Camera.y - Mario_Hitbox.position.y) - 16);
+    move_sprite(2,-(Camera.x - Mario_Hitbox.position.x),-(Camera.y - Mario_Hitbox.position.y)- 8);
+    move_sprite(3,-(Camera.x - Mario_Hitbox.position.x)+8,-(Camera.y - Mario_Hitbox.position.y)- 8);
+    move_sprite(4,-(Camera.x - Mario_Hitbox.position.x)-8,-(Camera.y - Mario_Hitbox.position.y));
+    move_sprite(5,-(Camera.x - Mario_Hitbox.position.x),-(Camera.y - Mario_Hitbox.position.y));
+    move_sprite(6,-(Camera.x - Mario_Hitbox.position.x)+8,-(Camera.y - Mario_Hitbox.position.y));
+    move_sprite(7,-(Camera.x - Mario_Hitbox.position.x)-8,-(Camera.y - Mario_Hitbox.position.y) + 8);
+    move_sprite(8,-(Camera.x - Mario_Hitbox.position.x),-(Camera.y - Mario_Hitbox.position.y) + 8);
+    move_sprite(9,-(Camera.x - Mario_Hitbox.position.x)+8,-(Camera.y - Mario_Hitbox.position.y) + 8);
 
     SWITCH_ROM(10);
 }
 
-void Anim_Mario_Win(int Transformation,int animstate) NONBANKED
+void Anim_Mario_Win(int animstate) BANKED
 {
-    
-    if(currentMarioPalette != Transformation)
-    {
-        Set_Mario_Palette(Transformation);
-        SWITCH_ROM(10);
-    }
-
-    switch (Transformation)
+    switch (Mario_Transformation)
     {
         case 0:
         Anim_Mario_Small_Win(animstate);
@@ -257,12 +313,16 @@ void Anim_Mario_Win(int Transformation,int animstate) NONBANKED
         break;
 
         case 2:
+        Anim_Mario_Fire_Win(animstate);
+        break;
+
+        case 3:
         Anim_Mario_Racoon_Win(animstate);
         break;
     }
 }
 
-void Anim_Mario_Star(void) NONBANKED
+void Anim_Mario_Star(void) BANKED
 {
 
 

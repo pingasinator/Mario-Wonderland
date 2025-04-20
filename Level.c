@@ -23,9 +23,11 @@ extern Level Level_12;
 extern Level Level_13;
 extern Level Level_14;
 
+extern Vector2 Mario_Velocity;
 extern Collision Mario_Hitbox;
 extern char Mario_Win;
 extern char Mario_dead;
+extern char Mario_dir;
 
 extern char GameMode;
 
@@ -79,7 +81,7 @@ void SetLevel(int LevelSelected)
     {
         for(int x = 0;x < 16;x++)
         {
-            Set_Sprite_Tile(Tilemap[Camera.x / 16 + x  + y * currentLevel.Length],(Camera.x / 16 * 2) + x * 2,y * 2);
+            Display_Tile(Tilemap[Camera.x / 16 + x  + y * currentLevel.Length],(Camera.x / 16 * 2) + x * 2,y * 2);
         }
     }
     DISABLE_RAM;
@@ -113,18 +115,22 @@ void Level_Update(void)
 
 void EndBlock_Update(void)
 {
-    if(currentEndLevelObject.hitbox.position.x > Camera.x && currentEndLevelObject.hitbox.position.x < Camera.x + 22 * 8)
+    if(currentEndLevelObject.hitbox.position.x > Camera.x && currentEndLevelObject.hitbox.position.x < Camera.x + 22 * 8 && currentEndLevelObject.hitbox.position.y > Camera.y - 16 && currentEndLevelObject.hitbox.position.y < Camera.y + 20 * 8)
     {
-        Anim_Object_EndBlock(&currentEndLevelObject);
+
         Collision c;
         c = currentEndLevelObject.hitbox;
+        currentEndLevelObject.hitbox.position.y -= 3 * (currentEndLevelObject.state == 1);
         if(OnCollision(Mario_Hitbox,c))
         {
+            currentEndLevelObject.state = 1;
+            Mario_dir = Sign(Mario_Hitbox.position.x - currentEndLevelObject.hitbox.position.x + 16 * 3);
+            Mario_Velocity.x = 0;
             Mario_Win = 1;
             Set_Level_Clear(currentLevel.LevelID);
             Save();
         }
-
+        Anim_Object_EndBlock(&currentEndLevelObject);
     }else
     {
         if(currentEndLevelObject.Sprite != 0)

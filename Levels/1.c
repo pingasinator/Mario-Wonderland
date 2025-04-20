@@ -6,7 +6,7 @@
 #pragma bank 20
 
 
-Level Level_11 = {.LevelID=1,.Tilemap=Level_11_Tilemap,.Spawnpoint={.x=16 * 2,.y=16*30 },.Enemies=Level_11_Enemies,.EnemiesCount=10,.Length=192,.Width=32,.Endblock={.hitbox={.pixelsize={.x=8,.y=8},.pixeloffset={.x=0,.y=-8},.position={.x=16 * 187 + 8,.y=16 * 28 - 8}}},.Palette=0};
+Level Level_11 = {.LevelID=1,.Tilemap=Level_11_Tilemap,.Spawnpoint={.x=16 * 2,.y=16*30 },.Enemies=Level_11_Enemies,.EnemiesCount=10,.Length=192,.Width=32,.Endblock={.hitbox={.pixelsize={.x=8,.y=8},.pixeloffset={.x=-8,.y=-8},.position={.x=16 * 187 + 8,.y=16 * 28 - 8}}},.Palette=0};
 
 const Enemy Level_11_Enemies[10] = 
 {

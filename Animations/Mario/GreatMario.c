@@ -1,8 +1,13 @@
 #include "..\..\include\Animations\Mario\GreatMario.h"
+#include "..\..\include\Collision.h"
+#include "..\..\include\Mathf.h"
 
 #pragma bank 12
 
 extern int EndofLevel;
+extern char Mario_dir;
+extern Collision Mario_Hitbox;
+extern Vector2 Camera;
 
 void Anim_Mario_Great_Idle(void) BANKED
 {
@@ -169,6 +174,7 @@ void Anim_Mario_Great_Win(int animstate) BANKED
     switch(animstate)
     {
         case 0:
+        Mario_dir = 1;
         set_sprite_prop(0,0);
         set_sprite_prop(1,0);
         set_sprite_prop(2,0);
@@ -192,6 +198,7 @@ void Anim_Mario_Great_Win(int animstate) BANKED
         break;
 
         case 3:
+        Mario_dir = 1;
         set_sprite_prop(0,0);
         set_sprite_prop(1,0);
         set_sprite_prop(2,0);
@@ -214,30 +221,32 @@ void Anim_Mario_Great_Win(int animstate) BANKED
         set_sprite_tile(9,0x7F);
         break;
 
-        case 9:
-        set_sprite_prop(0,S_FLIPX);
-        set_sprite_prop(1,S_FLIPX);
-        set_sprite_prop(2,S_FLIPX);
-        set_sprite_prop(3,S_FLIPX);
-        set_sprite_prop(4,S_FLIPX);
-        set_sprite_prop(5,S_FLIPX);
-        set_sprite_prop(6,S_FLIPX);
-        set_sprite_prop(7,S_FLIPX);
-        set_sprite_prop(8,S_FLIPX);
-        set_sprite_prop(9,S_FLIPX);
-        set_sprite_tile(0,0x0B);
-        set_sprite_tile(1,0x0A);
-        set_sprite_tile(2,0x11);
-        set_sprite_tile(3,0x10);
+        case 6:
+        Mario_dir = -1;
+        set_sprite_prop(0,0);
+        set_sprite_prop(1,0);
+        set_sprite_prop(2,0);
+        set_sprite_prop(3,0);
+        set_sprite_prop(4,0);
+        set_sprite_prop(5,0);
+        set_sprite_prop(6,0);
+        set_sprite_prop(7,0);
+        set_sprite_prop(8,0);
+        set_sprite_prop(9,0);
+        set_sprite_tile(0,0x0A);
+        set_sprite_tile(1,0x0B);
+        set_sprite_tile(2,0x10);
+        set_sprite_tile(3,0x11);
         set_sprite_tile(4,0x00);
-        set_sprite_tile(5,0x21);
-        set_sprite_tile(6,0x20);
+        set_sprite_tile(5,0x20);
+        set_sprite_tile(6,0x21);
         set_sprite_tile(7,0x00);
-        set_sprite_tile(8,0x31);
-        set_sprite_tile(9,0x30);
+        set_sprite_tile(8,0x30);
+        set_sprite_tile(9,0x31);
         break;
 
-        case 12:
+        case 9:
+        Mario_dir = 1;
         set_sprite_prop(0,0);
         set_sprite_prop(1,0);
         set_sprite_prop(2,0);

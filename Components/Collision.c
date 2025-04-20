@@ -290,7 +290,7 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
         {
             c_Down = Get_Tile(pos.x + A->pixelsize.x,pos.y + i);
             c_Up = Get_Tile(pos.x + A->pixelsize.x,pos.y - i);
-            if((c_Down >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 8,pos.y + i) < 0x80) || (c_Up >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 8,pos.y - i) < 0x80))
+            if((c_Down >= 0x80) || (c_Up >= 0x80))
             {
             
                 for(int j = 0; j < 9;j++)
@@ -310,7 +310,7 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
         {
             c_Down = Get_Tile(pos.x - A->pixelsize.x,pos.y + i);
             c_Up = Get_Tile(pos.x - A->pixelsize.x,pos.y + i);
-            if((c_Down >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 8,pos.y + i) < 0x80) || (c_Up >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 8,pos.y + i) < 0x80))
+            if((c_Down >= 0x80) || (c_Up >= 0x80))
             {
             
                 for(int j = 0; j < 9;j++)

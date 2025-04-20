@@ -11,6 +11,7 @@ typedef struct
     Vector2 dir;
     Vector2 SpawnPoint;
     char type;
+    char AnimatorState;
     char animState;
     char Sprite_tile;
     char Sprite_size;

@@ -15,7 +15,7 @@ Object nullObject = {.Sprite=0,.animstate=0,.Used=0,.returnToPoint=0,.type=0,.hi
 Object AllObjects[10];
 
 extern Vector2 Camera;
-extern char Mario_State;
+extern char Mario_Transformation;
 extern Collision Mario_Hitbox;
 
 extern char Coins;
@@ -50,14 +50,14 @@ void Objects_Update(void) BANKED
         {
             switch(AllObjects[i].type)
             {
-                case 1:
-                case 5:
-                case 6:
-                case 8:
+                case Object_Type_Block:
+                case Object_Type_BumpedBrick:
+                case Object_Type_ObjectBrick:
+                case Object_Type_DestroyedBrick:
                 Blocks_Update(i);
                 break;
 
-                case 2:
+                case Object_Type_Coin:
                 Coin_Update(i);
                 break;
 
@@ -77,12 +77,12 @@ void Blocks_Update(int i) BANKED
 
         switch(AllObjects[i].type)
         {
-            case 5:
-            case 6:
+            case Object_Type_BumpedBrick:
+            case Object_Type_ObjectBrick:
             Anim_Object_Brick(&AllObjects[i]);
             break;
 
-            case 8:
+            case Object_Type_DestroyedBrick:
 
             break;
 
@@ -104,12 +104,12 @@ void Blocks_Update(int i) BANKED
 
         switch (AllObjects[i].type)
         {
-            case 5:
+            case Object_Type_BumpedBrick:
             Set_Tile(0x85,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
             AllObjects[i].Sprite = Remove_Sprite(AllObjects[i].Sprite,4);
             break;
 
-            case 8:
+            case Object_Type_DestroyedBrick:
             Set_Tile(0x00,AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
             break;
         
@@ -130,10 +130,9 @@ void Coin_Update(int i) BANKED
     AllObjects[i].Velocity.y = Clamp(AllObjects[i].Velocity.y,-15,4);
     AllObjects[i].hitbox.position.y += AllObjects[i].Velocity.y;
 
-
-        Anim_Object_Coin(&AllObjects[i]);
-        AllObjects[i].animstate += 2;
-        AllObjects[i].animstate = AllObjects[i].animstate >= 6 ? 0 : AllObjects[i].animstate;
+    Anim_Object_Coin(&AllObjects[i]);
+    AllObjects[i].animstate += 2;
+    AllObjects[i].animstate = AllObjects[i].animstate >= 6 ? 0 : AllObjects[i].animstate;
 
 
     if(AllObjects[i].Velocity.y > 0 && AllObjects[i].hitbox.position.y >= AllObjects[i].originalPosition.y)
@@ -267,7 +266,7 @@ void Make_Coin(int x,int y) BANKED
             AllObjects[i].originalPosition.y = (y / 16) * 16;
             AllObjects[i].Velocity.y = -10;
             AllObjects[i].Used = 1;
-            AllObjects[i].type = 2;
+            AllObjects[i].type = Object_Type_Coin;
             break;
         }
     }
@@ -311,7 +310,7 @@ void Q_Block(int Type,int x,int y) BANKED
             AllObjects[i].originalPosition.x = (x / 16) * 16;
             AllObjects[i].originalPosition.y = (y / 16) * 16;
             AllObjects[i].Used = 1;
-            AllObjects[i].type = 1;
+            AllObjects[i].type = Object_Type_Block;
             Anim_Object_Block(&AllObjects[i]);
             switch (Type)
             {
@@ -324,7 +323,7 @@ void Q_Block(int Type,int x,int y) BANKED
                 break;
 
                 case 0x83:
-                if(Mario_State >= 1)
+                if(Mario_Transformation >= 1)
                 {
                     Create_Item(2,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
                 }else
@@ -334,7 +333,7 @@ void Q_Block(int Type,int x,int y) BANKED
                 break;
 
                 case 0x84:
-                if(Mario_State >= 1)
+                if(Mario_Transformation >= 1)
                 {
                     Create_Item(3,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
                 }else
@@ -344,29 +343,29 @@ void Q_Block(int Type,int x,int y) BANKED
                 break;
 
                 case 0x85:
-                if(Mario_State >= 1)
+                if(Mario_Transformation >= 1)
                 {
-                    AllObjects[i].type = 8;
+                    AllObjects[i].type = Object_Type_DestroyedBrick;
                     AllObjects[i].Sprite = Remove_Sprite(AllObjects[i].Sprite,4);
                 }else
                 {
-                    AllObjects[i].type = 5;
+                    AllObjects[i].type = Object_Type_BumpedBrick;
                     Anim_Object_Brick(&AllObjects[i]);
                 }
                 break;
 
                 case 0x86:
-                AllObjects[i].type = 6;
+                AllObjects[i].type = Object_Type_ObjectBrick;
                 Make_Coin(AllObjects[i].originalPosition.x,AllObjects[i].originalPosition.y);
                 break;
 
                 case 0x87:
-                AllObjects[i].type = 6;
+                AllObjects[i].type = Object_Type_ObjectBrick;
                 Create_Item(4,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
                 break;
 
                 case 0x88:
-                AllObjects[i].type = 6;
+                AllObjects[i].type = Object_Type_ObjectBrick;
                 Create_Item(5,AllObjects[i].originalPosition.x + 8,AllObjects[i].originalPosition.y + 16);
                 break;
             }

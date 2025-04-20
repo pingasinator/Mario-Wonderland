@@ -108,7 +108,7 @@ void Update_Goomba(int i)BANKED
                 AllEnemies[i].velocity.y += Time;
                 AllEnemies[i].velocity.x = AllEnemies[i].dir.x * Time;
 
-                Anim_Goomba_Move(&AllEnemies[i]);
+                AllEnemies[i].AnimatorState = Animator_Enemy_Goomba_State_Move;
 
                 AllEnemies[i].dir.x = Get_Tile(AllEnemies[i].Hitbox.position.x + AllEnemies[i].Hitbox.pixeloffset.x + AllEnemies[i].dir.x * (AllEnemies[i].Hitbox.pixelsize.x + 1),AllEnemies[i].Hitbox.position.y + AllEnemies[i].Hitbox.pixeloffset.y) >= 0x80 ? AllEnemies[i].dir.x - 2 * Sign(AllEnemies[i].dir.x) : AllEnemies[i].dir.x;
 
@@ -119,13 +119,26 @@ void Update_Goomba(int i)BANKED
                         Enemy_KnockBack(&AllEnemies[i],Mario_dir);
                     }else if( Mario_Velocity.y > 0 && Mario_Hitbox.position.y < AllEnemies[i].Hitbox.position.y)
                     {
-                        Anim_Goomba_Death(&AllEnemies[i]);
+                        AllEnemies[i].AnimatorState = Animator_Enemy_Goomba_State_Death;
                         Mario_Velocity.y = -8;
                         AllEnemies[i].dead = 1;
                     }else
                     {
                         Mario_Hit();
                     }
+                }
+                Anim_Goomba_Update(i);
+            }else
+            {
+                AllEnemies[i].velocity.x = 0;
+                AllEnemies[i].deathDelay--;
+                AllEnemies[i].AnimatorState = Animator_Enemy_Goomba_State_Death;
+                Anim_Goomba_Update(i);
+                if(AllEnemies[i].deathDelay <= 0)
+                {
+                    AllEnemies[i].Enabled = 0;
+                    AllEnemies[i].deathDelay = 0;
+                    AllEnemies[i].Sprite_tile = Remove_Sprite(AllEnemies[i].Sprite_tile,AllEnemies[i].Sprite_size);
                 }
             }
 
@@ -135,19 +148,6 @@ void Update_Goomba(int i)BANKED
             AllEnemies[i].Hitbox.position.y += AllEnemies[i].velocity.y;
 
             TilemapCollisionPhysicsSide(&AllEnemies[i].Hitbox,&AllEnemies[i].velocity,0);
-
-            if(AllEnemies[i].dead)
-            {
-                AllEnemies[i].velocity.x = 0;
-                AllEnemies[i].deathDelay--;
-                Anim_Goomba_Death(&AllEnemies[i]);
-                if(AllEnemies[i].deathDelay <= 0)
-                {
-                    AllEnemies[i].Enabled = 0;
-                    AllEnemies[i].deathDelay = 0;
-                    AllEnemies[i].Sprite_tile = Remove_Sprite(AllEnemies[i].Sprite_tile,AllEnemies[i].Sprite_size);
-                }
-            }
         }else
         {
             AllEnemies[i].velocity.x = AllEnemies[i].dir.x * 2;
@@ -155,7 +155,8 @@ void Update_Goomba(int i)BANKED
             AllEnemies[i].velocity.y = Clamp(AllEnemies[i].velocity.y,-8,8);
             AllEnemies[i].Hitbox.position.x += AllEnemies[i].velocity.x;
             AllEnemies[i].Hitbox.position.y += AllEnemies[i].velocity.y;
-            Anim_Goomba_Knockback(&AllEnemies[i]);
+            AllEnemies[i].AnimatorState = Animator_Enemy_Goomba_State_Knockback;
+            Anim_Goomba_Update(i);
         }
 
     if(AllEnemies[i].Hitbox.position.x < Camera.x - 8 * 4 || AllEnemies[i].Hitbox.position.x > Camera.x + 26 * 8 || AllEnemies[i].Hitbox.position.y < Camera.y - 8 || AllEnemies[i].Hitbox.position.y > Camera.y + 20 * 8)
@@ -179,11 +180,12 @@ void Update_Koopa(int i)BANKED
             case 0:
                 AllEnemies[i].velocity.y += Time;
                 AllEnemies[i].velocity.x = AllEnemies[i].dir.x * Time;
+                AllEnemies[i].Hitbox.pixeloffset.x = Abs(AllEnemies->Hitbox.pixeloffset.x) * AllEnemies[i].dir.x;
 
                 Vector2 Raypoint = {.x=AllEnemies[i].Hitbox.position.x + AllEnemies[i].Hitbox.pixeloffset.x + AllEnemies[i].dir.x * (AllEnemies[i].Hitbox.pixelsize.x + 2),.y=AllEnemies[i].Hitbox.position.y + AllEnemies[i].Hitbox.pixeloffset.y  + 7};
                 Vector2 Raydir = {.x=0,.y=-1};
 
-                Anim_Koopa_Move(&AllEnemies[i]);
+                AllEnemies[i].AnimatorState = Animator_Enemy_Koopa_State_Move;
 
                 AllEnemies[i].dir.x = Raycast(Raypoint,Raydir,14) ? AllEnemies[i].dir.x - 2 * Sign(AllEnemies[i].dir.x) : AllEnemies[i].dir.x;
 
@@ -211,7 +213,7 @@ void Update_Koopa(int i)BANKED
             case 1:
             AllEnemies[i].animState += Time;
             AllEnemies[i].velocity.x = Clamp(AllEnemies[i].velocity.x,0,0);
-            Anim_Koopa_Shell_Idle(&AllEnemies[i]);
+            AllEnemies[i].AnimatorState = Animator_Enemy_Koopa_State_Shell_Idle;
             if(OnCollisionSide(AllEnemies[i].Hitbox,Mario_Hitbox,2))
             {
                 AllEnemies[i].dir.x = 1;
@@ -228,18 +230,11 @@ void Update_Koopa(int i)BANKED
             {
                 Mario_Velocity.y = -10;
             }
-
-            if(AllEnemies[i].animState >= 60)
-            {   
-                AllEnemies[i].State = 0;
-                AllEnemies[i].animState = 0;
-                AllEnemies[i].Sprite_tile = Remove_Sprite(AllEnemies[i].Sprite_tile,4);
-            }
                 
             break;
 
             case 2:
-            Anim_Koopa_Shell_Move(&AllEnemies[i]);
+            AllEnemies[i].AnimatorState = Animator_Enemy_Koopa_State_Shell_Move;
             Vector2 Raypoint_Shell = {.x=AllEnemies[i].Hitbox.position.x + AllEnemies[i].Hitbox.pixeloffset.x + AllEnemies[i].dir.x * (AllEnemies[i].Hitbox.pixelsize.x + 8),.y=AllEnemies[i].Hitbox.position.y + AllEnemies[i].Hitbox.pixeloffset.y  + 7};
             Vector2 Raydir_Shell = {.x=0,.y=-1};
             AllEnemies[i].dir.x = Raycast(Raypoint_Shell,Raydir_Shell,14) ? AllEnemies[i].dir.x * -1 : AllEnemies[i].dir.x;
@@ -279,8 +274,10 @@ void Update_Koopa(int i)BANKED
         AllEnemies[i].velocity.y = Clamp(AllEnemies[i].velocity.y,-8,8);
         AllEnemies[i].Hitbox.position.x += AllEnemies[i].velocity.x;
         AllEnemies[i].Hitbox.position.y += AllEnemies[i].velocity.y;
-        Anim_Koopa_Knockback(&AllEnemies[i]);
+        AllEnemies[i].AnimatorState = Animator_Enemy_Koopa_State_Knockback;
     }
+
+    Anim_Koopa_Update(i);
 
     if(AllEnemies[i].Hitbox.position.x < Camera.x - 8 * 4 || AllEnemies[i].Hitbox.position.x > Camera.x + 26 * 8 || AllEnemies[i].Hitbox.position.y < Camera.y - 8 || AllEnemies[i].Hitbox.position.y > Camera.y + 20 * 8)
     {

@@ -5,6 +5,7 @@
 #include "..\include\Sprite.h"
 #include "..\include\Objects.h"
 #include "..\include\Animations\Mario\Mario.h"
+#include "..\include\Animations\Mario\RacoonMario.h"
 #include "..\include\Level.h"
 
 #include <gb\gb.h>
@@ -15,17 +16,19 @@ extern char Time;
 extern char Lifes;
 
 extern Level currentLevel;
+extern EndLevelObject currentEndLevelObject;
 
 extern unsigned char allInputsDown[];
 extern unsigned char allInputsPressed[];
-
+extern unsigned char Mario_Animator_State;
+extern unsigned char Mario_animState;
 #pragma bank 10
 
 Vector2 Mario_Velocity = {.x=0,.y=0};
 
 Collision Mario_Hitbox = {.position={.x=0,.y=0},.pixeloffset={.x=0,.y=-10},.pixelsize={.x=7,.y=10}};
 
-unsigned char Mario_State = 0;
+unsigned char Mario_Transformation = 0;
 char Mario_dead = 0;
 char Mario_runningProg = 0;
 char Mario_isRunning = 0;
@@ -50,8 +53,6 @@ char Mario_dir = 1;
 
 char Mario_onGround = 0;
 
-char Mario_animState = 0;
-
 void init_Mario(int x,int y)BANKED
 {
     Mario_Hitbox.position.x = x;
@@ -75,21 +76,21 @@ void Update_Mario(void)BANKED
     
     if(!Mario_dead && !Mario_Win)
     {
-        Mario_dir = allInputsPressed[2] ? -1 : allInputsPressed[1] ? 1 : Mario_dir;
+        Mario_dir = allInputsPressed[Joy_Button_LEFT] ? -1 : allInputsPressed[Joy_Button_RIGHT] ? 1 : Mario_dir;
     
-        Mario_maxSpeed = Mario_isRunning ? Time * 6 : allInputsPressed[6] ? Time * 4 : Time * 2;
+        Mario_maxSpeed = Mario_isRunning ? Time * 6 : allInputsPressed[Joy_Button_B] ? Time * 4 : Time * 2;
         Mario_RecoveryTime -= Mario_RecoveryTime > 0 ? Time : 0;
     
-        if(allInputsDown[2] || allInputsDown[1])
+        if(allInputsDown[Joy_Button_LEFT] || allInputsDown[Joy_Button_RIGHT])
         {
             WalkDelay = 2;
             decreaseDelay = 3;
-        }else if(allInputsPressed[2] || allInputsPressed[1])
+        }else if(allInputsPressed[Joy_Button_LEFT] || allInputsPressed[Joy_Button_RIGHT])
         {
             WalkDelay -= Time;
             if(WalkDelay <= 0)
             {
-                Mario_Velocity.x += allInputsPressed[1] ? Time * 2 : allInputsPressed[2] ? Time * -2 : 0;
+                Mario_Velocity.x += allInputsPressed[Joy_Button_RIGHT] ? Time * 2 : allInputsPressed[Joy_Button_LEFT] ? Time * -2 : 0;
                 WalkDelay = 2;
             }
         }else
@@ -110,7 +111,7 @@ void Update_Mario(void)BANKED
                 decreaseJump=2;
             }
 
-        if(allInputsDown[6] && Mario_State == 2)
+        if(allInputsDown[Joy_Button_B] && Mario_Transformation == 2)
         { 
             Make_FireBall(Mario_dir,Mario_Hitbox.position.x + Mario_dir * 8,Mario_Hitbox.position.y);
         }
@@ -140,111 +141,93 @@ void Update_Mario(void)BANKED
         if(Mario_Hitbox.position.y > currentLevel.Width * 16)
         {
             Mario_dead = 1;
-            Mario_State = 0;
+            Mario_Transformation = 0;
             Lifes--;
             Time = 0;
         }
 
-        if(allInputsDown[8])
+        if(allInputsDown[Joy_Button_START])
         {
             Pause();
         }
         
-        DisplayMario();
+
 
     }else if(Mario_dead)
     {
         Mario_Update_Death();
     }else if(Mario_Win)
     {
-        Mario_Velocity.x = 0;
+        Mario_isRunning = 0;
         Mario_Update_CheckGround();
+        Mario_Update_AirMovement();
+        Mario_Update_Physics();
+        MoveCamera( Mario_Hitbox.position.x > Camera.x + 96 ? Mario_Hitbox.position.x - (Camera.x + 96) : Mario_Hitbox.position.x < Camera.x + 80 ? Mario_Hitbox.position.x - (Camera.x + 80) : 0,
+        Mario_Hitbox.position.y < Camera.y + 56 ? Mario_Hitbox.position.y - (Camera.y + 56) : Mario_Hitbox.position.y > Camera.y + 88 ? Mario_Hitbox.position.y - (Camera.y + 88) : 0);
         if(Mario_onGround)
         {
-            Anim_Mario_Win(Mario_State,Mario_animState);
-            Mario_animState++;
-            delay(30);
-        }else
-        {
 
-            Mario_Update_AirMovement();
-            Mario_Update_Physics();
-            delay(30);
-            DisplayMario();
+            if(Mario_Hitbox.position.x <= currentEndLevelObject.hitbox.position.x + 16 * 3)
+            {
+                Mario_Velocity.x = Sign(Mario_Hitbox.position.x - currentEndLevelObject.hitbox.position.x + 16 * 3) * 3;
+                Mario_Update_GroundMovement();
+            }else
+            {
+                Mario_Velocity.x = 0;
+                Mario_Animator_State = Animator_Mario_State_Win;
+            }
         }
+        Mario_Velocity.x = Clamp(Mario_Velocity.x,-2,2);
     }
-}
-
-void DisplayMario(void)BANKED
-{
-    
-    for(int i = 0; i < 10; i++)
-    {
-        set_sprite_prop(i,S_FLIPX * (Mario_dir < 0));
-    }
-
-
-    move_sprite(0,-(Camera.x - Mario_Hitbox.position.x) + 8 * (Mario_dir < 0),-(Camera.y - Mario_Hitbox.position.y) - 16);
-    move_sprite(1,-(Camera.x - Mario_Hitbox.position.x) + 8 * (Mario_dir > 0),-(Camera.y - Mario_Hitbox.position.y) - 16);
-    move_sprite(2,-(Camera.x - Mario_Hitbox.position.x) + 8 * (Mario_dir < 0),-(Camera.y - Mario_Hitbox.position.y) - 8);
-    move_sprite(3,-(Camera.x - Mario_Hitbox.position.x) + 8 * (Mario_dir > 0),-(Camera.y - Mario_Hitbox.position.y) - 8);
-    move_sprite(4,-(Camera.x - Mario_Hitbox.position.x) - 8 + 24 * (Mario_dir < 0),-(Camera.y - Mario_Hitbox.position.y));
-    move_sprite(5,-(Camera.x - Mario_Hitbox.position.x) + 8 * (Mario_dir < 0),-(Camera.y - Mario_Hitbox.position.y));
-    move_sprite(6,-(Camera.x - Mario_Hitbox.position.x) + 8 * (Mario_dir > 0),-(Camera.y - Mario_Hitbox.position.y));
-    move_sprite(7,-(Camera.x - Mario_Hitbox.position.x) - 8 + 24 * (Mario_dir < 0),-(Camera.y - Mario_Hitbox.position.y) + 8);
-    move_sprite(8,-(Camera.x - Mario_Hitbox.position.x) + 8 * (Mario_dir < 0),-(Camera.y - Mario_Hitbox.position.y) + 8);
-    move_sprite(9,-(Camera.x - Mario_Hitbox.position.x) + 8 * (Mario_dir > 0),-(Camera.y - Mario_Hitbox.position.y) + 8);
+    Anim_Mario_Update();
 }
 
 void Mario_Update_AirMovement(void) BANKED
 {
-    Mario_Velocity.y += (!allInputsPressed[5] && Mario_Velocity.y < 0 &&! Mario_Win) * 2;
+    Mario_Velocity.y += (!allInputsPressed[Joy_Button_A] && Mario_Velocity.y < 0 &&! Mario_Win) * 2;
     Mario_Velocity.y += Mario_Win;
-    Mario_Velocity.y = Mario_State == 3 && allInputsDown[5] &&! Mario_isRunning ? 0 : Mario_State == 3 && allInputsDown[5] && Mario_isRunning ? -5 : Mario_Velocity.y;
+    Mario_Velocity.y = Mario_Transformation == 3 && allInputsPressed[Joy_Button_A] &&! Mario_isRunning &&! Mario_Win && Mario_Velocity.y > 0 ? 2 : Mario_Transformation == 3 && allInputsPressed[Joy_Button_A] && Mario_isRunning &&! Mario_Win ? -4 : Mario_Velocity.y;
     
     if(Mario_Velocity.y > 0)
     {
-        if(Mario_isRunning)
-        {
-            Anim_Mario_Jump_Run(Mario_State);
-        }else
-        {
-            Anim_Mario_Fall(Mario_State);
-        }
+        Mario_Animator_State = Mario_isRunning ? Animator_Mario_State_Jump_Run : allInputsPressed[Joy_Button_A] && Mario_Transformation == 3 ? Animator_Mario_State_Racoon_Glide : Animator_Mario_State_Fall;
     }else
     {
-        if(Mario_isRunning)
-        {
-            Anim_Mario_Jump_Run(Mario_State);
-        }else
-        {
-            Anim_Mario_Jump(Mario_State);
-        }
+
+        Mario_Animator_State = Mario_isRunning && allInputsPressed[Joy_Button_A] && Mario_Transformation == 3 ? Animator_Mario_State_Racoon_Fly : Mario_isRunning &&! Mario_Win ? Animator_Mario_State_Jump_Run : Animator_Mario_State_Jump;
 
     }
 }
 
 void Mario_Update_Speed(void) BANKED
 {
-    if(Abs(Mario_Velocity.x) >= 4 )
+    if(Mario_onGround)
     {
-        Mario_runningProg++;
-        if(Mario_runningProg >= 50 )
+        if(Abs(Mario_Velocity.x) >= 4 )
         {
-            Mario_isRunning = Mario_onGround || (Mario_isRunning &&! Mario_onGround);
+            Mario_runningProg += 2;
+            if(Mario_runningProg >= 100)
+            {
+                Mario_isRunning = Mario_onGround || (Mario_isRunning &&! Mario_onGround);
 
-        }else if(Mario_onGround)
+            }else if(Mario_onGround)
+            {
+                Mario_isRunning = 0;
+            }
+
+        }else
         {
-            Mario_isRunning = 0;
+            Mario_runningProg-=4;
+            Mario_isRunning = Mario_onGround ? 0 : Mario_isRunning;
         }
-
     }else
     {
-        Mario_runningProg-=2;
-        Mario_isRunning = Mario_onGround ? 0 : Mario_isRunning;
+        Mario_runningProg -= (allInputsPressed[Joy_Button_A] && Mario_Transformation == 3 && Mario_isRunning);
+        Mario_isRunning = Mario_runningProg <= 0 ? 0 : Mario_isRunning;
     }
+    
 
-    Mario_runningProg = Clamp(Mario_runningProg,0,50);
+    Mario_runningProg = Clamp(Mario_runningProg,0,100);
 }
 
 void Mario_Update_GroundMovement(void) BANKED
@@ -253,35 +236,23 @@ void Mario_Update_GroundMovement(void) BANKED
     {
         if((Mario_Velocity.x < 0 && Mario_dir == 1) || (Mario_Velocity.x > 0 && Mario_dir == -1))
         {
-            Anim_Mario_Slide(Mario_State);
-            Mario_animState = 0;
+            Mario_Animator_State = Animator_Mario_State_Slide;
         }else
         {
-
-            if(Mario_isRunning)
-            {
-                Anim_Mario_Run(Mario_State,Mario_animState);
-            }else
-            {
-                Anim_Mario_Move(Mario_State,Mario_animState);
-            }
-
-            Mario_animState += Time * (allInputsPressed[6] ? 2 : 1);
-            Mario_animState = Mario_animState >= 6 ? 0 : Mario_animState;
-            Mario_runningProg = Clamp(Mario_runningProg,0,50);
+            Mario_Animator_State = Mario_isRunning ? Animator_Mario_State_Run : Animator_Mario_State_Move;
         }
     }else
     {
-        Anim_Mario_Idle(Mario_State);
+        Mario_Animator_State = Animator_Mario_State_Idle;
     }
 
-    Mario_Velocity.y = allInputsDown[5] ? -7 : Mario_Velocity.y;
+    Mario_Velocity.y = allInputsDown[Joy_Button_A] ? -7 : Mario_Velocity.y;
 }
 
 void Mario_Update_Death(void) BANKED
 {
     deathJumpdelay--;
-
+    Mario_Animator_State = Animator_Mario_State_Death;
     if(deathJumpdelay <= 0)
     {
         DeathTime--;
@@ -297,7 +268,6 @@ void Mario_Update_Death(void) BANKED
 
     }
     delay(30);
-    Anim_Mario_Death(Mario_Hitbox);
 }
 
 void Mario_Update_Physics(void) BANKED
@@ -325,13 +295,13 @@ int Set_Transformation(int i)BANKED
     Mario_Hitbox.pixelsize.y = 14;
     if(i == 1)
     {
-        Mario_State = Mario_State < i ? i : Mario_State;
+        Mario_Transformation = Mario_Transformation < i ? i : Mario_Transformation;
     }else
     {
-        Mario_State = i;
+        Mario_Transformation = i;
     }
 
-    return Mario_State;
+    return Mario_Transformation;
 }
 
 void Mario_Hit(void)BANKED
@@ -339,20 +309,20 @@ void Mario_Hit(void)BANKED
     if(Mario_RecoveryTime <= 0)
     {
         Mario_RecoveryTime = 30;
-        switch (Mario_State)
+        switch(Mario_Transformation)
         {
             case 0:
             Mario_Set_Death();
             break;
 
             case 1:
-            Mario_State = 0;
+            Mario_Transformation = 0;
             Mario_Hitbox.pixeloffset.y = -10;
             Mario_Hitbox.pixelsize.y = 10;
             break;
     
             default:
-            Mario_State = 1;
+            Mario_Transformation = 1;
             break;
         }
     }
@@ -361,8 +331,7 @@ void Mario_Hit(void)BANKED
 void Mario_Set_Death(void)BANKED
 {
     Mario_dead = 1;
-    Mario_State = 0;
+    Mario_Transformation = 0;
     Time = 0;
     Lifes -= 1;
-    Anim_Mario_Death(Mario_Hitbox);
 }

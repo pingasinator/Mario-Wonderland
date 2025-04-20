@@ -24,6 +24,7 @@ typedef struct
     char Sprite;
     char animstate;
     char type;
+    char state;
 }EndLevelObject;
 
 void Use_Coin(int x,int y) BANKED;

@@ -215,26 +215,26 @@ void Anim_Mario_Small_Win(int animstate) BANKED
         break;
 
         case 6:
-        set_sprite_prop(0,S_FLIPX);
-        set_sprite_prop(1,S_FLIPX);
-        set_sprite_prop(2,S_FLIPX);
-        set_sprite_prop(3,S_FLIPX);
-        set_sprite_prop(4,S_FLIPX);
-        set_sprite_prop(5,S_FLIPX);
-        set_sprite_prop(6,S_FLIPX);
-        set_sprite_prop(7,S_FLIPX);
-        set_sprite_prop(8,S_FLIPX);
-        set_sprite_prop(9,S_FLIPX);
+        set_sprite_prop(0,0);
+        set_sprite_prop(1,0);
+        set_sprite_prop(2,0);
+        set_sprite_prop(3,0);
+        set_sprite_prop(4,0);
+        set_sprite_prop(5,0);
+        set_sprite_prop(6,0);
+        set_sprite_prop(7,0);
+        set_sprite_prop(8,0);
+        set_sprite_prop(9,0);
         set_sprite_tile(0,0x00);
         set_sprite_tile(1,0x00);
-        set_sprite_tile(2,0x03);
-        set_sprite_tile(3,0x02);
+        set_sprite_tile(2,0x02);
+        set_sprite_tile(3,0x03);
         set_sprite_tile(4,0x00);
-        set_sprite_tile(5,0x11);
-        set_sprite_tile(6,0x10);
+        set_sprite_tile(5,0x10);
+        set_sprite_tile(6,0x11);
         set_sprite_tile(7,0x00);
-        set_sprite_tile(8,0x21);
-        set_sprite_tile(9,0x20);
+        set_sprite_tile(8,0x20);
+        set_sprite_tile(9,0x21);
         break;
 
         case 9:

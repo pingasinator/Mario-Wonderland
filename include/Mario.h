@@ -11,8 +11,6 @@ void Mario_Update_Death(void) BANKED;
 void Mario_Update_Physics(void) BANKED;
 void Mario_Update_Speed(void) BANKED;
 
-void DisplayMario(void)BANKED;
-
 int Set_Transformation(int i)BANKED;
 
 void Mario_Set_Death(void)BANKED;

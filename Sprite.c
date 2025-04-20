@@ -1,5 +1,7 @@
 #include "include\Sprite.h"
 #include "include\Level.h"
+#include "include\Animations\Mario\Mario.h"
+#include "include\Animations\Enemies.h"
 #include <gb\gb.h>
 
 #pragma bank 2
@@ -31,11 +33,13 @@ extern unsigned char S_Obj_Coin_0[];
 extern unsigned char S_Obj_Coin_1[];
 extern unsigned char S_Obj_Coin_2[];
 extern unsigned char S_Obj_Brick[];
+extern unsigned char S_Obj_Endblock[];
 
 extern unsigned char S_null[];
 extern unsigned char S_Mario_Small[];
 extern unsigned char S_Mario_Great[];
 extern unsigned char S_Mario_Fire[];
+extern unsigned char S_Mario_Racoon[];
 
 extern unsigned char S_Mario_World_Small[];
 
@@ -85,8 +89,9 @@ extern unsigned char Tilemap[];
 
 extern unsigned char BKG_World_1_Tilemap[];
 
-
 unsigned char currentMarioPalette;
+
+extern Enemy *AllEnemies;
 
 unsigned char Sprites[40] =
 {
@@ -170,10 +175,10 @@ void Set_Tile(unsigned char Tile,int x,int y) BANKED
     SWITCH_RAM(2);
     Tilemap[x/16 + y/16*currentLevel.Length] = Tile;
     DISABLE_RAM;
-    Set_Sprite_Tile(Tile,x/16*2,y/16*2);
+    Display_Tile(Tile,x/16*2,y/16*2);
 }
 
-void Set_Sprite_Tile(unsigned char Tile,int x,int y) BANKED
+void Display_Tile(unsigned char Tile,int x,int y) BANKED
 {
     x -= 32 * (x / 32);
     y -= 32 * (y / 32);
@@ -277,21 +282,22 @@ void init_Objects_Vram(void) BANKED
     set_sprite_data(0x98,1,S_Obj_Coin_1);
     set_sprite_data(0x99,1,S_Obj_Coin_2);
     set_sprite_data(0x9A,4,S_Obj_Brick);
+    set_sprite_data(0x9E,8,S_Obj_Endblock);
 }
 
 void init_Enemies_Vram(void) BANKED
 {
 
-    set_sprite_data(0xA4,4,S_Goomba_Idle);
-    set_sprite_data(0xA8,4,S_Goomba_Move);
-    set_sprite_data(0xAC,2,S_Goomba_Death);
-    set_sprite_data(0xAE,5,S_Koopa_Idle);
-    set_sprite_data(0xB3,1,S_Koopa_Move_0);
-    set_sprite_data(0xB4,3,S_Koopa_Move_1);
-    set_sprite_data(0xB7,2,S_Koopa_Shell_0);
-    set_sprite_data(0xB9,4,S_Koopa_Shell_1);
-    set_sprite_data(0xBD,2,S_Koopa_Shell_2);
-    set_sprite_data(0xBF,2,S_Koopa_Shell_3);
+    set_sprite_data(0xA6,4,S_Goomba_Idle);
+    set_sprite_data(0xAA,4,S_Goomba_Move);
+    set_sprite_data(0xAE,2,S_Goomba_Death);
+    set_sprite_data(0xB0,5,S_Koopa_Idle);
+    set_sprite_data(0xB5,1,S_Koopa_Move_0);
+    set_sprite_data(0xB6,3,S_Koopa_Move_1);
+    set_sprite_data(0xB9,2,S_Koopa_Shell_0);
+    set_sprite_data(0xBB,4,S_Koopa_Shell_1);
+    set_sprite_data(0xBF,2,S_Koopa_Shell_2);
+    set_sprite_data(0xC1,2,S_Koopa_Shell_3);
 
 }
 
@@ -304,10 +310,7 @@ void init_GBDK_Title(void) BANKED
 void Set_Mario_Palette(int i) NONBANKED
 {
     currentMarioPalette = i;
-    for(int i = 0; i < 10; i++)
-    {
-        hide_sprite(i);
-    }
+
 
     SWITCH_ROM(3);
     switch (i)
@@ -322,6 +325,10 @@ void Set_Mario_Palette(int i) NONBANKED
 
         case 2:
         set_sprite_data(0x00,128,S_Mario_Fire);
+        break;
+
+        case 3:
+        set_sprite_data(0x00,128,S_Mario_Racoon);
         break;
     
         default:
@@ -341,3 +348,4 @@ void init_HUD_Vram(void) BANKED
     set_bkg_data(0x72,1,S_HUD_T);
     set_bkg_data(0x73,10,S_HUD_Font);
 }
+

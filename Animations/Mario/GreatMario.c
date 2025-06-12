@@ -127,6 +127,20 @@ void Anim_Mario_Great_Run(int animstate) BANKED
     }
 }
 
+void Anim_Mario_Great_Crounch(void) BANKED
+{
+    set_sprite_tile(0,0x00);
+    set_sprite_tile(1,0x00);
+    set_sprite_tile(2,0x00);
+    set_sprite_tile(3,0x00);
+    set_sprite_tile(4,0x00);
+    set_sprite_tile(5,0x04);
+    set_sprite_tile(6,0x05);
+    set_sprite_tile(7,0x00);
+    set_sprite_tile(8,0x14);
+    set_sprite_tile(9,0x15);
+}
+
 void Anim_Mario_Great_Jump(void) BANKED
 {
     set_sprite_tile(0,0x44);

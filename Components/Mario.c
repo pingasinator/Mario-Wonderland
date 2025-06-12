@@ -73,7 +73,6 @@ void init_Mario(int x,int y)BANKED
 
 void Update_Mario(void)BANKED
 {
-    
     if(!Mario_dead && !Mario_Win)
     {
         Mario_dir = allInputsPressed[Joy_Button_LEFT] ? -1 : allInputsPressed[Joy_Button_RIGHT] ? 1 : Mario_dir;
@@ -85,7 +84,7 @@ void Update_Mario(void)BANKED
         {
             WalkDelay = 2;
             decreaseDelay = 3;
-        }else if(allInputsPressed[Joy_Button_LEFT] || allInputsPressed[Joy_Button_RIGHT])
+        }else if((allInputsPressed[Joy_Button_LEFT] || allInputsPressed[Joy_Button_RIGHT]) &&! (Mario_onGround && allInputsPressed[Joy_Button_DOWN]))
         {
             WalkDelay -= Time;
             if(WalkDelay <= 0)
@@ -104,21 +103,16 @@ void Update_Mario(void)BANKED
 
         }
         
-            decreaseJump -= Time;
-            if(decreaseJump <= 0)
-            {
-                Mario_Velocity.y++;
-                decreaseJump=2;
-            }
+        decreaseJump -= Time;
+        if(decreaseJump <= 0)
+        {
+            Mario_Velocity.y++;
+            decreaseJump=2;
+        }
 
         if(allInputsDown[Joy_Button_B] && Mario_Transformation == 2)
         { 
-            Make_FireBall(Mario_dir,Mario_Hitbox.position.x + Mario_dir * 8,Mario_Hitbox.position.y);
-        }
-
-        if(Mario_Star)
-        {
-            Anim_Mario_Star();
+            Object_Create_FireBall(Mario_dir,Mario_Hitbox.position.x + Mario_dir * 8,Mario_Hitbox.position.y);
         }
 
         Mario_Update_CheckGround();
@@ -232,19 +226,26 @@ void Mario_Update_Speed(void) BANKED
 
 void Mario_Update_GroundMovement(void) BANKED
 {
-    if(abs(Mario_Velocity.x) >= 1)
+    if(allInputsPressed[Joy_Button_DOWN])
     {
-        if((Mario_Velocity.x < 0 && Mario_dir == 1) || (Mario_Velocity.x > 0 && Mario_dir == -1))
-        {
-            Mario_Animator_State = Animator_Mario_State_Slide;
-        }else
-        {
-            Mario_Animator_State = Mario_isRunning ? Animator_Mario_State_Run : Animator_Mario_State_Move;
-        }
+        Mario_Animator_State = Animator_Mario_State_Crounch;
     }else
     {
-        Mario_Animator_State = Animator_Mario_State_Idle;
+        if(abs(Mario_Velocity.x) >= 1)
+        {
+            if((Mario_Velocity.x < 0 && Mario_dir == 1) || (Mario_Velocity.x > 0 && Mario_dir == -1))
+            {
+                Mario_Animator_State = Animator_Mario_State_Slide;
+            }else
+            {
+                Mario_Animator_State = Mario_isRunning ? Animator_Mario_State_Run : Animator_Mario_State_Move;
+            }
+        }else
+        {
+            Mario_Animator_State = Animator_Mario_State_Idle;
+        }
     }
+
 
     Mario_Velocity.y = allInputsDown[Joy_Button_A] ? -7 : Mario_Velocity.y;
 }

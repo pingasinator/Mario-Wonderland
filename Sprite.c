@@ -6,34 +6,16 @@
 
 #pragma bank 2
 
-extern unsigned char *S_Default_Tiles[];
-extern unsigned char S_Pipe_H[];
-extern unsigned char S_Pipe_V[];
-extern unsigned char S_Full[];
-extern unsigned char S_Light_Grey[];
-extern unsigned char S_Dark_Grey[];
-extern unsigned char S_Water_0[];
-extern unsigned char S_Water_1[];
-extern unsigned char S_Water_2[];
-extern unsigned char S_Lava_0[];
-extern unsigned char S_EndLevel_Background[];
-extern unsigned char S_EndLevel_Block[];
-
 unsigned char **Current_Ground_Palette;
 unsigned char **Current_Background_Palette;
 
-extern unsigned char S_Mushroom[];
-extern unsigned char S_FireFlower[];
-extern unsigned char S_Leaf[];
-extern unsigned char S_Star[];
+extern unsigned char S_Items[];
 extern unsigned char S_FireBall_H[];
 extern unsigned char S_FireBall_V[];
 extern unsigned char S_Obj_Block[];
-extern unsigned char S_Obj_Coin_0[];
-extern unsigned char S_Obj_Coin_1[];
-extern unsigned char S_Obj_Coin_2[];
+extern unsigned char S_Obj_Coin[];
 extern unsigned char S_Obj_Brick[];
-extern unsigned char S_Obj_Endblock[];
+extern unsigned char S_Obj_EndStar_0[];
 
 extern unsigned char S_null[];
 extern unsigned char S_Mario_Small[];
@@ -43,9 +25,7 @@ extern unsigned char S_Mario_Racoon[];
 
 extern unsigned char S_Mario_World_Small[];
 
-extern unsigned char S_Goomba_Idle[];
-extern unsigned char S_Goomba_Move[];
-extern unsigned char S_Goomba_Death[];
+extern unsigned char S_Goomba[];
 extern unsigned char S_Koopa_Idle[];
 extern unsigned char S_Koopa_Move_0[];
 extern unsigned char S_Koopa_Move_1[];
@@ -53,14 +33,10 @@ extern unsigned char S_Koopa_Shell_0[];
 extern unsigned char S_Koopa_Shell_1[];
 extern unsigned char S_Koopa_Shell_2[];
 extern unsigned char S_Koopa_Shell_3[];
+extern unsigned char S_Muncher_0[];
 
 extern unsigned char S_Overworld_Ground[];
-extern unsigned char S_Overworld_Background_Cloud[];
-extern unsigned char S_Overworld_Background_Cloud_1[];
-extern unsigned char S_Overworld_Background_Bush[];
-
 extern unsigned char S_Underground_Ground[];
-
 extern unsigned char S_Airship_Ground[];
 
 extern unsigned char S_World_Overworld[];
@@ -69,12 +45,7 @@ extern unsigned char S_World_HUD[];
 extern unsigned char S_GBDK[];
 extern unsigned char BKG_GBDK[];
 
-extern unsigned char S_HUD_Life_Mario[];
-extern unsigned char S_HUD_Coin[];
-extern unsigned char S_HUD_Star[];
-extern unsigned char S_HUD_T[];
-extern unsigned char S_HUD_Font[];
-extern unsigned char S_HUD_X[];
+extern unsigned char S_HUD[];
 
 extern unsigned char *Overworld_Background_Palette[];
 extern unsigned char *Overworld_Ground_Palette[];
@@ -130,6 +101,21 @@ int Remove_Sprite(int Place,int size) BANKED
     return 0;
 }
 
+int Remove_NonMarioObject_Sprite(int Place,int size) BANKED
+{
+    if(Place >= 10)
+    {
+        for(int i = 0; i < size;i++)
+        {
+            Sprites[Place + i] = 0;
+            set_sprite_tile(Place + i,0);
+            set_sprite_prop(Place + i,0);
+            move_sprite(Place + i,0,0);
+        }
+    }
+    return 0;
+}
+
 void Set_Tile_Palette(int i) BANKED
 {
     switch(i)
@@ -137,15 +123,13 @@ void Set_Tile_Palette(int i) BANKED
         case 0:
         Current_Background_Palette = Overworld_Background_Palette;
         Current_Ground_Palette = Overworld_Ground_Palette;
-        set_bkg_data(0x31,18,S_Overworld_Ground);
-        set_bkg_data(0x43,12,S_Overworld_Background_Cloud);
-        set_bkg_data(0x4F,8,S_Overworld_Background_Cloud_1);
+        set_bkg_data(0x00,108,S_Overworld_Ground);
         break;
 
         case 1:
         Current_Background_Palette = Underground_Background_Palette;
         Current_Ground_Palette = Underground_Ground_Palette;
-        set_bkg_data(0x31,18,S_Underground_Ground);
+        set_bkg_data(0x0,18,S_Underground_Ground);
         break;
 
         case 2:
@@ -209,7 +193,6 @@ void Reset_Vram(void) BANKED
 
 void Reset_Sprite_Vram(void) BANKED
 {
-
     Remove_Sprite(0,40);
     for(int i = 0; i < 256;i++)
     {
@@ -219,7 +202,6 @@ void Reset_Sprite_Vram(void) BANKED
 
 void Reset_BKG_Vram(void) BANKED
 {   
-
     for(int i = 0; i < 128;i++)
     {
         set_bkg_data(i,1,S_null);
@@ -250,55 +232,26 @@ void init_World_BKG(int i)BANKED
     set_bkg_tiles(0,0,20,18,BKG_World_1_Tilemap);
 }
 
-void init_Level_Vram(void) BANKED
-{
-
-    for(int z = 0; z < 6; z++)
-    {
-        set_bkg_data(1 + z * 4,4,S_Default_Tiles[z]);
-    }
-    set_bkg_data(0x19,5,S_Pipe_H);
-    set_bkg_data(0x1E,5,S_Pipe_V);
-    set_bkg_data(0x23,2,S_Water_0);
-    set_bkg_data(0x25,2,S_Lava_0);
-    set_bkg_data(0x27,2,S_EndLevel_Background);
-    set_bkg_data(0x29,8,S_EndLevel_Block);
-    set_bkg_data(0x7D,1,S_Light_Grey);
-    set_bkg_data(0x7E,1,S_Dark_Grey);
-    set_bkg_data(0x7F,1,S_Full);
-}
-
 void init_Objects_Vram(void) BANKED
 {
-
-    set_sprite_data(0x80,4,S_Mushroom);
-    set_sprite_data(0x84,2,S_FireFlower);
-    set_sprite_data(0x86,4,S_Leaf);
-    set_sprite_data(0x8A,2,S_Star);
-    set_sprite_data(0x8C,2,S_FireBall_H);
-    set_sprite_data(0x8E,2,S_FireBall_V);
-    set_sprite_data(0x90,4,S_Obj_Block);
-    set_sprite_data(0x94,4,S_Obj_Coin_0);
-    set_sprite_data(0x98,1,S_Obj_Coin_1);
-    set_sprite_data(0x99,1,S_Obj_Coin_2);
-    set_sprite_data(0x9A,4,S_Obj_Brick);
-    set_sprite_data(0x9E,8,S_Obj_Endblock);
+    set_sprite_data(0x80,22,S_Items);
+    set_sprite_data(0x96,2,S_FireBall_H);
+    set_sprite_data(0x98,2,S_FireBall_V);
+    set_sprite_data(0x9A,4,S_Obj_Block);
+    set_sprite_data(0x9E,6,S_Obj_Coin);
+    set_sprite_data(0xA4,4,S_Obj_Brick);
+    set_sprite_data(0xA8,2,S_Obj_EndStar_0);
 }
 
 void init_Enemies_Vram(void) BANKED
 {
-
-    set_sprite_data(0xA6,4,S_Goomba_Idle);
-    set_sprite_data(0xAA,4,S_Goomba_Move);
-    set_sprite_data(0xAE,2,S_Goomba_Death);
-    set_sprite_data(0xB0,5,S_Koopa_Idle);
-    set_sprite_data(0xB5,1,S_Koopa_Move_0);
-    set_sprite_data(0xB6,3,S_Koopa_Move_1);
-    set_sprite_data(0xB9,2,S_Koopa_Shell_0);
-    set_sprite_data(0xBB,4,S_Koopa_Shell_1);
-    set_sprite_data(0xBF,2,S_Koopa_Shell_2);
-    set_sprite_data(0xC1,2,S_Koopa_Shell_3);
-
+    set_sprite_data(0xB0,5,S_Goomba);
+    set_sprite_data(0xB5,5,S_Koopa_Idle);
+    set_sprite_data(0xBA,1,S_Koopa_Move_0);
+    set_sprite_data(0xBB,3,S_Koopa_Move_1);
+    set_sprite_data(0xBF,2,S_Koopa_Shell_0);
+    set_sprite_data(0xC1,4,S_Koopa_Shell_1);
+    set_sprite_data(0xC5,2,S_Koopa_Shell_2);
 }
 
 void init_GBDK_Title(void) BANKED
@@ -310,7 +263,6 @@ void init_GBDK_Title(void) BANKED
 void Set_Mario_Palette(int i) NONBANKED
 {
     currentMarioPalette = i;
-
 
     SWITCH_ROM(3);
     switch (i)
@@ -340,12 +292,6 @@ void Set_Mario_Palette(int i) NONBANKED
 
 void init_HUD_Vram(void) BANKED
 {
-
-    set_bkg_data(0x6D,1,S_HUD_Life_Mario);
-    set_bkg_data(0x6E,1,S_HUD_X);
-    set_bkg_data(0x6F,1,S_HUD_Coin);
-    set_bkg_data(0x70,2,S_HUD_Star);
-    set_bkg_data(0x72,1,S_HUD_T);
-    set_bkg_data(0x73,10,S_HUD_Font);
+    set_sprite_data(0xF0,16,S_HUD);
 }
 

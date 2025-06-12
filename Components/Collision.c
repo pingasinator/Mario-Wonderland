@@ -16,7 +16,7 @@ int TileMapCollisionSide(Collision *A,int side) BANKED
     pos.y = A->position.y + A->pixeloffset.y;
     int boundOut = 0;
     int boundIn = 0;
-    int i = 0;
+ 
  
 
     switch(side)
@@ -238,25 +238,17 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
     {
         if(pos.y + A->pixelsize.y > 0 && pos.y + A->pixelsize.y < currentLevel.Width * 16)
         {
+            c_Mid = Get_Tile(pos.x,pos.y + A->pixelsize.y);
+            TileObject_Update(c_Mid,pos.x,pos.y + A->pixelsize.y,*Velocity,0);
             c_Right = Get_Tile(pos.x + i,pos.y + A->pixelsize.y);
-            c_Left = Get_Tile(pos.x - i,pos.y + A->pixelsize.y);
-            c_Mid = Get_Tile(pos.x + i,pos.y);
             TileObject_Update(c_Right,pos.x + i,pos.y + A->pixelsize.y,*Velocity,0);
+            c_Left = Get_Tile(pos.x - i,pos.y + A->pixelsize.y);
             TileObject_Update(c_Left,pos.x - i,pos.y + A->pixelsize.y,*Velocity,0);
-            TileObject_Update(c_Mid,pos.x + i,pos.y,*Velocity,0);
             if((c_Right >= 0x80 && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - 8) < 0x80) || (c_Left >= 0x80 && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - 8) < 0x80))
             {
-                for(int j = 0; j < 9;j++)
-                {
-                    if((Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - j) < 0x80) || (Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - j) < 0x80))
-                    {
-                        Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
-    
-                        A->position.y -= (j - 1);
-                        pos.y = A->position.y + A->pixeloffset.y;
-                        break;
-                    }
-                }
+                Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
+                A->position.y = ((pos.y + A->pixelsize.y) / 16) * 16;
+                pos.y = A->position.y + A->pixeloffset.y;
             }
         }
 
@@ -264,22 +256,17 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
         pos.y = A->position.y + A->pixeloffset.y;
         if(pos.y - A->pixelsize.y > 0 && pos.y - A->pixelsize.y < currentLevel.Width * 16)
         {
+            c_Mid = Get_Tile(pos.x,pos.y- A->pixelsize.y);
+            TileObject_Update(c_Mid,pos.x,pos.y - A->pixelsize.y,*Velocity,1);
             c_Right = Get_Tile(pos.x + i,pos.y - A->pixelsize.y);
-            c_Left = Get_Tile(pos.x - i,pos.y - A->pixelsize.y);
             TileObject_Update(c_Right,pos.x + i,pos.y - A->pixelsize.y,*Velocity,1);
+            c_Left = Get_Tile(pos.x - i,pos.y - A->pixelsize.y);
             TileObject_Update(c_Left,pos.x - i,pos.y - A->pixelsize.y,*Velocity,1);
             if((c_Right >= 0x80 && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + 8) < 0x80) || (c_Left >= 0x80 && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + 8) < 0x80))
             {
-                for(int j = 0; j < 9;j++)
-                {
-                    if((Get_Tile(pos.x + i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + j) < 0x80) || (Get_Tile(pos.x - i,pos.y - A->pixelsize.y) >= 0x80 && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + j) < 0x80))
-                    {
-                        Velocity->y = Velocity->y < 0 ? 0 : Velocity->y;
-                        A->position.y += (j - 1);
-                        pos.y = A->position.y + A->pixeloffset.y;
-                        break;
-                    }
-                }
+                Velocity->y = Velocity->y < 0 ? 0 : Velocity->y;
+                A->position.y = ((pos.y - A->pixelsize.y) / 16 + 1) * 16 + A->pixelsize.y * 2;
+                pos.y = A->position.y - A->pixeloffset.y;
             }
         }
     }
@@ -290,6 +277,8 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
         {
             c_Down = Get_Tile(pos.x + A->pixelsize.x,pos.y + i);
             c_Up = Get_Tile(pos.x + A->pixelsize.x,pos.y - i);
+            c_Mid = Get_Tile(pos.x + A->pixelsize.x,pos.y);
+            TileObject_Update(c_Mid,pos.x + A->pixelsize.x,pos.y,*Velocity,3);
             if((c_Down >= 0x80) || (c_Up >= 0x80))
             {
             
@@ -310,6 +299,8 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
         {
             c_Down = Get_Tile(pos.x - A->pixelsize.x,pos.y + i);
             c_Up = Get_Tile(pos.x - A->pixelsize.x,pos.y + i);
+            c_Mid = Get_Tile(pos.x - A->pixelsize.x,pos.y);
+            TileObject_Update(c_Mid,pos.x - A->pixelsize.x,pos.y,*Velocity,2);
             if((c_Down >= 0x80) || (c_Up >= 0x80))
             {
             
@@ -343,10 +334,10 @@ void TilemapCollisionPhysicsSide(Collision *A,Vector2* Velocity,int side) BANKED
             {
                 if(pos.y + A->pixelsize.y > 0 && pos.y + A->pixelsize.y < currentLevel.Width * 16)
                 {
-                    while(Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 || Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 )
+                    if(Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 || Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80 )
                     {
                         Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
-                        A->position.y -= 1;
+                        A->position.y = ((pos.y + A->pixelsize.y) / 16) * 16;
                         pos.y = A->position.y + A->pixeloffset.y;
                     }
                 }

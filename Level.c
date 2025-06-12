@@ -5,7 +5,6 @@
 #include "include\Sprite.h"
 #include "include\Objects.h"
 #include "include\GameSystem.h"
-#include "include\Items.h"
 
 #include "include\Animations\BKG.h"
 #include "include\Animations\Objects.h"
@@ -48,7 +47,6 @@ int EndofLevel = 0;
 
 void Reset_Level(void)
 {
-    
     EndofLevel = 0;
     Timer = 300;
     milisec = 30;
@@ -60,7 +58,6 @@ void SetLevel(int LevelSelected)
     SWITCH_RAM(2);
     Reset_Vram();
     Reset_Level();
-    Reset_Items();
     Set_Mario_Palette(0);
     Set_Camera_Position(0,16*29);
     SWITCH_ROM(20 + LevelSelected / 2);
@@ -69,7 +66,6 @@ void SetLevel(int LevelSelected)
     Set_All_Enemies(LevelSelected);
     currentEndLevelObject = currentLevel.Endblock;
     init_Enemies_Vram();
-    init_Level_Vram();
     init_Objects_Vram();
     init_HUD_Vram();
     init_Mario(GetLevel(LevelSelected).Spawnpoint.x,GetLevel(LevelSelected).Spawnpoint.y);
@@ -101,7 +97,6 @@ void Level_Update(void)
         Update_HUD(Lifes,Coins,Timer);
         Update_Enemy();
         Objects_Update();
-        Items_Update();
         Timer_Update();
         Anim_BKG_Update();
         EndBlock_Update();
@@ -135,7 +130,7 @@ void EndBlock_Update(void)
     {
         if(currentEndLevelObject.Sprite != 0)
         {
-            currentEndLevelObject.Sprite = Remove_Sprite(currentEndLevelObject.Sprite,4);
+            currentEndLevelObject.Sprite = Remove_NonMarioObject_Sprite(currentEndLevelObject.Sprite,4);
         }
     }
 }
@@ -143,11 +138,8 @@ void EndBlock_Update(void)
 void Timer_Update(void)
 {
     milisec -= Time * !Mario_Win &&! Mario_dead;
-    if(milisec <= 0)
-    {
-        milisec = 30;
-        Timer--;
-    }
+    Timer -= (milisec <= 0);
+    milisec = milisec <= 0 ? 30 : milisec;
 
     if(Timer <= 0 &&! Mario_dead)
     {

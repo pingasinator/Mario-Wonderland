@@ -13,14 +13,14 @@
 #define Animator_Enemy_Koopa_State_Shell_Move 0x02
 #define Animator_Enemy_Koopa_State_Knockback 0x03
 
-void Anim_Goomba_Update(int SelectedEnemy) BANKED;
-void Anim_Goomba_Move(int SelectedEnemy) BANKED;
-void Anim_Goomba_Death(int SelectedEnemy) BANKED;
-void Anim_Goomba_Knockback(int SelectedEnemy)BANKED;
+void Anim_Goomba_Update(Enemy *e) BANKED;
+void Anim_Goomba_Move(Enemy *e) BANKED;
+void Anim_Goomba_Death(Enemy *e) BANKED;
+void Anim_Goomba_Knockback(Enemy *e)BANKED;
 
-void Anim_Koopa_Update(int SelectedEnemy)BANKED;
-void Anim_Koopa_Move(int SelectedEnemy) BANKED;
-void Anim_Koopa_Shell_Idle(int SelectedEnemy)BANKED;
-void Anim_Koopa_Shell_Move(int SelectedEnemy)BANKED;
+void Anim_Koopa_Update(Enemy *e)BANKED;
+void Anim_Koopa_Move(Enemy *e) BANKED;
+void Anim_Koopa_Shell_Idle(Enemy *e)BANKED;
+void Anim_Koopa_Shell_Move(Enemy *e)BANKED;
 void Anim_Koopa_Knockback(Enemy *e)BANKED;
 #endif

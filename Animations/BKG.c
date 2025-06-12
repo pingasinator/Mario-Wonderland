@@ -33,10 +33,7 @@ extern unsigned char S_Water_3[];
 
 void Anim_BKG_Update(void) BANKED
 {
-    Anim_BKG_Coin();
-    Anim_Q_block();
-    Anim_Water();
-    Anim_Lava();
+
 }
 
 void Anim_BKG_Coin(void)BANKED
@@ -96,19 +93,19 @@ void Anim_Water(void)BANKED
     switch(Water_animstate)
     {
         case 0:
-        set_bkg_data(0x23,2,S_Water_0);
+        set_bkg_data(0x27,2,S_Water_0);
         break;
 
         case 5:
-        set_bkg_data(0x23,2,S_Water_1);
+        set_bkg_data(0x27,2,S_Water_1);
         break;
 
         case 10:
-        set_bkg_data(0x23,2,S_Water_2);
+        set_bkg_data(0x27,2,S_Water_2);
         break;
 
         case 15:
-        set_bkg_data(0x23,2,S_Water_3);
+        set_bkg_data(0x27,2,S_Water_3);
         break;
     }
     Water_animstate += Time;
@@ -121,19 +118,19 @@ void Anim_Lava(void)BANKED
     switch(Lava_animstate)
     {
         case 0:
-        set_bkg_data(0x25,2,S_Lava_0);
+        set_bkg_data(0x29,2,S_Lava_0);
         break;
 
         case 5:
-        set_bkg_data(0x25,2,S_Lava_1);
+        set_bkg_data(0x29,2,S_Lava_1);
         break;
 
         case 10:
-        set_bkg_data(0x25,2,S_Lava_2);
+        set_bkg_data(0x29,2,S_Lava_2);
         break;
 
         case 15:
-        set_bkg_data(0x25,2,S_Lava_3);
+        set_bkg_data(0x29,2,S_Lava_3);
         break;
     }
     Lava_animstate += Time;

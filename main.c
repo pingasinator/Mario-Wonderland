@@ -44,10 +44,14 @@ void GBDKTitleScreen(void)
     while(1)
     {
         pos_Y--;
+        Input_Update();
         move_bkg(0,pos_Y);
         SHOW_BKG;
         vsync();
-        if(pos_Y == 0)
+        if(allInputsDown[Joy_Button_START])
+        {
+            break;
+        }else if(pos_Y == 0)
         {
             delay(1000);
             break;

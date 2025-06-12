@@ -164,6 +164,20 @@ void Anim_Mario_Small_Jump_Run(void) BANKED
     set_sprite_tile(9,0x59);
 }
 
+void Anim_Mario_Small_Crounch(void) BANKED
+{
+    set_sprite_tile(0,0x00);
+    set_sprite_tile(1,0x00);
+    set_sprite_tile(2,0x00);
+    set_sprite_tile(3,0x00);
+    set_sprite_tile(4,0x00);
+    set_sprite_tile(5,0x60);
+    set_sprite_tile(6,0x61);
+    set_sprite_tile(7,0x00);
+    set_sprite_tile(8,0x70);
+    set_sprite_tile(9,0x71);
+}
+
 void Anim_Mario_Small_Win(int animstate) BANKED
 {
     switch(animstate)

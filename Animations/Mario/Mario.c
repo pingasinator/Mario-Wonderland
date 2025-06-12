@@ -2,6 +2,7 @@
 #include "..\..\include\Sprite.h"
 #include "..\..\include\Camera.h"
 #include "..\..\include\collision.h"
+#include "..\..\include\Objects.h"
 #include "..\..\include\GameSystem.h"
 #include "..\..\include\Animations\Mario\Mario.h"
 #include "..\..\include\Animations\Mario\SmallMario.h"
@@ -16,6 +17,7 @@ extern unsigned char allInputsPressed[];
 extern char Mario_isRunning;
 extern Collision Mario_Hitbox;
 extern unsigned char Mario_Transformation;
+extern char Mario_Star;
 
 int animstate_Star;
 unsigned char Mario_animState;
@@ -69,6 +71,11 @@ void Anim_Mario_Update(void) NONBANKED
         Anim_Mario_Slide();
         break;
 
+        case Animator_Mario_State_Crounch:
+        Mario_animState = 0;
+        Anim_Mario_Crounch();
+        break;
+
         case Animator_Mario_State_Death:
         Mario_animState = 0;
         Anim_Mario_Death();
@@ -91,10 +98,9 @@ void Anim_Mario_Update(void) NONBANKED
         Mario_animState++;
         Mario_animState = Mario_animState >= 6 ? 0 : Mario_animState;
         break;
-
-
     }
 
+    Anim_Mario_Star();
     DisplayMario();
 }
 
@@ -258,6 +264,28 @@ void Anim_Mario_Slide(void) BANKED
     }
 }
 
+void Anim_Mario_Crounch(void) BANKED
+{
+    switch (Mario_Transformation)
+    {
+        case 0:
+        Anim_Mario_Small_Crounch();
+        break;
+    
+        case 1:
+        Anim_Mario_Great_Crounch();
+        break;
+
+        case 2:
+        Anim_Mario_Fire_Crounch();
+        break;
+
+        case 3:
+        Anim_Mario_Racoon_Crounch();
+        break;
+    }
+}
+
 void Anim_Mario_Death(void) NONBANKED
 {
     if(currentMarioPalette != 0)
@@ -324,24 +352,6 @@ void Anim_Mario_Win(int animstate) BANKED
 
 void Anim_Mario_Star(void) BANKED
 {
-
-
-    switch (animstate_Star)
-    {
-        case 0:
-        for(int i = 0; i < 10;i++)
-        {
-            set_sprite_prop(i,S_PALETTE);
-        }
-        break;
-    
-        case 10:
-        for(int i = 0; i < 10;i++)
-        {
-            set_sprite_prop(i,S_PALETTE);
-        }
-        break;
-    }
-    animstate_Star += Time;
-    animstate_Star = animstate_Star >= 20 ? 0 : animstate_Star;
+    animstate_Star += Mario_Star * Time;
+    animstate_Star = animstate_Star >= 10 ? 0 : animstate_Star;
 }

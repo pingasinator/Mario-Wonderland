@@ -11,8 +11,9 @@
 #define Animator_Mario_State_Jump_Run 0x04
 #define Animator_Mario_State_Fall 0x05
 #define Animator_Mario_State_Slide 0x06
-#define Animator_Mario_State_Death 0x07
-#define Animator_Mario_State_Win 0x08
+#define Animator_Mario_State_Crounch 0x07
+#define Animator_Mario_State_Death 0x08
+#define Animator_Mario_State_Win 0x09
 #define Animator_Mario_State_Racoon_Glide 0x20
 #define Animator_Mario_State_Racoon_Fly 0x21
 
@@ -24,6 +25,7 @@ void Anim_Mario_Jump(void) BANKED;
 void Anim_Mario_Jump_Run(void) BANKED;
 void Anim_Mario_Fall(void) BANKED;
 void Anim_Mario_Slide(void) BANKED;
+void Anim_Mario_Crounch(void)BANKED;
 void Anim_Mario_Death(void) NONBANKED;
 void Anim_Mario_Star(void) BANKED;
 void Anim_Mario_Win(int animstate) BANKED;

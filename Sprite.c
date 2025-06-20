@@ -123,7 +123,7 @@ void Set_Tile_Palette(int i) BANKED
         case 0:
         Current_Background_Palette = Overworld_Background_Palette;
         Current_Ground_Palette = Overworld_Ground_Palette;
-        set_bkg_data(0x00,108,S_Overworld_Ground);
+        set_bkg_data(0x00,110,S_Overworld_Ground);
         break;
 
         case 1:

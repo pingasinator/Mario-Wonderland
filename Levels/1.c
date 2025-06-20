@@ -17,7 +17,7 @@ const Enemy Level_1_1_Enemies[] =
     {.type=Enemy_Type_Goomba,.SpawnPoint={.x=16 * 54,.y=16*30}},
     {.type=Enemy_Type_Goomba,.SpawnPoint={.x=16 * 56,.y=16*30}},
     {.type=Enemy_Type_Goomba,.SpawnPoint={.x=16 * 76,.y=16*28}},
-    {.type=Enemy_Type_Goomba,.SpawnPoint={.x=16 * 95,.y=16*30}},
+    {.type=Enemy_Type_Koopa,.SpawnPoint={.x=16 * 95,.y=16*30}},
     {.type=Enemy_Type_Goomba,.SpawnPoint={.x=16 * 97,.y=16*30}},
     {.type=Enemy_Type_Goomba,.SpawnPoint={.x=16 * 99,.y=16*30}},
     {.type=Enemy_Type_Goomba,.SpawnPoint={.x=16 * 137,.y=16*26}},

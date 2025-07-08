@@ -110,13 +110,11 @@ void Update_Goomba(Enemy *e)BANKED
                         Mario_Hit();
                     }
                 }
-                Anim_Goomba_Update(e);
             }else
             {
                 e->velocity.x = 0;
                 e->deathDelay--;
                 e->AnimatorState = Animator_Enemy_Goomba_State_Death;
-                Anim_Goomba_Update(e);
                 if(e->deathDelay <= 0)
                 {
                     e->Enabled = 0;
@@ -126,11 +124,10 @@ void Update_Goomba(Enemy *e)BANKED
             }
 
             e->velocity.y = e->Knockback ? e->velocity.y : Clamp(e->velocity.y,-2,2);
-
             e->Hitbox.position.x += e->velocity.x;
             e->Hitbox.position.y += e->velocity.y;
-
             TilemapCollisionPhysicsSide(&e->Hitbox,&e->velocity,0);
+            Anim_Goomba_Update(e);
         }else
         {
             e->velocity.x = e->dir.x * 2;

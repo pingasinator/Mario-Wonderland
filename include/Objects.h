@@ -46,17 +46,16 @@ typedef struct
     char state;
 }EndLevelObject;
 
-void Use_Coin(int x,int y) BANKED;
+
 void Objects_Update(void) BANKED;
+void Object_Reset(void) BANKED;
 void Coin_Update(Object *o) BANKED;
 void Blocks_Update(Object *o) BANKED;
 void HiddenCoin_Update(Object *o) BANKED;
 
 void Q_Block(int Type,int x,int y) BANKED;
 
-void Object_Create_Item(int type,int x,int y)BANKED;
-void Object_Create_Coin(int x,int y)  BANKED;
-void Object_Create_FireBall(int dir,int x,int y) BANKED;
+Object *Object_Create(unsigned char type,int x,int y,int dir)BANKED;
 void Object_Create_HiddenCoin(int x,int y) BANKED;
 
 void Object_Item_Start(Object *o) BANKED;
@@ -66,5 +65,5 @@ void Object_Item_StaticItem_Update(Object *o)BANKED;
 void Object_Item_Star_Update(Object *o)BANKED;
 
 void FireBall_Update(Object *o) BANKED;
-void TileObject_Update(unsigned char Tile,int X,int Y,Vector2 Velocity,int side) BANKED;
+
 #endif

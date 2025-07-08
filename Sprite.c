@@ -6,6 +6,7 @@
 
 #pragma bank 2
 
+unsigned char current_Palette_Index;
 unsigned char **Current_Ground_Palette;
 unsigned char **Current_Background_Palette;
 
@@ -118,6 +119,7 @@ int Remove_NonMarioObject_Sprite(int Place,int size) BANKED
 
 void Set_Tile_Palette(int i) BANKED
 {
+    current_Palette_Index = i;
     switch(i)
     {
         case 0:

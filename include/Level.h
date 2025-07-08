@@ -10,6 +10,7 @@ typedef struct
     unsigned char *Tilemap;
     Enemy *Enemies;
     Vector2 Spawnpoint;
+    Vector2 CameraPoint;
     char EnemiesCount;
     unsigned char Length;
     unsigned char Width;

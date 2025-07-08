@@ -112,7 +112,7 @@ void Update_Mario(void)BANKED
 
         if(allInputsDown[Joy_Button_B] && Mario_Transformation == 2)
         { 
-            Object_Create_FireBall(Mario_dir,Mario_Hitbox.position.x + Mario_dir * 8,Mario_Hitbox.position.y);
+            Object_Create(Object_Type_Fireball,Mario_Hitbox.position.x + Mario_dir * 8,Mario_Hitbox.position.y,Mario_dir);
         }
 
         Mario_Update_CheckGround();

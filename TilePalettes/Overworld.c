@@ -1,4 +1,4 @@
-#pragma bank 2
+#pragma bank 2 
 
 extern unsigned char T_null[];
 extern unsigned char T_Grey_Light[];
@@ -50,6 +50,7 @@ extern unsigned char T_OW_Ground_15[];
 extern unsigned char T_OW_Ground_16[];
 extern unsigned char T_OW_Ground_17[];
 extern unsigned char T_OW_Ground_18[];
+extern unsigned char T_OW_Ground_19[];
 
 extern unsigned char T_OW_background_0[];
 extern unsigned char T_OW_background_1[];
@@ -74,7 +75,7 @@ const unsigned char *Overworld_Ground_Palette[] =
     T_Alt_Block,T_Used_Block,T_Pipe_V_UL,T_Pipe_V_UR,T_Pipe_V_ML,T_Pipe_V_MR,T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_MU,T_Pipe_H_MD,T_Pipe_H_DR,T_Pipe_H_UR,T_Pipe_V_UL,T_Pipe_V_UR,
     T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_DR,T_Pipe_H_UR,T_OW_Ground_0,T_OW_Ground_1,T_OW_Ground_2,T_OW_Ground_3,T_OW_Ground_4,T_OW_Ground_5,
     T_OW_Ground_6,T_OW_Ground_7,T_OW_Ground_8,T_OW_Ground_9,T_OW_Ground_10,T_OW_Ground_11,T_OW_Ground_12,T_OW_Ground_13,T_OW_Ground_14,
-    T_OW_Ground_15,T_OW_Ground_16,T_OW_Ground_17,T_OW_Ground_18
+    T_OW_Ground_15,T_OW_Ground_16,T_OW_Ground_17,T_OW_Ground_18,T_OW_Ground_19
 };
 
 const unsigned char *Overworld_Background_Palette[] = 

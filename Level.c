@@ -58,6 +58,7 @@ void SetLevel(int LevelSelected)
     SWITCH_RAM(2);
     Reset_Vram();
     Reset_Level();
+    Object_Reset();
     Set_Mario_Palette(0);
     Set_Camera_Position(0,16*29);
     SWITCH_ROM(20 + LevelSelected / 2);
@@ -93,7 +94,6 @@ void Level_Update(void)
     {
         Input_Update();
         Update_Mario();
-        Update_Camera();
         Update_HUD(Lifes,Coins,Timer);
         Update_Enemy();
         Objects_Update();

@@ -7,7 +7,10 @@
 #include "..\include\Animations\Objects.h"
 #include "..\include\Enemies.h"
 #include "..\include\Level.h"
+
 #include <gb\gb.h>
+#include <asm\sm83\string.h>
+#include <stdlib.h>
 
 #pragma bank 14
 
@@ -19,6 +22,7 @@ const Object hiddenCoin = {.type=Object_Type_HiddenCoin,.enabled=1,.hitbox={.pix
 const Object Item = {.type=0,.start=1,.enabled=1,.dir=1,.hitbox={.pixelsize={.x=8,.y=8},.pixeloffset={.x=0,.y=-8}}};
 
 Object Object_Buffer[10];
+int Object_number;
 
 extern Vector2 Camera;
 extern char Mario_Transformation;
@@ -47,13 +51,16 @@ void Object_Reset(void) BANKED
         }
         Object_Buffer[i] = nullObject;
     }
+    Object_number = 0;
 }
 
 void Objects_Update(void) BANKED
 {
-    for(int i = 0;i < 10;i++)
+    int j=0;
+    int k=0;
+    for(int i = 0;i < Object_number;i++)
     {
-        if(Object_Buffer[i].enabled != 0)
+        if(Object_Buffer[i].enabled)
         {
             switch(Object_Buffer[i].type)
             {
@@ -86,8 +93,14 @@ void Objects_Update(void) BANKED
                 Object_Item_Update(&Object_Buffer[i]);
                 break;
             }
+            Object_Buffer[j] = Object_Buffer[i];
+            j++;
+        }else
+        {
+            k++;
         }
     }
+    Object_number -= k;
 }
 
 void Blocks_Update(Object *o) BANKED
@@ -331,64 +344,6 @@ void FireBall_Update(Object *o) BANKED
     } 
 }
 
-void Use_Coin(int x,int y) BANKED
-{
-    Set_Tile(0,x,y);
-    Coins++;
-    if(Coins >= 100)
-    {
-        Coins = 0;
-        Lifes++;
-        Lifes = Clamp(Lifes,0,99);
-    }
-}
-
-void TileObject_Update(unsigned char Tile,int X,int Y,Vector2 velocity,int side) BANKED
-{
-    if(Tile >= 0x81 && Tile <= 0x95)
-    {
-        if(velocity.y < 0 && side == 1)
-        {
-            Q_Block(Tile,X,Y);
-        }
-    }else
-    {
-        switch(Tile)
-        {
-            case 0x04:
-            Use_Coin(X,Y);
-            break;
-
-            case 0x05:
-            Object_Create_HiddenCoin(X,Y);
-            break;
-        }
-    }
-}
-
-void Object_Create_Coin(int x,int y) BANKED
-{
-    for(int i = 0;i < 10;i++)
-    {
-        if(Object_Buffer[i].enabled == 0)
-        {
-            Coins++;
-            if(Coins >= 100)
-            {
-                Coins = 0;
-                Lifes++;
-                Lifes = Clamp(Lifes,0,99);
-            }
-            Object_Buffer[i] = coin;
-            Object_Buffer[i].hitbox.position.x = (x / 16) * 16 + 8;
-            Object_Buffer[i].hitbox.position.y = (y / 16) * 16 + 16;
-            Object_Buffer[i].originalPosition.x = (x / 16) * 16;
-            Object_Buffer[i].originalPosition.y = (y / 16) * 16;
-            break;
-        }
-    }
-}
-
 void Object_Create_HiddenCoin(int x,int y) BANKED
 {
     for(int i = 0; i < 10;i++)
@@ -404,134 +359,150 @@ void Object_Create_HiddenCoin(int x,int y) BANKED
     }
 }
 
-void Object_Create_FireBall(int dir,int x,int y) BANKED
+Object *Object_Create(unsigned char Type,int x, int y,int dir) BANKED
 {
-    for(int i = 0;i < 10;i++)
+    if(Object_number < 10)
     {
-        if(!Object_Buffer[i].enabled && FireballNumber < 2)
+        Object_number++;
+        switch(Type)
         {
-            FireballNumber++;
-            Object_Buffer[i] = fireball;
-            Object_Buffer[i].dir = dir;
-            Object_Buffer[i].Sprite = Add_Sprite(2);
-            Object_Buffer[i].hitbox.position.x = x;
-            Object_Buffer[i].hitbox.position.y = y;
+            case Object_Type_Item_Mushroom:
+            case Object_Type_Item_FireFlower:
+            case Object_Type_Item_RacoonLeaf:
+            case Object_Type_Item_Koopashell:
+            case Object_Type_Item_Tinyshroom:
+            case Object_type_Item_Star:
+            case Object_Type_Item_1UP:
+            Object_Buffer[Object_number - 1] = Item;
+            Object_Buffer[Object_number - 1].Sprite = Add_Sprite(4);
             break;
-        }
-    }
-}
 
-void Object_Create_Item(int type,int x,int y)BANKED
-{
-    for(int i = 0; i < 10;i++)
-    {
-        if(!Object_Buffer[i].enabled)
-        {
-            Object_Buffer[i] = Item;
-            Object_Buffer[i].type = type;
-            Object_Buffer[i].hitbox.position.x = x;
-            Object_Buffer[i].hitbox.position.y = y;
-            Object_Buffer[i].originalPosition.x = x;
-            Object_Buffer[i].originalPosition.y = y;
+            case Object_Type_Fireball:
+            if(FireballNumber < 2)
+            {
+                FireballNumber++;
+                Object_Buffer[Object_number - 1] = fireball;
+                Object_Buffer[Object_number - 1].dir = dir;
+                Object_Buffer[Object_number - 1].Sprite = Add_Sprite(2);
+            }
+            break;
+
+            case Object_Type_Coin:
+            Coins++;
+            if(Coins >= 100)
+            {
+                Coins = 0;
+                Lifes++;
+                Lifes = Clamp(Lifes,0,99);
+            }
+            Object_Buffer[Object_number - 1] = coin;
+            break;
+
+            case Object_Type_Block:
+            Object_Buffer[Object_number - 1].Sprite = Add_Sprite(4);
             break;
         }
+
+        Object_Buffer[Object_number - 1].type = Type;
+        Object_Buffer[Object_number - 1].enabled = 1;
+        Object_Buffer[Object_number - 1].hitbox.position.x = x;
+        Object_Buffer[Object_number - 1].hitbox.position.y = y;
+        Object_Buffer[Object_number - 1].originalPosition.x = x;
+        Object_Buffer[Object_number - 1].originalPosition.y = y;
+
+        return &Object_Buffer[Object_number - 1];
+    }else
+    {
+        return NULL;
     }
 }
 
 void Q_Block(int Type,int x,int y) BANKED
 {
-    for(int i = 0;i < 10;i++)
+    Object *Block = Object_Create(Object_Type_Block,(x / 16) * 16,(y / 16) * 16,0);
+    if(Block != NULL)
     {
-        if(Object_Buffer[i].enabled == 0)
+        Set_Tile(0x80,x,y);
+        Block->type = Object_Type_Block;
+        switch (Type)
         {
-            Set_Tile(0x80,x,y);
-            Object_Buffer[i].hitbox.position.x = (x / 16) * 16;
-            Object_Buffer[i].hitbox.position.y = (y / 16) * 16;
-            Object_Buffer[i].originalPosition.x = (x / 16) * 16;
-            Object_Buffer[i].originalPosition.y = (y / 16) * 16;
-            Object_Buffer[i].enabled = 1;
-            Object_Buffer[i].type = Object_Type_Block;
-            switch (Type)
-            {
-                case 0x81:
-                Object_Create_Coin(Object_Buffer[i].originalPosition.x,Object_Buffer[i].originalPosition.y);
-                break;
+            case 0x81:
+            Object_Create(Object_Type_Coin,Block->originalPosition.x + 8,Block->originalPosition.y,0);
+            break;
     
-                case 0x83:
-                Object_Create_Item(Object_Type_Item_Mushroom,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
+            case 0x83:
+            Object_Create(Object_Type_Item_Mushroom,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
 
-                case 0x84:
-                Object_Create_Item(Mario_Transformation >= 1 ? Object_Type_Item_FireFlower : Object_Type_Item_Mushroom ,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
+            case 0x84:
+            Object_Create(Mario_Transformation >= 1 ? Object_Type_Item_FireFlower : Object_Type_Item_Mushroom ,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
 
-                case 0x85:
-                Object_Create_Item(Mario_Transformation >= 1 ? Object_Type_Item_RacoonLeaf : Object_Type_Item_Mushroom,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
+            case 0x85:
+            Object_Create(Mario_Transformation >= 1 ? Object_Type_Item_RacoonLeaf : Object_Type_Item_Mushroom,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
 
-                case 0x86:
-                Object_Create_Item(Mario_Transformation >= 1 ? Object_Type_Item_Koopashell : Object_Type_Item_Mushroom,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
+            case 0x86:
+            Object_Create(Mario_Transformation >= 1 ? Object_Type_Item_Koopashell : Object_Type_Item_Mushroom,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
 
-                case 0x87:
-                Object_Create_Item(Object_Type_Item_Tinyshroom,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
+            case 0x87:
+            Object_Create(Object_Type_Item_Tinyshroom,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
 
-                case 0x89:
-                Object_Create_Item(Object_type_Item_Star,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
+            case 0x89:
+            Object_Create(Object_type_Item_Star,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
 
-                case 0x8A:
-                Object_Create_Item(Object_Type_Item_1UP,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
+            case 0x8A:
+            Object_Create(Object_Type_Item_1UP,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
 
-                case 0x8B:
-                if(Mario_Transformation >= 1)
-                {
-                    Object_Buffer[i].type = Object_Type_DestroyedBrick;
-                    Object_Buffer[i].Sprite = Remove_NonMarioObject_Sprite(Object_Buffer[i].Sprite,4);
-                }else
-                {
-                    Object_Buffer[i].type = Object_Type_BumpedBrick;
-                    Anim_Object_Brick(&Object_Buffer[i]);
-                }
-                break;
-
-                case 0x8C:
-                Object_Buffer[i].type = Object_Type_ObjectBrick;
-                Object_Create_Coin(Object_Buffer[i].originalPosition.x,Object_Buffer[i].originalPosition.y);
-                break;
-
-                case 0x8D:
-                Object_Buffer[i].type = Object_Type_ObjectBrick;
-                Object_Create_Item(Object_Type_Item_Mushroom,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
-
-                case 0x8E:
-                Object_Buffer[i].type = Object_Type_ObjectBrick;
-                Object_Create_Item(Mario_Transformation >= 1 ? Object_Type_Item_FireFlower : Object_Type_Item_Mushroom ,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
-
-                case 0x8F:
-                Object_Buffer[i].type = Object_Type_ObjectBrick;
-                Object_Create_Item(Mario_Transformation >= 1 ? Object_Type_Item_RacoonLeaf : Object_Type_Item_Mushroom,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
-
-                case 0x90:
-                Object_Buffer[i].type = Object_Type_ObjectBrick;
-                Object_Create_Item(Mario_Transformation >= 1 ? Object_Type_Item_Koopashell : Object_Type_Item_Mushroom,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
-
-                case 0x94:
-                Object_Buffer[i].type = Object_Type_ObjectBrick;
-                Object_Create_Item(Object_type_Item_Star,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
-
-                case 0x95:
-                Object_Buffer[i].type = Object_Type_ObjectBrick;
-                Object_Create_Item(Object_Type_Item_1UP,Object_Buffer[i].originalPosition.x + 8,Object_Buffer[i].originalPosition.y + 16);
-                break;
+            case 0x8B:
+            if(Mario_Transformation >= 1)
+            {
+                Block->type = Object_Type_DestroyedBrick;
+                Block->Sprite = Remove_NonMarioObject_Sprite(Block->Sprite,4);
+            }else
+            {
+                Block->type = Object_Type_BumpedBrick;
+                Anim_Object_Brick(Block);
             }
+            break;
+
+            case 0x8C:
+            Block->type = Object_Type_ObjectBrick;
+            Object_Create(Object_Type_Coin,Block->originalPosition.x,Block->originalPosition.y,0);
+            break;
+
+            case 0x8D:
+            Block->type = Object_Type_ObjectBrick;
+            Object_Create(Object_Type_Item_Mushroom,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
+
+            case 0x8E:
+            Block->type = Object_Type_ObjectBrick;
+            Object_Create(Mario_Transformation >= 1 ? Object_Type_Item_FireFlower : Object_Type_Item_Mushroom ,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
+
+            case 0x8F:
+            Block->type = Object_Type_ObjectBrick;
+            Object_Create(Mario_Transformation >= 1 ? Object_Type_Item_RacoonLeaf : Object_Type_Item_Mushroom,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
+
+            case 0x90:
+            Block->type = Object_Type_ObjectBrick;
+            Object_Create(Mario_Transformation >= 1 ? Object_Type_Item_Koopashell : Object_Type_Item_Mushroom,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
+
+            case 0x94:
+            Block->type = Object_Type_ObjectBrick;
+            Object_Create(Object_type_Item_Star,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
+            break;
+
+            case 0x95:
+            Block->type = Object_Type_ObjectBrick;
+            Object_Create(Object_Type_Item_1UP,Block->originalPosition.x + 8,Block->originalPosition.y + 16,0);
             break;
         }
     }

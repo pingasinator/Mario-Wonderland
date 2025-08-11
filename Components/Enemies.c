@@ -21,23 +21,27 @@ extern Vector2 Mario_Velocity;
 extern Collision Mario_Hitbox;
 extern char Mario_Star;
 extern char Mario_dir;
-extern char Mario_dead;
-extern char Mario_Win;
+extern unsigned char Mario_State;
+
+extern Scene CurrentScene;
 
 Enemy *AllEnemies = NULL;
 int Enemies_Number = 0;
 const Enemy Goomba={.type=Enemy_Type_Goomba,.Sprite_tile=0,.Sprite_size=4,.dir.x=-1,.dead=0,.Knockback=0,.deathDelay=10,.Hitbox={.pixelsize={.x=8,.y=8},.pixeloffset={.x=0,.y=-8}}};
 const Enemy Koopa={.type=Enemy_Type_Koopa,.Sprite_tile=0,.Sprite_size=5,.dir.x=-1,.dead=0,.Knockback=0,.deathDelay=10,.Hitbox={.pixelsize={.x=8,.y=8},.pixeloffset={.x=0,.y=-8}}};
 
-void Set_All_Enemies(int Level)NONBANKED
+void Set_All_Enemies(void)NONBANKED
 {
     if(AllEnemies != NULL)
     {
         free(AllEnemies);
     }
-    Enemies_Number = GetLevel(Level).EnemiesCount;
+
+    if(CurrentScene.Enemies != NULL)
+    {
+        Enemies_Number = CurrentScene.EnemiesCount;
     AllEnemies = malloc(Enemies_Number * sizeof(Enemy));
-    memcpy(AllEnemies,GetLevel(Level).Enemies,Enemies_Number * sizeof(Enemy));
+    memcpy(AllEnemies,CurrentScene.Enemies,Enemies_Number * sizeof(Enemy));
 
     for(int i = 0; i < Enemies_Number;i++)
     {
@@ -57,6 +61,8 @@ void Set_All_Enemies(int Level)NONBANKED
             break;
         }
     }
+    }
+
 }
 
 void Update_Enemy(void)BANKED
@@ -68,7 +74,7 @@ void Update_Enemy(void)BANKED
             AllEnemies[i].Enabled = 1;
         }
         
-        if(AllEnemies[i].Enabled &&! Mario_dead &&! Mario_Win)
+        if(AllEnemies[i].Enabled && Mario_State != Mario_State_Dead && Mario_State != Mario_State_Win)
         {
             switch(AllEnemies[i].type)
             {
@@ -95,7 +101,7 @@ void Update_Goomba(Enemy *e)BANKED
                 e->AnimatorState = Animator_Enemy_Goomba_State_Move;
                 e->dir.x = Get_Tile(e->Hitbox.position.x + e->Hitbox.pixeloffset.x + e->dir.x * (e->Hitbox.pixelsize.x + 1),e->Hitbox.position.y + e->Hitbox.pixeloffset.y) >= 0x80 ? e->dir.x - 2 * Sign(e->dir.x) : e->dir.x;
 
-                if(!Mario_dead && !Mario_Win && OnCollision(e->Hitbox,Mario_Hitbox))  
+                if(!(Mario_State == Mario_State_Dead) && !(Mario_State == Mario_State_Win) && OnCollision(e->Hitbox,Mario_Hitbox))  
                 {
                     if(Mario_Star)
                     {
@@ -158,14 +164,11 @@ void Update_Koopa(Enemy *e)BANKED
                 e->velocity.x = e->dir.x * Time;
                 e->Hitbox.pixeloffset.x = Abs(AllEnemies->Hitbox.pixeloffset.x) * e->dir.x;
 
-                Vector2 Raypoint = {.x=e->Hitbox.position.x + e->Hitbox.pixeloffset.x + e->dir.x * (e->Hitbox.pixelsize.x + 2),.y=e->Hitbox.position.y + e->Hitbox.pixeloffset.y  + 7};
-                Vector2 Raydir = {.x=0,.y=-1};
-
+                e->dir.x = Get_Tile(e->Hitbox.position.x + e->Hitbox.pixeloffset.x + e->dir.x * (e->Hitbox.pixelsize.x + 1),e->Hitbox.position.y + e->Hitbox.pixeloffset.y) >= 0x80 ? e->dir.x - 2 * Sign(e->dir.x) : e->dir.x;
                 e->AnimatorState = Animator_Enemy_Koopa_State_Move;
 
-                e->dir.x = Raycast(Raypoint,Raydir,14) ? e->dir.x - 2 * Sign(e->dir.x) : e->dir.x;
 
-                if(OnCollision(e->Hitbox,Mario_Hitbox) &&! Mario_dead &&! Mario_Win)  
+                if(OnCollision(e->Hitbox,Mario_Hitbox) &&! (Mario_State == Mario_State_Dead) &&! (Mario_State == Mario_State_Win))  
                 {
                     if(Mario_Star)
                     {

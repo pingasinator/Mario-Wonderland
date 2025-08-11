@@ -10,6 +10,7 @@ int Add_Sprite(int size)BANKED;
 int Remove_Sprite(int Place,int size)BANKED;
 int Remove_NonMarioObject_Sprite(int Place,int size) BANKED;
 
+void Tile_Tilmap_display_xy(int x,int y) BANKED;
 void Display_Tile(unsigned char Sprite,int x,int y)BANKED;
 void Set_Tile_Palette(int i)BANKED;
 unsigned char Get_Tile(int x,int y)BANKED;

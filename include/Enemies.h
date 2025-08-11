@@ -27,7 +27,7 @@ typedef struct
 
 void Update_Enemy(void)BANKED;
 
-void Set_All_Enemies(int Level)NONBANKED;
+void Set_All_Enemies(void)NONBANKED;
 
 void Update_Goomba(Enemy *e)BANKED;
 

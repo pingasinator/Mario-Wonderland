@@ -5,7 +5,6 @@
 #include "include\Sprite.h"
 #include "include\Objects.h"
 #include "include\GameSystem.h"
-#include "include\Tile.h"
 
 #include "include\Animations\BKG.h"
 #include "include\Animations\Objects.h"
@@ -22,16 +21,10 @@ extern Level Level_1_1;
 
 extern unsigned char Level_1_1_Tilemap[];
 
-Level *Test[] = 
-{
-    &Level_1_1
-};
-
 extern Vector2 Mario_Velocity;
 extern Collision Mario_Hitbox;
 extern char Mario_State;
 extern char Mario_dir;
-extern unsigned char Mario_Transformation;
 
 extern char GameMode;
 
@@ -49,11 +42,6 @@ int currentScene_Size;
 
 int Timer = 300;
 int milisec = 30;
-int SceneTransitionDelay = 30;
-
-unsigned char LoadScene;
-unsigned char NextSceneIndex;
-unsigned char currentSceneIndex;
 
 int EndofLevel = 0;
 
@@ -66,71 +54,51 @@ void Reset_Level(void)
 
 void Level_Load_Scene(int SelectedScene)
 {
-    ENABLE_RAM;
-    SWITCH_RAM(2);
-    SWITCH_ROM(20);
-    CurrentScene = currentLevel.Scenes[SelectedScene];
-    Reset_Vram();
-    Object_Reset();
+
+    
+    Set_Mario_Palette(0);
+    SWITCH_ROM(20 + 1 / 2);
+    
+    Set_Camera_Position(0,16*29);
     Set_All_Enemies();
-    Set_Mario_Palette(Mario_Transformation);
-    SWITCH_ROM(20);
     init_Enemies_Vram();
     init_Objects_Vram();
     init_HUD_Vram();
-    currentScene_Size = CurrentScene.Length * CurrentScene.Width;
+    init_Mario(CurrentScene.Spawnpoint.x,CurrentScene.Spawnpoint.y);
     Set_Tile_Palette(CurrentScene.Palette);
 
-    memcpy(Tilemap,CurrentScene.Tilemap,sizeof(uint8_t) * currentScene_Size);
-    init_Mario(CurrentScene.StartPoint.Point.x,CurrentScene.StartPoint.Point.y);
-    Set_Camera_Position(CurrentScene.StartPoint.Camera.x,CurrentScene.StartPoint.Camera.y);
-    for(int y = 0;y < 16;y++)
+    for(int y = 0;y < 32;y++)
     {
         for(int x = 0;x < 16;x++)
         {
-            Tile_Tilmap_display_xy((Camera.x / 16 / 16) + x * 16 ,(Camera.y / 16 / 16) * 16 * 16 + y*16);
+            Display_Tile(Tilemap[Camera.x / 16 + x  + y * CurrentScene.Length],(Camera.x / 16 * 2) + x * 2,y * 2);
         }
     }
-    init_win(0);
-    SHOW_SPRITES;
-    SHOW_WIN;
-    SHOW_BKG;
-    DISABLE_RAM;
-    
 }
 
 void SetLevel(int LevelSelected)
 {
+    ENABLE_RAM;
+    SWITCH_RAM(2);
     SWITCH_ROM(20);
+        memcpy(Tilemap,Level_1_1_Tilemap,sizeof(uint8_t) * currentScene_Size);
+    Reset_Vram();
     Reset_Level();
+    Object_Reset();
     currentLevel = GetLevel(LevelSelected);
-    currentEndLevelObject = CurrentScene.Endblock;
-    Level_Load_Scene(0);
+
     
-}
-
-void Level_Set_Previous_Scene(void)
-{
-    if(!LoadScene)
-    {
-        LoadScene = 1;
-        NextSceneIndex--;
-    }
-
-}
-
-void Level_Set_Next_Scene(void)
-{
-    if(!LoadScene)
-    {
-        LoadScene = 1;
-        NextSceneIndex++;
-    }
+    CurrentScene = *currentLevel.Scenes;
+    Level_Load_Scene(0);
+    DISABLE_RAM;
 }
 
 void Level_Update(void)
 {
-    RS:
+    init_win(0);
+    SHOW_SPRITES;
+    SHOW_WIN;
+    SHOW_BKG;
     while (1)
     {
         Input_Update();
@@ -141,14 +109,6 @@ void Level_Update(void)
         Timer_Update();
         Anim_BKG_Update();
         EndBlock_Update();
-        if(LoadScene)
-        {
-            Level_Load_Scene(NextSceneIndex);
-            LoadScene = 0;
-            SceneTransitionDelay=60;
-            goto RS;
-        }
-
         if(EndofLevel)
         {
             GameMode = 0;

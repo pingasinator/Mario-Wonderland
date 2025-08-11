@@ -3,6 +3,11 @@
 #ifndef Mario_H
 #define Mario_H
 
+#define Mario_State_Neutral 0x00
+#define Mario_State_Win 0x01
+#define Mario_State_Dead 0x02
+#define Mario_State_EnterPipe 0x03
+
 void init_Mario(int x,int y)BANKED;
 void Update_Mario(void)BANKED;
 void Mario_Update_AirMovement(void) BANKED;

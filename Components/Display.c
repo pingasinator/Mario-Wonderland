@@ -5,6 +5,7 @@
 #include "..\include\Objects.h"
 
 #include "..\include\Animations\Mario\Mario.h"
+#include "..\include\Mario.h"
 #include "..\include\Animations\Enemies.h"
 
 #pragma bank 4
@@ -17,6 +18,7 @@ extern Collision Mario_Hitbox;
 extern char Mario_dir;
 extern char Mario_Transformation;
 extern char Mario_Animator_State;
+extern unsigned char Mario_State;
 extern int animstate_Star;
 
 void DisplayMario(void)BANKED
@@ -24,7 +26,7 @@ void DisplayMario(void)BANKED
     
     for(int i = 0; i < 10; i++)
     {
-        set_sprite_prop(i,S_FLIPX * (Mario_dir < 0) + ((animstate_Star >= 5) * S_PALETTE));
+        set_sprite_prop(i,S_FLIPX * (Mario_dir < 0) + ((animstate_Star >= 5) * S_PALETTE) + ((Mario_State == Mario_State_EnterPipe) * S_PRIORITY));
     }
 
     move_sprite(0,-(Camera.x - Mario_Hitbox.position.x) + 8 * (Mario_dir < 0),-(Camera.y - Mario_Hitbox.position.y) - 16);

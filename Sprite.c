@@ -55,7 +55,7 @@ extern unsigned char *Underground_Ground_Palette[];
 extern unsigned char *Airship_Ground_Palette[];
 extern unsigned char *Airship_Background_Palette[];
 
-extern Level currentLevel;
+extern Scene CurrentScene;
 
 extern unsigned char Tilemap[];
 
@@ -150,7 +150,7 @@ unsigned char Get_Tile(int x,int y) BANKED
 {
     ENABLE_RAM;
     SWITCH_RAM(2);
-    unsigned char tempTile = Tilemap[x/16 + y/16*currentLevel.Length];
+    unsigned char tempTile = Tilemap[x/16 + y/16*CurrentScene.Length];
     DISABLE_RAM;
     return tempTile;
 }
@@ -159,7 +159,7 @@ void Set_Tile(unsigned char Tile,int x,int y) BANKED
 {
     ENABLE_RAM;
     SWITCH_RAM(2);
-    Tilemap[x/16 + y/16*currentLevel.Length] = Tile;
+    Tilemap[x/16 + y/16*CurrentScene.Length] = Tile;
     DISABLE_RAM;
     Display_Tile(Tile,x/16*2,y/16*2);
 }
@@ -180,6 +180,28 @@ void Display_Tile(unsigned char Tile,int x,int y) BANKED
         set_bkg_tile_xy(x + 1,y,Current_Ground_Palette[Tile - 0x80][1]);
         set_bkg_tile_xy(x,y + 1,Current_Ground_Palette[Tile - 0x80][2]);
         set_bkg_tile_xy(x + 1,y + 1,Current_Ground_Palette[Tile - 0x80][3]);
+    }
+    
+}
+
+void Tile_Tilmap_display_xy(int x,int y) BANKED
+{
+    unsigned char Tile = Tilemap[x / 16 + y / 16 * CurrentScene.Length];
+    int VramX = (x / 16 - 16 * (x / 16 / 16)) * 2;
+    int VramY = (y / 16 - 16 * (y / 16 / 16)) * 2;
+
+    if(Tile <= 0x80)
+    {
+        set_bkg_tile_xy(VramX,VramY,Current_Background_Palette[Tile][0]);
+        set_bkg_tile_xy(VramX + 1,VramY,Current_Background_Palette[Tile][1]);
+        set_bkg_tile_xy(VramX,VramY + 1,Current_Background_Palette[Tile][2]);
+        set_bkg_tile_xy(VramX + 1,VramY + 1,Current_Background_Palette[Tile][3]);
+    }else
+    {
+        set_bkg_tile_xy(VramX,VramY,Current_Ground_Palette[Tile - 0x80][0]);
+        set_bkg_tile_xy(VramX + 1,VramY,Current_Ground_Palette[Tile - 0x80][1]);
+        set_bkg_tile_xy(VramX,VramY + 1,Current_Ground_Palette[Tile - 0x80][2]);
+        set_bkg_tile_xy(VramX + 1,VramY + 1,Current_Ground_Palette[Tile - 0x80][3]);
     }
     
 }

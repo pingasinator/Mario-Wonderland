@@ -1,6 +1,7 @@
 #include "..\include\Camera.h"
 #include "..\include\Level.h"
 #include "..\include\Sprite.h"
+#include "..\include\Tile.h"
 #include <gb\gb.h>
 
 #pragma bank 15
@@ -10,11 +11,11 @@ Vector2 oldCamera = {.x=0,.y=0};
 
 extern char Mario_runningProg;
 
-extern Level currentLevel;
+extern Scene CurrentScene;
 
 extern unsigned char Tilemap[];
 
-char c[20] = 
+char c[] = 
 {
     0xF0,0xFF,0xF4,0xF4,0x00,0xF1,0xFF,0xF4,0xF4,0x00,0xF3,0xF3,0xF3,0xF3,0xF3,0x00,0xFE,0xF4,0xF4,0xF4
 };
@@ -47,6 +48,7 @@ void Set_Camera_Position(int x,int y)BANKED
 {
     Camera.x = x;
     Camera.y = y;
+    move_bkg(Camera.x,Camera.y);
 }
 
 void Update_Camera(void)BANKED
@@ -65,8 +67,8 @@ void MoveCamera(int x,int y)BANKED
     Camera.x += x;
     Camera.y += y;
 
-    Camera.x = Clamp(Camera.x,0,currentLevel.Length * 16 - 10 * 16);
-    Camera.y = Clamp(Camera.y,0,currentLevel.Width * 16 - 9 * 16);
+    Camera.x = Clamp(Camera.x,0,CurrentScene.Length * 16 - 10 * 16);
+    Camera.y = Clamp(Camera.y,0,CurrentScene.Width * 16 - 9 * 16);
 
     if(Camera.x / 16 < oldCamera.x / 16 || Camera.x / 16 > oldCamera.x / 16)
     {
@@ -74,18 +76,18 @@ void MoveCamera(int x,int y)BANKED
         {
             for(int i = 0;i < 11;i++)
             {
-                if(Camera.x / 16 + 11 + (Camera.y / 16 - 1 + i) * currentLevel.Length > 0 && Camera.x / 16 + 11 + (Camera.y / 16 - 1 + i) * currentLevel.Length < 6144)
+                if(Camera.x / 16 + 11 + (Camera.y / 16 - 1 + i) * CurrentScene.Length > 0 && Camera.x / 16 + 11 + (Camera.y / 16 - 1 + i) * CurrentScene.Length < 6144)
                 {
-                    Display_Tile(Tilemap[Camera.x / 16 + 11 + (Camera.y / 16 - 1 + i) * currentLevel.Length],Camera.x / 16 * 2 + 22,Camera.y / 16 * 2 - 2 + i * 2);
+                    Tile_Tilmap_display_xy(Camera.x + 11 * 16,Camera.y - 16 + i *16);
                 }
             }
         }else
         {
             for(int i = 0;i < 11;i++)
             {
-                if(Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length > 0 && Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length < 6144)
+                if(Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * CurrentScene.Length > 0 && Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * CurrentScene.Length < 6144)
                 {
-                    Display_Tile(Tilemap[Camera.x / 16 - 1 + (Camera.y / 16 - 1 + i) * currentLevel.Length],Camera.x / 16 * 2 - 2,Camera.y / 16 * 2 - 2 + i * 2);
+                    Tile_Tilmap_display_xy(Camera.x - 16 ,Camera.y - 16 + i * 16);
                 }
             }
         }
@@ -97,18 +99,18 @@ void MoveCamera(int x,int y)BANKED
         {
             for(int i = 0;i < 13;i++)
             {
-                if(Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length < 6144)
+                if(Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * CurrentScene.Length > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * CurrentScene.Length < 6144)
                 {
-                    Display_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 + 9) * currentLevel.Length],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 + 18);
+                    Tile_Tilmap_display_xy(Camera.x - 16 + i * 16,Camera.y + 9 * 16);
                 }
             }
         }else
         {
             for(int i = 0;i < 13;i++)
             {
-                if(Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length < 6144)
+                if(Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * CurrentScene.Length > 0 && Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * CurrentScene.Length < 6144)
                 {
-                    Display_Tile(Tilemap[Camera.x / 16 - 1 + i + (Camera.y / 16 - 1) * currentLevel.Length],Camera.x / 16 * 2 - 2 + i * 2,Camera.y / 16 * 2 - 2);
+                    Tile_Tilmap_display_xy(Camera.x - 16 + i * 16,Camera.y - 16);
                 }
             }
         }

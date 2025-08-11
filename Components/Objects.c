@@ -28,7 +28,7 @@ extern Vector2 Camera;
 extern char Mario_Transformation;
 extern Collision Mario_Hitbox;
 extern char Mario_Star;
-extern char Mario_dead;
+extern unsigned char Mario_State;
 
 extern char Time;
 extern char Coins;
@@ -37,7 +37,7 @@ extern char Lifes;
 extern Enemy* AllEnemies;
 extern int Enemies_Number;
 
-extern Level currentLevel;
+extern Scene CurrentScene;
 
 int FireballNumber = 0;
 
@@ -197,7 +197,7 @@ void Object_Item_Mushroom_Update(Object *o) BANKED
         Collision c;
         c = o->hitbox;
         
-        if(OnCollision(c,Mario_Hitbox) &&! Mario_dead)
+        if(OnCollision(c,Mario_Hitbox) &&! (Mario_State == Mario_State_Dead))
         {
             if(o->type != Object_Type_Item_1UP)
             {
@@ -223,7 +223,7 @@ void Object_Item_StaticItem_Update(Object *o)BANKED
     {
         Collision c;
         c = o->hitbox;
-        if(OnCollision(c,Mario_Hitbox) &&! Mario_dead)
+        if(OnCollision(c,Mario_Hitbox) &&! (Mario_State == Mario_State_Dead))
         {
             Set_Transformation(o->type);
             o->Sprite = Remove_NonMarioObject_Sprite(o->Sprite,4);

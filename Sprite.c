@@ -1,8 +1,8 @@
-#include "include\Sprite.h"
-#include "include\Level.h"
-#include "include\Animations\Mario\Mario.h"
-#include "include\Animations\Enemies.h"
-#include <gb\gb.h>
+#include "include/Sprite.h"
+#include "include/Level.h"
+#include "include/Animations/Mario/Mario.h"
+#include "include/Animations/Enemies.h"
+#include <gb/gb.h>
 
 #pragma bank 2
 

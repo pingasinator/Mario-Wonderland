@@ -1,5 +1,5 @@
-#include "..\include\World.h"
-#include "..\include\GameSystem.h"
+#include "../include/World.h"
+#include "../include/GameSystem.h"
 
 World_Point World_1_Points[] = {
     {.Level=0,.position={.x=0x01,.y=0x05},.state=0},

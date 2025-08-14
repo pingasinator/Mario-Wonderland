@@ -1,4 +1,4 @@
-#include "..\..\include\Animations\Mario\SmallMario.h"
+#include "../../include/Animations/Mario/SmallMario.h"
 
 #pragma bank 12
 

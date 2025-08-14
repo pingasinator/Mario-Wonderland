@@ -1,5 +1,5 @@
-#include <gb\gb.h>
-#include "..\Enemies.h"
+#include <gb/gb.h>
+#include "../Enemies.h"
 
 #ifndef Animation_Enemies_H
 #define Animation_Enemies_H

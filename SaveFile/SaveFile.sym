@@ -1,60 +1,60 @@
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
-Hexadecimal [24-Bits]
+Hexadecimal [32-Bits]
 
 Symbol Table
 
-    .__.$$$.                                                    =  002710 L
-    .__.ABS.                                                    =  000000 G
-    .__.CPU.                                                    =  000000 L
-    .__.H$L.                                                    =  000000 L
-  1 _SaveFile_1                                                    000021 GR
-  2 _SaveFile_1_Levels                                             000046 GR
-  1 _SaveFile_1_World_1_Levels                                     000001 GR
-  1 _SaveFile_1_World_2_Levels                                     000005 GR
-  1 _SaveFile_1_World_3_Levels                                     000009 GR
-  1 _SaveFile_1_World_4_Levels                                     00000D GR
-  1 _SaveFile_1_World_5_Levels                                     000011 GR
-  1 _SaveFile_1_World_6_Levels                                     000015 GR
-  1 _SaveFile_1_World_7_Levels                                     000019 GR
-  1 _SaveFile_1_World_8_Levels                                     00001D GR
-  1 _SaveFile_2                                                    000029 GR
-  1 _SaveFile_3                                                    000031 GR
-  1 _SavedPoint                                                    000000 GR
-  2 _World_1                                                       000066 GR
-  2 _World_1_Points                                                000000 GR
-  2 _World_2                                                       00006B GR
-  2 _World_3                                                       000070 GR
-  2 _World_4                                                       000075 GR
-  2 _World_5                                                       00007A GR
-  2 _World_6                                                       00007F GR
-  2 _World_7                                                       000084 GR
-  2 _World_8                                                       000089 GR
-  2 _World_List                                                    000056 GR
-  7 __xinit__SaveFile_1_Levels                                     000046 R
-  7 __xinit__World_1                                               000066 R
-  7 __xinit__World_1_Points                                        000000 R
-  7 __xinit__World_2                                               00006B R
-  7 __xinit__World_3                                               000070 R
-  7 __xinit__World_4                                               000075 R
-  7 __xinit__World_5                                               00007A R
-  7 __xinit__World_6                                               00007F R
-  7 __xinit__World_7                                               000084 R
-  7 __xinit__World_8                                               000089 R
-  7 __xinit__World_List                                            000056 R
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+  1 _SaveFile_1                                                     00000021 GR
+  2 _SaveFile_1_Levels                                              00000046 GR
+  1 _SaveFile_1_World_1_Levels                                      00000001 GR
+  1 _SaveFile_1_World_2_Levels                                      00000005 GR
+  1 _SaveFile_1_World_3_Levels                                      00000009 GR
+  1 _SaveFile_1_World_4_Levels                                      0000000D GR
+  1 _SaveFile_1_World_5_Levels                                      00000011 GR
+  1 _SaveFile_1_World_6_Levels                                      00000015 GR
+  1 _SaveFile_1_World_7_Levels                                      00000019 GR
+  1 _SaveFile_1_World_8_Levels                                      0000001D GR
+  1 _SaveFile_2                                                     00000029 GR
+  1 _SaveFile_3                                                     00000031 GR
+  1 _SavedPoint                                                     00000000 GR
+  2 _World_1                                                        00000066 GR
+  2 _World_1_Points                                                 00000000 GR
+  2 _World_2                                                        0000006B GR
+  2 _World_3                                                        00000070 GR
+  2 _World_4                                                        00000075 GR
+  2 _World_5                                                        0000007A GR
+  2 _World_6                                                        0000007F GR
+  2 _World_7                                                        00000084 GR
+  2 _World_8                                                        00000089 GR
+  2 _World_List                                                     00000056 GR
+  7 __xinit__SaveFile_1_Levels                                      00000046 R
+  7 __xinit__World_1                                                00000066 R
+  7 __xinit__World_1_Points                                         00000000 R
+  7 __xinit__World_2                                                0000006B R
+  7 __xinit__World_3                                                00000070 R
+  7 __xinit__World_4                                                00000075 R
+  7 __xinit__World_5                                                0000007A R
+  7 __xinit__World_6                                                0000007F R
+  7 __xinit__World_7                                                00000084 R
+  7 __xinit__World_8                                                00000089 R
+  7 __xinit__World_List                                             00000056 R
 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
-Hexadecimal [24-Bits]
+Hexadecimal [32-Bits]
 
 Area Table
 
-   0 _CODE                                      size      0   flags    0
-   1 _DATA_1                                    size     39   flags    0
-   2 _INITIALIZED                               size     8E   flags    0
-   3 _DABS                                      size      0   flags    8
-   4 _HOME                                      size      0   flags    0
-   5 _GSINIT                                    size      0   flags    0
-   6 _GSFINAL                                   size      0   flags    0
-   7 _INITIALIZER                               size     8E   flags    0
-   8 _CABS                                      size      0   flags    8
+   0 _CODE                                      size        0   flags    0
+   1 _DATA_1                                    size       39   flags    0
+   2 _INITIALIZED                               size       8E   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size        0   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _INITIALIZER                               size       8E   flags    0
+   8 _CABS                                      size        0   flags    8
 

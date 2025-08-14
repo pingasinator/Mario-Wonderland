@@ -1,6 +1,6 @@
-#include "..\..\include\Animations\Mario\WorldMario.h"
-#include "..\..\include\Sprite.h"
-#include "..\..\include\World.h"
+#include "../../include/Animations/Mario/WorldMario.h"
+#include "../../include/Sprite.h"
+#include "../../include/World.h"
 
 #pragma bank 12
 

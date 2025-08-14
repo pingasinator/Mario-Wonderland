@@ -1,5 +1,5 @@
 #include "World.h"
-#include <gb\gb.h>
+#include <gb/gb.h>
 
 #ifndef Game_System_H
 #define Game_System_H

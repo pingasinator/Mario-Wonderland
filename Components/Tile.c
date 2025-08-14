@@ -1,11 +1,11 @@
-#include "..\include\Tile.h"
-#include "..\include\Objects.h"
-#include "..\include\Mario.h"
-#include "..\include\Sprite.h"
-#include "..\include\GameSystem.h"
-#include "..\include\Level.h"
+#include "../include/Tile.h"
+#include "../include/Objects.h"
+#include "../include/Mario.h"
+#include "../include/Sprite.h"
+#include "../include/GameSystem.h"
+#include "../include/Level.h"
 
-#include <gb\gb.h>
+#include <gb/gb.h>
 
 #pragma bank 2
 

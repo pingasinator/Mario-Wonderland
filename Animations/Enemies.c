@@ -1,7 +1,7 @@
-#include "..\include\Animations\Enemies.h"
-#include "..\include\Sprite.h"
-#include "..\include\Camera.h"
-#include <gb\gb.h>
+#include "../include/Animations/Enemies.h"
+#include "../include/Sprite.h"
+#include "../include/Camera.h"
+#include <gb/gb.h>
 
 extern Vector2 Camera;
 extern char Time;

@@ -1,15 +1,15 @@
 
-#include "..\include\Sprite.h"
-#include "..\include\Objects.h"
-#include "..\include\Camera.h"
-#include "..\include\GameSystem.h"
-#include "..\include\Mario.h"
-#include "..\include\Animations\Objects.h"
-#include "..\include\Enemies.h"
-#include "..\include\Level.h"
+#include "../include/Sprite.h"
+#include "../include/Objects.h"
+#include "../include/Camera.h"
+#include "../include/GameSystem.h"
+#include "../include/Mario.h"
+#include "../include/Animations/Objects.h"
+#include "../include/Enemies.h"
+#include "../include/Level.h"
 
-#include <gb\gb.h>
-#include <asm\sm83\string.h>
+#include <gb/gb.h>
+#include <asm/sm83/string.h>
 #include <stdlib.h>
 
 #pragma bank 14

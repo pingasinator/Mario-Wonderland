@@ -1,4 +1,4 @@
-#include <gb\gb.h>
+#include <gb/gb.h>
 
 #ifndef Anim_Mario_Small
 #define Anim_Mario_Small

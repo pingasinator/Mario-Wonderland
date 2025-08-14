@@ -1,6 +1,6 @@
-#include "..\include\Animations\Objects.h"
-#include "..\include\Sprite.h"
-#include "..\include\Camera.h"
+#include "../include/Animations/Objects.h"
+#include "../include/Sprite.h"
+#include "../include/Camera.h"
 
 extern Vector2 Camera;
 

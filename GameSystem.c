@@ -1,5 +1,5 @@
-#include "include\GameSystem.h"
-#include <gb\gb.h>
+#include "include/GameSystem.h"
+#include <gb/gb.h>
 
 char Time = 1;
 char Coins;

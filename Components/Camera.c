@@ -1,8 +1,8 @@
-#include "..\include\Camera.h"
-#include "..\include\Level.h"
-#include "..\include\Sprite.h"
-#include "..\include\Tile.h"
-#include <gb\gb.h>
+#include "../include/Camera.h"
+#include "../include/Level.h"
+#include "../include/Sprite.h"
+#include "../include/Tile.h"
+#include <gb/gb.h>
 
 #pragma bank 15
 

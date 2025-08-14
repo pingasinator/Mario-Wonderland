@@ -1,9 +1,8 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ISO C Compiler 
-; Version 4.3.2 #14228 (MINGW64)
+; File Created by SDCC : free open source ISO C Compiler
+; Version 4.5.1 #15267 (Linux)
 ;--------------------------------------------------------
 	.module savefile
-	.optsdcc -msm83
 	
 ;--------------------------------------------------------
 ; Public variables in this module

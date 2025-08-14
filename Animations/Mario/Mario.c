@@ -1,14 +1,14 @@
-#include <gb\gb.h>
-#include "..\..\include\Sprite.h"
-#include "..\..\include\Camera.h"
-#include "..\..\include\collision.h"
-#include "..\..\include\Objects.h"
-#include "..\..\include\GameSystem.h"
-#include "..\..\include\Animations\Mario\Mario.h"
-#include "..\..\include\Animations\Mario\SmallMario.h"
-#include "..\..\include\Animations\Mario\GreatMario.h"
-#include "..\..\include\Animations\Mario\FireMario.h"
-#include "..\..\include\Animations\Mario\RacoonMario.h"
+#include <gb/gb.h>
+#include "../../include/Sprite.h"
+#include "../../include/Camera.h"
+#include "../../include/collision.h"
+#include "../../include/Objects.h"
+#include "../../include/GameSystem.h"
+#include "../../include/Animations/Mario/Mario.h"
+#include "../../include/Animations/Mario/SmallMario.h"
+#include "../../include/Animations/Mario/GreatMario.h"
+#include "../../include/Animations/Mario/FireMario.h"
+#include "../../include/Animations/Mario/RacoonMario.h"
 
 extern Vector2 Camera;
 extern int Time;

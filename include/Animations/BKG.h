@@ -1,4 +1,4 @@
-#include <gb\gb.h>
+#include <gb/gb.h>
 #ifndef Animation_BKG_H
 #define Animation_BKG_H
 

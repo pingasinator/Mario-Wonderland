@@ -1,5 +1,5 @@
-#include <gb\gb.h>
-#include "..\..\Mathf.h"
+#include <gb/gb.h>
+#include "../../Mathf.h"
 
 void Anim_Mario_World_Idle(void)BANKED;
 void Anim_Mario_World_Down(int animstate) BANKED;

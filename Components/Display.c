@@ -1,12 +1,13 @@
-#include <gb\gb.h>
-#include "..\include\Sprite.h"
-#include "..\include\collision.h"
-#include "..\include\Enemies.h"
-#include "..\include\Objects.h"
+#include <gb/gb.h>
 
-#include "..\include\Animations\Mario\Mario.h"
-#include "..\include\Mario.h"
-#include "..\include\Animations\Enemies.h"
+#include "../include/Sprite.h"
+#include "../include/collision.h"
+#include "../include/Enemies.h"
+#include "../include/Objects.h"
+
+#include "../include/Animations/Mario/Mario.h"
+#include "../include/Mario.h"
+#include "../include/Animations/Enemies.h"
 
 #pragma bank 4
 

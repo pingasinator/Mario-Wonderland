@@ -1,4 +1,4 @@
-#include <gb\gb.h>
+#include <gb/gb.h>
 
 #ifndef Mario_H
 #define Mario_H

@@ -1,6 +1,6 @@
-#include "..\include\Animations\BKG.h"
-#include "..\include\GameSystem.h"
-#include <gb\gb.h>
+#include "../include/Animations/BKG.h"
+#include "../include/GameSystem.h"
+#include <gb/gb.h>
 
 #pragma bank 2
 

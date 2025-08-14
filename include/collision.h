@@ -1,5 +1,5 @@
 #include "Mathf.h"
-#include <gb\gb.h>
+#include <gb/gb.h>
 
 #ifndef Collision_H
 #define Collision_H

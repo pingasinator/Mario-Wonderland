@@ -1,9 +1,9 @@
 
-#include "include\Level.h"
-#include "include\World.h"
-#include "include\GameSystem.h"
-#include "include\Sprite.h"
-#include <gb\gb.h>
+#include "include/Level.h"
+#include "include/World.h"
+#include "include/GameSystem.h"
+#include "include/Sprite.h"
+#include <gb/gb.h>
 
 extern char Lifes;
 extern unsigned char allInputsDown[];

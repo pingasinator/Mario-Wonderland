@@ -1,5 +1,5 @@
 #include "Mathf.h"
-#include <gb\gb.h>
+#include <gb/gb.h>
 
 #ifndef Game_H
 #define Game_H

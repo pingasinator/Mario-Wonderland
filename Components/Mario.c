@@ -1,14 +1,14 @@
-#include "..\include\Mathf.h"
-#include "..\include\Mario.h"
-#include "..\include\Camera.h"
-#include "..\include\GameSystem.h"
-#include "..\include\Sprite.h"
-#include "..\include\Objects.h"
-#include "..\include\Animations\Mario\Mario.h"
-#include "..\include\Animations\Mario\RacoonMario.h"
-#include "..\include\Level.h"
+#include "../include/Mathf.h"
+#include "../include/Mario.h"
+#include "../include/Camera.h"
+#include "../include/GameSystem.h"
+#include "../include/Sprite.h"
+#include "../include/Objects.h"
+#include "../include/Animations/Mario/Mario.h"
+#include "../include/Animations/Mario/RacoonMario.h"
+#include "../include/Level.h"
 
-#include <gb\gb.h>
+#include <gb/gb.h>
 #include <stdlib.h>
 
 extern Vector2 Camera;

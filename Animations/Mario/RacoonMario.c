@@ -1,7 +1,7 @@
-#include "..\..\include\Animations\Mario\RacoonMario.h"
-#include "..\..\include\Animations\Mario\Mario.h"
-#include "..\..\include\Collision.h"
-#include "..\..\include\Mathf.h"
+#include "../../include/Animations/Mario/RacoonMario.h"
+#include "../../include/Animations/Mario/Mario.h"
+#include "../../include/collision.h"
+#include "../../include/Mathf.h"
 
 #pragma bank 12
 

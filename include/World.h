@@ -1,5 +1,5 @@
 #include "Mathf.h"
-#include <gb\gb.h>
+#include <gb/gb.h>
 
 #ifndef World_H
 #define World_H

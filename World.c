@@ -1,10 +1,10 @@
 
-#include "include\World.h"
-#include "include\Sprite.h"
-#include "include\GameSystem.h"
-#include "include\Level.h"
-#include "include\Animations\Mario\WorldMario.h"
-#include <gb\gb.h>
+#include "include/World.h"
+#include "include/Sprite.h"
+#include "include/GameSystem.h"
+#include "include/Level.h"
+#include "include/Animations/Mario/WorldMario.h"
+#include <gb/gb.h>
 
 extern char Time;
 extern char Coins;

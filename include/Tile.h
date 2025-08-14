@@ -1,4 +1,4 @@
-#include <gb\gb.h>
+#include <gb/gb.h>
 #include "Mathf.h"
 
 void Tile_Mario_Interact(unsigned char Tile,int X,int Y,Vector2 Velocity,int side) BANKED;

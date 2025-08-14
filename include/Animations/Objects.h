@@ -1,5 +1,5 @@
-#include <gb\gb.h>
-#include "..\Objects.h"
+#include <gb/gb.h>
+#include "../Objects.h"
 
 #ifndef Animation_Objects_H
 #define Animation_Objects_H

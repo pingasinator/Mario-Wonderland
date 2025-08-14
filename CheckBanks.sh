@@ -1,0 +1,1 @@
+./romusage ./MarioWonderland.gb -g

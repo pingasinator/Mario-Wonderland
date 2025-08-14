@@ -1,5 +1,3 @@
-#include <gb\gb.h>
-
 #pragma bank 2
 
 const unsigned char S_null[] = 

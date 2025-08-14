@@ -1,5 +1,5 @@
-#include <gb\gb.h>
-#include "..\..\collision.h"
+#include <gb/gb.h>
+#include "../../collision.h"
 
 #ifndef Animation_Mario_H
 #define Animation_Mario_H

@@ -1,7 +1,7 @@
 #include "Mathf.h"
 #include "Enemies.h"
 #include "Objects.h"
-#include <gb\gb.h>
+#include <gb/gb.h>
 
 #ifndef Sprite_H
 #define Sprite_H

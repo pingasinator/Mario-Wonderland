@@ -73,14 +73,14 @@ const unsigned char *Overworld_Ground_Palette[] =
 {
     T_Grey_Light,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,
     T_Alt_Block,T_Used_Block,T_Pipe_V_UL,T_Pipe_V_UR,T_Pipe_V_ML,T_Pipe_V_MR,T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_MU,T_Pipe_H_MD,T_Pipe_H_DR,T_Pipe_H_UR,T_Pipe_V_UL,T_Pipe_V_UR,
-    T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_DR,T_Pipe_H_UR,T_OW_Ground_0,T_OW_Ground_1,T_OW_Ground_2,T_OW_Ground_3,T_OW_Ground_4,T_OW_Ground_5,
-    T_OW_Ground_6,T_OW_Ground_7,T_OW_Ground_8,T_OW_Ground_9,T_OW_Ground_10,T_OW_Ground_11,T_OW_Ground_12,T_OW_Ground_13,T_OW_Ground_14,
-    T_OW_Ground_15,T_OW_Ground_16,T_OW_Ground_17,T_OW_Ground_18,T_OW_Ground_19
+    T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_DR,T_Pipe_H_UR,T_Pipe_V_UL,T_Pipe_V_UR,T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_DR,T_Pipe_H_UR,T_OW_Ground_0,T_OW_Ground_1,
+    T_OW_Ground_2,T_OW_Ground_3,T_OW_Ground_4,T_OW_Ground_5,T_OW_Ground_6,T_OW_Ground_7,T_OW_Ground_8,T_OW_Ground_9,T_OW_Ground_10,T_OW_Ground_11,T_OW_Ground_12,T_OW_Ground_13,T_OW_Ground_14,T_OW_Ground_15,
+    T_OW_Ground_16,T_OW_Ground_17,T_OW_Ground_18,T_OW_Ground_19
 };
 
 const unsigned char *Overworld_Background_Palette[] = 
 {
-    T_Grey_Light,T_null,T_Grey_Dark,T_Black,T_Coin,T_Hidden_Coin,T_Lava_Top,T_Grey_Dark,T_Water_Top,T_Grey_Light,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,
+    T_null,T_Grey_Light,T_Grey_Dark,T_Black,T_Coin,T_Hidden_Coin,T_Lava_Top,T_Grey_Dark,T_Water_Top,T_Grey_Light,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,
     T_OW_background_0,T_OW_background_1,T_OW_background_2,T_OW_background_3,T_OW_background_4,T_OW_background_5,T_OW_background_6,T_OW_background_7,
     T_OW_background_8,T_OW_background_9,T_OW_background_10,T_OW_background_11,T_OW_background_12,T_OW_background_13,T_OW_background_14,T_OW_background_15
 };

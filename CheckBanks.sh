@@ -1,1 +1,1 @@
-./romusage ./MarioWonderland.gb -g
+./romusage ./MarioWonderLand.gb -g

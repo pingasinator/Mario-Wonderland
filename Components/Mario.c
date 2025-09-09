@@ -25,6 +25,7 @@ extern unsigned char Mario_Animator_State;
 extern unsigned char Mario_animState;
 
 extern unsigned char SceneTransitionDelay;
+extern unsigned char LoadScene;
 
 #pragma bank 10
 
@@ -184,7 +185,7 @@ void Update_Mario(void)BANKED
         {
             Time=1;
             Mario_State=Mario_State_Neutral;
-            Level_Set_Next_Scene();
+            LoadScene = 1;
         }else
         {
             Time=0;

@@ -51,6 +51,8 @@ int Timer = 300;
 int milisec = 30;
 int SceneTransitionDelay = 30;
 
+unsigned char spawnpointIndex;
+
 unsigned char LoadScene;
 unsigned char NextSceneIndex;
 unsigned char currentSceneIndex;
@@ -70,6 +72,8 @@ void Level_Load_Scene(int SelectedScene)
     SWITCH_RAM(2);
     SWITCH_ROM(20);
     CurrentScene = currentLevel.Scenes[SelectedScene];
+    SceneTransitionDelay =30;
+    LoadScene = 0;
     Reset_Vram();
     Object_Reset();
     Set_All_Enemies();
@@ -82,13 +86,13 @@ void Level_Load_Scene(int SelectedScene)
     Set_Tile_Palette(CurrentScene.Palette);
 
     memcpy(Tilemap,CurrentScene.Tilemap,sizeof(uint8_t) * currentScene_Size);
-    init_Mario(CurrentScene.StartPoint.Point.x,CurrentScene.StartPoint.Point.y);
-    Set_Camera_Position(CurrentScene.StartPoint.Camera.x,CurrentScene.StartPoint.Camera.y);
+    init_Mario(CurrentScene.Spawnpoints[spawnpointIndex].Point.x,CurrentScene.Spawnpoints[spawnpointIndex].Point.y);
+    Set_Camera_Position(CurrentScene.Spawnpoints[spawnpointIndex].Camera.x,CurrentScene.Spawnpoints[spawnpointIndex].Camera.y);
     for(int y = 0;y < 16;y++)
     {
         for(int x = 0;x < 16;x++)
         {
-            Tile_Tilmap_display_xy((Camera.x / 16 / 16) + x * 16 ,(Camera.y / 16 / 16) * 16 * 16 + y*16);
+            Tile_Tilmap_display_xy((Camera.x / 16 / 16) * 16 * 16 + x * 16 ,(Camera.y / 16 / 16) * 16 * 16 + y*16);
         }
     }
     init_win(0);
@@ -103,28 +107,29 @@ void SetLevel(int LevelSelected)
 {
     SWITCH_ROM(20);
     Reset_Level();
+    spawnpointIndex = 0;
     currentLevel = GetLevel(LevelSelected);
+    Level_Load_Scene(currentLevel.StartScene);
     currentEndLevelObject = CurrentScene.Endblock;
-    Level_Load_Scene(0);
-    
 }
 
-void Level_Set_Previous_Scene(void)
+
+void Level_Set_Scene(unsigned char Index)
 {
     if(!LoadScene)
     {
-        LoadScene = 1;
-        NextSceneIndex--;
-    }
+        switch(Index)
+        {
+            case 0x00:
+            NextSceneIndex--;
+            spawnpointIndex = NextSceneIndex*4 + 3;
+            break;
 
-}
-
-void Level_Set_Next_Scene(void)
-{
-    if(!LoadScene)
-    {
-        LoadScene = 1;
-        NextSceneIndex++;
+            case 0x01:
+            NextSceneIndex++;
+            spawnpointIndex = NextSceneIndex*4 + 2;
+            break;
+        }
     }
 }
 
@@ -144,7 +149,6 @@ void Level_Update(void)
         if(LoadScene)
         {
             Level_Load_Scene(NextSceneIndex);
-            LoadScene = 0;
             SceneTransitionDelay=60;
             goto RS;
         }

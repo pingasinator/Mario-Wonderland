@@ -126,6 +126,7 @@ void Set_Tile_Palette(int i) BANKED
         Current_Background_Palette = Overworld_Background_Palette;
         Current_Ground_Palette = Overworld_Ground_Palette;
         set_bkg_data(0x00,110,S_Overworld_Ground);
+        BGP_REG = 0xE1;
         break;
 
         case 1:

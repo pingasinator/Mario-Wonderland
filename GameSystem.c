@@ -33,7 +33,7 @@ void Input_Update(void)
     for(int i = 8; i >= 0;i--)
     {
         allInputsDown[i] = 0;
-        if(PressedInputs >= allInputs[i])
+        if(PressedInputs && allInputs[i] == allInputs[i])
         {
             if(allInputsPressed[i] == 0)
             {
@@ -41,7 +41,6 @@ void Input_Update(void)
 
             }
             allInputsPressed[i] = 1;
-            PressedInputs -= allInputs[i];
         }else
         {
             allInputsPressed[i] = 0;

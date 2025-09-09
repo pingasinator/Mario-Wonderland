@@ -19,9 +19,7 @@ typedef struct
 {
     unsigned char *Tilemap;
     Enemy *Enemies;
-    Spawn StartPoint;
-    Spawn Checkpoint;
-    Spawn WarpPoint;
+    Spawn *Spawnpoints;
     char EnemiesCount;
     unsigned char Length;
     unsigned char Width;
@@ -36,7 +34,7 @@ typedef struct
     Scene* Scenes;
 } Level;
 
-void Level_Set_Next_Scene(void);
+void Level_Set_Scene(unsigned char Index);
 void Level_Load_Scene(int SelectedScene);
 void EndBlock_Update(void);
 void Reset_Level(void);

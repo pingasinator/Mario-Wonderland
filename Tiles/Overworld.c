@@ -12,11 +12,11 @@ const unsigned char T_OW_Ground_4[] = {0x36,0x42,0x36,0x45};
 
 const unsigned char T_OW_Ground_5[] = {0x43,0x37,0x45,0x37};
 
-const unsigned char T_OW_Ground_6[] = {37,38,33,34};
+const unsigned char T_OW_Ground_6[] = {0x3A,0x3B,0x36,0x37};
 
-const unsigned char T_OW_Ground_7[] = {33,34,39,40};
+const unsigned char T_OW_Ground_7[] = {0x36,0x37,0x3C,0x3D};
 
-const unsigned char T_OW_Ground_8[] = {33,34,33,34};
+const unsigned char T_OW_Ground_8[] = {0x36,0x37,0x36,0x37};
 
 const unsigned char T_OW_Ground_9[] = {0x43,0x44,0x39,0x3A};
 

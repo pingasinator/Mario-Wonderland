@@ -15,8 +15,6 @@ int Raycast(Vector2 point,Vector2 dir,int pixelSize) BANKED;
 
 int OnCollision(Collision A,Collision B) BANKED;
 int OnCollisionSide(Collision A,Collision B, int side) BANKED;
-int TileMapCollision(Collision A) BANKED;
-int TileMapCollisionSide(Collision *A,int side) BANKED;
 void TilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED;
 void TilemapCollisionPhysicsSide(Collision *A,Vector2* Velocity,int side) BANKED;
 void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED;

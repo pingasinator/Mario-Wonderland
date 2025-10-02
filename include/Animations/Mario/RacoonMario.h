@@ -16,5 +16,5 @@ void Anim_Mario_Racoon_Crounch(void) BANKED;
 void Anim_Mario_Racoon_Fly(int animstate) BANKED;
 void Anim_Mario_Racoon_Win(int animstate) BANKED;
 void Anim_Mario_Racoon_Slide(void) BANKED;
-
+void Anim_Mario_Racoon_Front(void) BANKED;
 #endif

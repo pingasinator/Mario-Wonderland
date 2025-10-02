@@ -12,5 +12,5 @@ void Anim_Mario_Great_Jump(void) BANKED;
 void Anim_Mario_Great_Jump_Run(void) BANKED;
 void Anim_Mario_Great_Crounch(void) BANKED;
 void Anim_Mario_Great_Win(int animstate) BANKED;
-
+void Anim_Mario_Great_Front(void) BANKED;
 #endif

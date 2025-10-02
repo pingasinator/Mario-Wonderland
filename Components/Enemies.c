@@ -40,27 +40,28 @@ void Set_All_Enemies(void)NONBANKED
     if(CurrentScene.Enemies != NULL)
     {
         Enemies_Number = CurrentScene.EnemiesCount;
-    AllEnemies = malloc(Enemies_Number * sizeof(Enemy));
-    memcpy(AllEnemies,CurrentScene.Enemies,Enemies_Number * sizeof(Enemy));
+        AllEnemies = malloc(Enemies_Number * sizeof(Enemy));
+        memcpy(AllEnemies,CurrentScene.Enemies,Enemies_Number * sizeof(Enemy));
 
-    for(int i = 0; i < Enemies_Number;i++)
-    {
-        Vector2 TempPosition;
-        TempPosition.x = AllEnemies[i].SpawnPoint.x;
-        TempPosition.y = AllEnemies[i].SpawnPoint.y;
-        switch(AllEnemies[i].type)
+        for(int i = 0; i < Enemies_Number;i++)
         {
-            case Enemy_Type_Goomba:
-            AllEnemies[i]=Goomba;
-            AllEnemies[i].SpawnPoint=TempPosition;
-            break;
+            Vector2 TempPosition;
+            TempPosition.x = AllEnemies[i].SpawnPoint.x;
+            TempPosition.y = AllEnemies[i].SpawnPoint.y;
+            switch(AllEnemies[i].type)
+            {
+                case Enemy_Type_Goomba:
+                AllEnemies[i]=Goomba;
+                AllEnemies[i].SpawnPoint=TempPosition;
+                break;
              
-            case Enemy_Type_Koopa:
-            AllEnemies[i]=Koopa;
-            AllEnemies[i].SpawnPoint=TempPosition;
-            break;
+               case Enemy_Type_Koopa:
+                AllEnemies[i]=Koopa;
+               AllEnemies[i].SpawnPoint=TempPosition;
+                break;
+            }
+            AllEnemies[i].Hitbox.position = AllEnemies[i].SpawnPoint;
         }
-    }
     }
 
 }
@@ -109,7 +110,7 @@ void Update_Goomba(Enemy *e)BANKED
                     }else if( Mario_Velocity.y > 0 && Mario_Hitbox.position.y < e->Hitbox.position.y)
                     {
                         e->AnimatorState = Animator_Enemy_Goomba_State_Death;
-                        Mario_Velocity.y = -8;
+                        Mario_Velocity.y = -16;
                         e->dead = 1;
                     }else
                     {
@@ -125,7 +126,7 @@ void Update_Goomba(Enemy *e)BANKED
                 {
                     e->Enabled = 0;
                     e->deathDelay = 0;
-                    e->Sprite_tile = Remove_Sprite(e->Sprite_tile,e->Sprite_size);
+                    e->Sprite_tile = Remove_NonMarioObject_Sprite(e->Sprite_tile,e->Sprite_size);
                 }
             }
 
@@ -149,7 +150,7 @@ void Update_Goomba(Enemy *e)BANKED
     {
         e->Enabled = 0;
         e->Hitbox.position = e->SpawnPoint;
-        e->Sprite_tile = Remove_Sprite(e->Sprite_tile,e->Sprite_size);
+        e->Sprite_tile = Remove_NonMarioObject_Sprite(e->Sprite_tile,e->Sprite_size);
     }
 }
 
@@ -175,9 +176,9 @@ void Update_Koopa(Enemy *e)BANKED
                         Enemy_KnockBack(e,Mario_dir);
                     }else if( Mario_Velocity.y > 0 && Mario_Hitbox.position.y < e->Hitbox.position.y)
                     {
-                        Mario_Velocity.y = -8;
+                        Mario_Velocity.y = -16;
                         e->State = 1;
-                        e->Sprite_tile = Remove_Sprite(e->Sprite_tile,5);
+                        e->Sprite_tile = Remove_NonMarioObject_Sprite(e->Sprite_tile,5);
                         e->Sprite_tile = Add_Sprite(4);
                         e->velocity.x = 0;
                     }else
@@ -207,7 +208,7 @@ void Update_Koopa(Enemy *e)BANKED
 
             if(OnCollisionSide(e->Hitbox,Mario_Hitbox,1) && Mario_Velocity.y > 0)
             {
-                Mario_Velocity.y = -8;
+                Mario_Velocity.y = -16;
             }
                 
             break;
@@ -224,7 +225,7 @@ void Update_Koopa(Enemy *e)BANKED
             {
                 e->velocity.x = 0;
                 e->State = 1;
-                Mario_Velocity.y = -8;
+                Mario_Velocity.y = -16;
             }else if((OnCollisionSide(e->Hitbox,Mario_Hitbox,2) && e->dir.x < 0) || (OnCollisionSide(e->Hitbox,Mario_Hitbox,3) && e->dir.x > 0))
             {
                 Mario_Hit();
@@ -265,7 +266,7 @@ void Update_Koopa(Enemy *e)BANKED
         e->Hitbox.position = e->SpawnPoint;
         if(e->Sprite_tile != 0)
         {
-            e->Sprite_tile = Remove_Sprite(e->Sprite_tile,e->Sprite_size);
+            e->Sprite_tile = Remove_NonMarioObject_Sprite(e->Sprite_tile,e->Sprite_size);
         }
     }
 }

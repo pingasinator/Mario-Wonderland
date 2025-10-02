@@ -68,11 +68,12 @@ void Reset_Level(void)
 
 void Level_Load_Scene(int SelectedScene)
 {
+    DISPLAY_OFF;
     ENABLE_RAM;
     SWITCH_RAM(2);
     SWITCH_ROM(20);
     CurrentScene = currentLevel.Scenes[SelectedScene];
-    SceneTransitionDelay =30;
+    SceneTransitionDelay = 30;
     LoadScene = 0;
     Reset_Vram();
     Object_Reset();
@@ -100,7 +101,7 @@ void Level_Load_Scene(int SelectedScene)
     SHOW_WIN;
     SHOW_BKG;
     DISABLE_RAM;
-    
+    DISPLAY_ON;
 }
 
 void SetLevel(int LevelSelected)
@@ -108,6 +109,7 @@ void SetLevel(int LevelSelected)
     SWITCH_ROM(20);
     Reset_Level();
     spawnpointIndex = 0;
+    NextSceneIndex = 0;
     currentLevel = GetLevel(LevelSelected);
     Level_Load_Scene(currentLevel.StartScene);
     currentEndLevelObject = CurrentScene.Endblock;

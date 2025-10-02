@@ -22,6 +22,7 @@ void main(void)
             switch(GameMode)
             {
                 case 0:
+                BGP_REG = 0xE4;
                 World_Update();
                 break;
 

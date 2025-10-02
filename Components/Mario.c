@@ -42,10 +42,6 @@ char Mario_isRunning = 0;
 char deathJumpdelay = 30;
 char DeathTime = 45;
 
-char WalkDelay;
-char decreaseDelay;
-char decreaseJump;
-
 char death_init = 0;
 
 char Mario_maxSpeed;
@@ -57,6 +53,8 @@ char Mario_RecoveryTime = 0;
 char Mario_dir = 1;
 
 char Mario_onGround = 0;
+
+Vector2 Mario_pipeDir;
 
 void init_Mario(int x,int y)BANKED
 {
@@ -85,36 +83,11 @@ void Update_Mario(void)BANKED
     
         Mario_maxSpeed = Mario_isRunning ? Time * 6 : allInputsPressed[Joy_Button_B] ? Time * 4 : Time * 2;
         Mario_RecoveryTime -= Mario_RecoveryTime > 0 ? Time : 0;
-    
-        if(allInputsDown[Joy_Button_LEFT] || allInputsDown[Joy_Button_RIGHT])
-        {
-            WalkDelay = 2;
-            decreaseDelay = 3;
-        }else if((allInputsPressed[Joy_Button_LEFT] || allInputsPressed[Joy_Button_RIGHT]) &&! (Mario_onGround && allInputsPressed[Joy_Button_DOWN]))
-        {
-            WalkDelay -= Time;
-            if(WalkDelay <= 0)
-            {
-                Mario_Velocity.x += allInputsPressed[Joy_Button_RIGHT] ? Time * 2 : allInputsPressed[Joy_Button_LEFT] ? Time * -2 : 0;
-                WalkDelay = 2;
-            }
-        }else
-        {
-            decreaseDelay -= Time;
-            if(decreaseDelay <= 0)
-            {
-                Mario_Velocity.x -= Sign(Mario_Velocity.x);
-                decreaseDelay = 3;
-            }
-
-        }
         
-        decreaseJump -= Time;
-        if(decreaseJump <= 0)
-        {
-            Mario_Velocity.y++;
-            decreaseJump=2;
-        }
+        Mario_Velocity.x += ((allInputsPressed[Joy_Button_LEFT] || allInputsPressed[Joy_Button_RIGHT]) &&! allInputsPressed[Joy_Button_DOWN]) * (allInputsPressed[Joy_Button_LEFT] ? -1 : allInputsPressed[Joy_Button_RIGHT] ? 1 : 0); 
+        Mario_Velocity.x -= ((!allInputsPressed[Joy_Button_LEFT] && !allInputsPressed[Joy_Button_RIGHT]) || (allInputsPressed[Joy_Button_DOWN] && Mario_onGround)) * Sign(Mario_Velocity.x);
+        
+        Mario_Velocity.y += Time;
 
         if(allInputsDown[Joy_Button_B] && Mario_Transformation == 2)
         { 
@@ -122,6 +95,9 @@ void Update_Mario(void)BANKED
         }
 
         Mario_Update_CheckGround();
+
+        Mario_Update_Speed();
+        Mario_Update_Physics();
 
         if(!Mario_onGround)
         {
@@ -131,9 +107,6 @@ void Update_Mario(void)BANKED
         {
             Mario_Update_GroundMovement();
         }
-
-        Mario_Update_Speed();
-        Mario_Update_Physics();
 
         MoveCamera( Mario_Hitbox.position.x > Camera.x + 96 ? Mario_Hitbox.position.x - (Camera.x + 96) : Mario_Hitbox.position.x < Camera.x + 80 ? Mario_Hitbox.position.x - (Camera.x + 80) : 0,
         Mario_Hitbox.position.y < Camera.y + 56 ? Mario_Hitbox.position.y - (Camera.y + 56) : Mario_Hitbox.position.y > Camera.y + 88 ? Mario_Hitbox.position.y - (Camera.y + 88) : 0);
@@ -161,7 +134,6 @@ void Update_Mario(void)BANKED
         Mario_Hitbox.position.y < Camera.y + 56 ? Mario_Hitbox.position.y - (Camera.y + 56) : Mario_Hitbox.position.y > Camera.y + 88 ? Mario_Hitbox.position.y - (Camera.y + 88) : 0);
         if(Mario_onGround)
         {
-
             if(Mario_Hitbox.position.x <= currentEndLevelObject.hitbox.position.x + 16 * 3)
             {
                 Mario_Velocity.x = Sign(Mario_Hitbox.position.x - currentEndLevelObject.hitbox.position.x + 16 * 3) * 3;
@@ -180,16 +152,18 @@ void Update_Mario(void)BANKED
         break;
 
         case Mario_State_EnterPipe:
-        Mario_Animator_State=Animator_Mario_State_Idle;
+        Mario_Animator_State = Mario_pipeDir.y != 0 ? Animator_Mario_State_Front : Animator_Mario_State_Move;
         if(SceneTransitionDelay <= 0)
         {
             Time=1;
             Mario_State=Mario_State_Neutral;
+            Mario_dir = 1;
             LoadScene = 1;
         }else
         {
             Time=0;
-            Mario_Hitbox.position.y++;
+            Mario_Hitbox.position.x += Mario_pipeDir.x;
+            Mario_Hitbox.position.y += Mario_pipeDir.y;
             SceneTransitionDelay--;
         }
         break;
@@ -201,7 +175,7 @@ void Mario_Update_AirMovement(void) BANKED
 {
     Mario_Velocity.y += (!allInputsPressed[Joy_Button_A] && Mario_Velocity.y < 0 &&! Mario_State == Mario_State_Win) * 2;
     Mario_Velocity.y += (Mario_State == Mario_State_Win);
-    Mario_Velocity.y = Mario_Transformation == 3 && allInputsPressed[Joy_Button_A] &&! Mario_isRunning &&! Mario_State == Mario_State_Win && Mario_Velocity.y > 0 ? 2 : Mario_Transformation == 3 && allInputsPressed[Joy_Button_A] && Mario_isRunning &&! Mario_State == Mario_State_Win ? -4 : Mario_Velocity.y;
+    Mario_Velocity.y = Mario_Transformation == 3 && allInputsPressed[Joy_Button_A] &&! Mario_isRunning &&! Mario_State == Mario_State_Win && Mario_Velocity.y > 0 ? 2 : Mario_Transformation == 3 && allInputsPressed[Joy_Button_A] && Mario_isRunning &&! Mario_State == Mario_State_Win ? -10 : Mario_Velocity.y;
     
     if(Mario_Velocity.y > 0)
     {
@@ -218,7 +192,7 @@ void Mario_Update_Speed(void) BANKED
 {
     if(Mario_onGround)
     {
-        if(Abs(Mario_Velocity.x) >= 4 )
+        if(Abs(Mario_Velocity.x) / 2 >= 4 )
         {
             Mario_runningProg += 2;
             if(Mario_runningProg >= 100)
@@ -252,7 +226,7 @@ void Mario_Update_GroundMovement(void) BANKED
         Mario_Animator_State = Animator_Mario_State_Crounch;
     }else
     {
-        if(abs(Mario_Velocity.x) >= 1)
+        if(abs(Mario_Velocity.x) / 2 >= 1)
         {
             if((Mario_Velocity.x < 0 && Mario_dir == 1) || (Mario_Velocity.x > 0 && Mario_dir == -1))
             {
@@ -268,7 +242,7 @@ void Mario_Update_GroundMovement(void) BANKED
     }
 
 
-    Mario_Velocity.y = allInputsDown[Joy_Button_A] ? -7 : Mario_Velocity.y;
+    Mario_Velocity.y = allInputsDown[Joy_Button_A] ? -16 : Mario_Velocity.y;
 }
 
 void Mario_Update_Death(void) BANKED
@@ -295,11 +269,11 @@ void Mario_Update_Death(void) BANKED
 void Mario_Update_Physics(void) BANKED
 {
     
-    Mario_Velocity.y = Clamp(Mario_Velocity.y,-10,8);
-    Mario_Velocity.x = Clamp(Mario_Velocity.x,-Mario_maxSpeed,Mario_maxSpeed);
+    Mario_Velocity.y = Clamp(Mario_Velocity.y,-16,16);
+    Mario_Velocity.x = Clamp(Mario_Velocity.x,-Mario_maxSpeed * 2,Mario_maxSpeed * 2);
 
-    Mario_Hitbox.position.x += Mario_Velocity.x;
-    Mario_Hitbox.position.y += Mario_Velocity.y;
+    Mario_Hitbox.position.x += Mario_Velocity.x / 2;
+    Mario_Hitbox.position.y += Mario_Velocity.y / 2;
 
     Mario_Hitbox.position.x = Clamp(Mario_Hitbox.position.x,0,CurrentScene.Length*16);
 

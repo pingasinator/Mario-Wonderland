@@ -87,6 +87,10 @@ void Anim_Mario_Update(void) NONBANKED
         Anim_Mario_Win(Mario_animState);
         break;
 
+        case Animator_Mario_State_Front:
+        Anim_Mario_Front();
+        break;
+
         case Animator_Mario_State_Racoon_Fly:
         Anim_Mario_Racoon_Fly(Mario_animState);
         Mario_animState++;
@@ -346,6 +350,28 @@ void Anim_Mario_Win(int animstate) BANKED
 
         case 3:
         Anim_Mario_Racoon_Win(animstate);
+        break;
+    }
+}
+
+void Anim_Mario_Front(void) BANKED
+{
+    switch (Mario_Transformation)
+    {
+        case 0:
+        Anim_Mario_Small_Front();
+        break;
+
+        case 1:
+        Anim_Mario_Great_Front();
+        break;
+
+        case 2:
+        Anim_Mario_Fire_Front();
+        break;
+
+        case 3:
+        Anim_Mario_Racoon_Front();
         break;
     }
 }

@@ -10,65 +10,6 @@ extern unsigned char Tilemap[];
 
 #pragma bank 13
 
-int TileMapCollisionSide(Collision *A,int side) BANKED
-{
-    Vector2 pos;
-    pos.x = A->position.x + A->pixeloffset.x;
-    pos.y = A->position.y + A->pixeloffset.y;
-    int boundOut = 0;
-    int boundIn = 0;
- 
- 
-
-    switch(side)
-    {
-        case 0:
-        for(int i = A->pixelsize.x; i > 0; i -= 8)
-        {
-            if(Get_Tile(pos.x + i,pos.y + A->pixelsize.y) >= 0x80 || Get_Tile(pos.x - i,pos.y + A->pixelsize.y) >= 0x80)
-            {
-                return 1;
-            }
-        }
-
-        break;
-
-        case 1:
-        for(int i = A->pixelsize.x; i > 0; i -= 8)
-        {
-            if(Get_Tile(pos.x + i,pos.y - A->pixelsize.y) >= 0x80 || Get_Tile(pos.x - i,pos.y - A->pixelsize.y) >= 0x80)
-            {
-                return 1;
-            }
-        }
-
-        break;
-
-        case 2:
-        for(int i = A->pixelsize.y; i > 0; i -= 8)
-        {
-            if(Get_Tile(pos.x - A->pixelsize.x,pos.y + i) >= 0x80 || Get_Tile(pos.x - A->pixelsize.x,pos.y - i) >= 0x80)
-            {
-                return 1;
-            }
-        }
-
-        break;
-
-        case 3:
-        for(int i = A->pixelsize.y; i > 0; i -= 8)
-        {
-            if(Get_Tile(pos.x + A->pixelsize.x,pos.y + i) >= 0x80 || Get_Tile(pos.x + A->pixelsize.x,pos.y - i) >= 0x80)
-            {
-                return 1;
-            }
-        }
-        break;
-    }
-    
-    return 0;
-}
-
 int OnCollision(Collision A,Collision B) BANKED
 {
     Vector2 A_minpos = {.x=A.position.x + A.pixeloffset.x - A.pixelsize.x,.y=A.position.y + A.pixeloffset.y - A.pixelsize.y};
@@ -239,10 +180,10 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
         if(pos.y + A->pixelsize.y > 0 && pos.y + A->pixelsize.y < CurrentScene.Width * 16)
         {
             c_Right = Get_Tile(pos.x + i,pos.y + A->pixelsize.y);
-            Tile_Mario_Interact(c_Right,pos.x + i,pos.y + A->pixelsize.y,*Velocity,0);
+            Tile_Mario_Interact(c_Right,pos.x + i,pos.y + A->pixelsize.y,*Velocity,1,1);
             c_Left = Get_Tile(pos.x - i,pos.y + A->pixelsize.y);
-            Tile_Mario_Interact(c_Left,pos.x - i,pos.y + A->pixelsize.y,*Velocity,0);
-            if((c_Right >= 0x80 && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - 8) < 0x80) || (c_Left >= 0x80 && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - 8) < 0x80))
+            Tile_Mario_Interact(c_Left,pos.x - i,pos.y + A->pixelsize.y,*Velocity,-1,1);
+            if((c_Right > 0x7F && Get_Tile(pos.x + i,pos.y + A->pixelsize.y - 8) < 0x80) || (c_Left > 0x7F && Get_Tile(pos.x - i,pos.y + A->pixelsize.y - 8) < 0x80))
             {
                 Velocity->y = Velocity->y > 0 ? 0 : Velocity->y;
                 A->position.y = ((pos.y + A->pixelsize.y) / 16) * 16;
@@ -255,10 +196,10 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
         if(pos.y - A->pixelsize.y > 0 && pos.y - A->pixelsize.y < CurrentScene.Width * 16)
         {
             c_Right = Get_Tile(pos.x + i,pos.y - A->pixelsize.y);
-            Tile_Mario_Interact(c_Right,pos.x + i,pos.y- A->pixelsize.y,*Velocity,1);
+            Tile_Mario_Interact(c_Right,pos.x + i,pos.y- A->pixelsize.y,*Velocity,1,-1);
             c_Left = Get_Tile(pos.x - i,pos.y - A->pixelsize.y);
-            Tile_Mario_Interact(c_Left,pos.x - i,pos.y- A->pixelsize.y,*Velocity,1);
-            if((c_Right >= 0x80 && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + 8) < 0x80) || (c_Left >= 0x80 && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + 8) < 0x80))
+            Tile_Mario_Interact(c_Left,pos.x - i,pos.y- A->pixelsize.y,*Velocity,-1,-1);
+            if((c_Right > 0x7F && Get_Tile(pos.x + i,pos.y - A->pixelsize.y + 8) < 0x80) || (c_Left > 0x7F && Get_Tile(pos.x - i,pos.y - A->pixelsize.y + 8) < 0x80))
             {
                 Velocity->y = Velocity->y < 0 ? 0 : Velocity->y;
                 A->position.y = ((pos.y - A->pixelsize.y) / 16 + 1) * 16 + A->pixelsize.y * 2;
@@ -270,14 +211,15 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
     for(int i = A->pixelsize.y - 1;i >= 0 ;i-= 16)
     {
         pos.x = A->position.x + A->pixeloffset.x;
+        pos.y = A->position.y + A->pixeloffset.y;
         if(pos.x + A->pixelsize.x > 0 && pos.x + A->pixelsize.x < CurrentScene.Length * 16)
         {
             c_Mid = Get_Tile(pos.x + A->pixelsize.x,pos.y);
-            Tile_Mario_Interact(c_Mid,pos.x + A->pixelsize.x,pos.y,*Velocity,2);
+            Tile_Mario_Interact(c_Mid,pos.x + A->pixelsize.x,pos.y,*Velocity,1,0);
             c_Down = Get_Tile(pos.x + A->pixelsize.x,pos.y + i);
             c_Up = Get_Tile(pos.x + A->pixelsize.x,pos.y - i);
 
-            if((c_Down >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 16,pos.y + i) < 0x80) || (c_Mid >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 16,pos.y) < 0x80) || (c_Up >= 0x80 && Get_Tile(pos.x + A->pixelsize.x - 16,pos.y - i) < 0x80))
+            if((c_Down >= 0x80) || (c_Mid >= 0x80) || (c_Up >= 0x80))
             {
                 Velocity->x = Velocity->x > 0 ? 0 : Velocity->x;
                 A->position.x = ((pos.x + A->pixelsize.x) / 16) * 16 - 8;
@@ -289,14 +231,14 @@ void MarioTilemapCollisionPhysics(Collision *A,Vector2* Velocity) BANKED
         if(pos.x - A->pixelsize.x > 0 && pos.x - A->pixelsize.x < CurrentScene.Length * 16)
         {
             c_Mid = Get_Tile(pos.x - A->pixelsize.x,pos.y);
-            Tile_Mario_Interact(c_Mid,pos.x - A->pixelsize.x,pos.y,*Velocity,3);
+            Tile_Mario_Interact(c_Mid,pos.x - A->pixelsize.x,pos.y,*Velocity,-1,0);
             c_Down = Get_Tile(pos.x - A->pixelsize.x,pos.y + i);
             c_Up = Get_Tile(pos.x - A->pixelsize.x,pos.y - i);
-            if((c_Down >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 16,pos.y + i) < 0x80) || (c_Mid >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 16,pos.y) < 0x80) || (c_Up >= 0x80 && Get_Tile(pos.x - A->pixelsize.x + 16,pos.y - i) < 0x80))
+            if((c_Down >= 0x80) || (c_Mid >= 0x80) || (c_Up >= 0x80))
             {
                 Velocity->x = Velocity->x < 0 ? 0 : Velocity->x;
-                A->position.x = ((pos.x - A->pixelsize.x) / 16 + 1) * 16 + 8;
-                pos.x = A->position.x - A->pixeloffset.x;
+                A->position.x = ((pos.x - A->pixelsize.x) / 16 + 1) * 16 + 7;
+                pos.x = A->position.x + A->pixeloffset.x;
             }
         }
     }

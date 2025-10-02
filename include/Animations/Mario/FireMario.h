@@ -12,5 +12,5 @@ void Anim_Mario_Fire_Jump(void) BANKED;
 void Anim_Mario_Fire_Jump_Run(void) BANKED;
 void Anim_Mario_Fire_Crounch(void) BANKED;
 void Anim_Mario_Fire_Win(int animstate) BANKED;
-
+void Anim_Mario_Fire_Front(void) BANKED;
 #endif

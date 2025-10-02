@@ -195,75 +195,6 @@ void Anim_Mario_Small_Win(int animstate) BANKED
         set_sprite_prop(9,0);
         set_sprite_tile(0,0x00);
         set_sprite_tile(1,0x00);
-        set_sprite_tile(2,0x02);
-        set_sprite_tile(3,0x03);
-        set_sprite_tile(4,0x00);
-        set_sprite_tile(5,0x10);
-        set_sprite_tile(6,0x11);
-        set_sprite_tile(7,0x00);
-        set_sprite_tile(8,0x20);
-        set_sprite_tile(9,0x21);
-        break;
-
-        case 3:
-        set_sprite_prop(0,0);
-        set_sprite_prop(1,0);
-        set_sprite_prop(2,0);
-        set_sprite_prop(3,0);
-        set_sprite_prop(4,0);
-        set_sprite_prop(5,0);
-        set_sprite_prop(6,0);
-        set_sprite_prop(7,0);
-        set_sprite_prop(8,0);
-        set_sprite_prop(9,0);
-        set_sprite_tile(0,0x00);
-        set_sprite_tile(1,0x00);
-        set_sprite_tile(2,0x3C);
-        set_sprite_tile(3,0x3D);
-        set_sprite_tile(4,0x00);
-        set_sprite_tile(5,0x4C);
-        set_sprite_tile(6,0x4D);
-        set_sprite_tile(7,0x00);
-        set_sprite_tile(8,0x5C);
-        set_sprite_tile(9,0x5D);
-        break;
-
-        case 6:
-        set_sprite_prop(0,0);
-        set_sprite_prop(1,0);
-        set_sprite_prop(2,0);
-        set_sprite_prop(3,0);
-        set_sprite_prop(4,0);
-        set_sprite_prop(5,0);
-        set_sprite_prop(6,0);
-        set_sprite_prop(7,0);
-        set_sprite_prop(8,0);
-        set_sprite_prop(9,0);
-        set_sprite_tile(0,0x00);
-        set_sprite_tile(1,0x00);
-        set_sprite_tile(2,0x02);
-        set_sprite_tile(3,0x03);
-        set_sprite_tile(4,0x00);
-        set_sprite_tile(5,0x10);
-        set_sprite_tile(6,0x11);
-        set_sprite_tile(7,0x00);
-        set_sprite_tile(8,0x20);
-        set_sprite_tile(9,0x21);
-        break;
-
-        case 9:
-        set_sprite_prop(0,0);
-        set_sprite_prop(1,0);
-        set_sprite_prop(2,0);
-        set_sprite_prop(3,0);
-        set_sprite_prop(4,0);
-        set_sprite_prop(5,0);
-        set_sprite_prop(6,0);
-        set_sprite_prop(7,0);
-        set_sprite_prop(8,0);
-        set_sprite_prop(9,0);
-        set_sprite_tile(0,0x00);
-        set_sprite_tile(1,0x00);
         set_sprite_tile(2,0x3C);
         set_sprite_tile(3,0x3D);
         set_sprite_tile(4,0x6B);
@@ -278,4 +209,19 @@ void Anim_Mario_Small_Win(int animstate) BANKED
         EndofLevel = 1;
         break;
     }
+}
+
+void Anim_Mario_Small_Front(void) BANKED
+{
+    set_sprite_tile(0,0x00);
+    set_sprite_tile(1,0x00);
+    set_sprite_tile(2,0x3A);
+    set_sprite_tile(3,0x3B);
+    set_sprite_tile(4,0x00);
+    set_sprite_tile(5,0x4A);
+    set_sprite_tile(6,0x4B);
+    set_sprite_tile(7,0x00);
+    set_sprite_tile(8,0x5A);
+    set_sprite_tile(9,0x5B);
+
 }

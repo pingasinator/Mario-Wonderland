@@ -181,106 +181,46 @@ void Anim_Mario_Fire_Jump_Run(void) BANKED
 
 void Anim_Mario_Fire_Win(int animstate) BANKED
 {
+    Mario_dir = 1;
+    set_sprite_prop(0,0);
+    set_sprite_prop(1,0);
+    set_sprite_prop(2,0);
+    set_sprite_prop(3,0);
+    set_sprite_prop(4,0);
+    set_sprite_prop(5,0);
+    set_sprite_prop(6,0);
+    set_sprite_prop(7,0);
+    set_sprite_prop(8,0);
+    set_sprite_prop(9,0);
+    set_sprite_tile(0,0x4A);
+    set_sprite_tile(1,0x4B);
+    set_sprite_tile(2,0x5A);
+    set_sprite_tile(3,0x5B);
+    set_sprite_tile(4,0x69);
+    set_sprite_tile(5,0x6A);
+    set_sprite_tile(6,0x6B);
+    set_sprite_tile(7,0x00);
+    set_sprite_tile(8,0x7A);
+    set_sprite_tile(9,0x7B);
+    
     switch(animstate)
     {
-        case 0:
-        Mario_dir = 1;
-        set_sprite_prop(0,0);
-        set_sprite_prop(1,0);
-        set_sprite_prop(2,0);
-        set_sprite_prop(3,0);
-        set_sprite_prop(4,0);
-        set_sprite_prop(5,0);
-        set_sprite_prop(6,0);
-        set_sprite_prop(7,0);
-        set_sprite_prop(8,0);
-        set_sprite_prop(9,0);
-        set_sprite_tile(0,0x0A);
-        set_sprite_tile(1,0x0B);
-        set_sprite_tile(2,0x10);
-        set_sprite_tile(3,0x11);
-        set_sprite_tile(4,0x00);
-        set_sprite_tile(5,0x20);
-        set_sprite_tile(6,0x21);
-        set_sprite_tile(7,0x00);
-        set_sprite_tile(8,0x30);
-        set_sprite_tile(9,0x31);
-        break;
-
-        case 3:
-        Mario_dir = 1;
-        set_sprite_prop(0,0);
-        set_sprite_prop(1,0);
-        set_sprite_prop(2,0);
-        set_sprite_prop(3,0);
-        set_sprite_prop(4,0);
-        set_sprite_prop(5,0);
-        set_sprite_prop(6,0);
-        set_sprite_prop(7,0);
-        set_sprite_prop(8,0);
-        set_sprite_prop(9,0);
-        set_sprite_tile(0,0x4E);
-        set_sprite_tile(1,0x4F);
-        set_sprite_tile(2,0x5E);
-        set_sprite_tile(3,0x5F);
-        set_sprite_tile(4,0x00);
-        set_sprite_tile(5,0x6E);
-        set_sprite_tile(6,0x6F);
-        set_sprite_tile(7,0x00);
-        set_sprite_tile(8,0x7E);
-        set_sprite_tile(9,0x7F);
-        break;
-
-        case 6:
-        Mario_dir = -1;
-        set_sprite_prop(0,0);
-        set_sprite_prop(1,0);
-        set_sprite_prop(2,0);
-        set_sprite_prop(3,0);
-        set_sprite_prop(4,0);
-        set_sprite_prop(5,0);
-        set_sprite_prop(6,0);
-        set_sprite_prop(7,0);
-        set_sprite_prop(8,0);
-        set_sprite_prop(9,0);
-        set_sprite_tile(0,0x0A);
-        set_sprite_tile(1,0x0B);
-        set_sprite_tile(2,0x10);
-        set_sprite_tile(3,0x11);
-        set_sprite_tile(4,0x00);
-        set_sprite_tile(5,0x20);
-        set_sprite_tile(6,0x21);
-        set_sprite_tile(7,0x00);
-        set_sprite_tile(8,0x30);
-        set_sprite_tile(9,0x31);
-        break;
-
-        case 9:
-        Mario_dir = 1;
-        set_sprite_prop(0,0);
-        set_sprite_prop(1,0);
-        set_sprite_prop(2,0);
-        set_sprite_prop(3,0);
-        set_sprite_prop(4,0);
-        set_sprite_prop(5,0);
-        set_sprite_prop(6,0);
-        set_sprite_prop(7,0);
-        set_sprite_prop(8,0);
-        set_sprite_prop(9,0);
-        set_sprite_tile(0,0x4A);
-        set_sprite_tile(1,0x4B);
-        set_sprite_tile(2,0x5A);
-        set_sprite_tile(3,0x5B);
-        set_sprite_tile(4,0x69);
-        set_sprite_tile(5,0x6A);
-        set_sprite_tile(6,0x6B);
-        set_sprite_tile(7,0x00);
-        set_sprite_tile(8,0x7A);
-        set_sprite_tile(9,0x7B);
-        break;
-
         case 60:
         EndofLevel = 1;
         break;
     }
+}
+
+void Anim_Mario_Fire_Front(void) BANKED
+{
+    set_sprite_tile(0,0x4C);
+    set_sprite_tile(1,0x4D);
+    set_sprite_tile(2,0x5C);
+    set_sprite_tile(3,0x5D);
+    set_sprite_tile(4,0x00);
+    set_sprite_tile(5,0x6C);
+    set_sprite_tile(6,0x6D);
+    set_sprite_tile(7,0x00);
+    set_sprite_tile(8,0x7C);
+    set_sprite_tile(9,0x7D);
 }

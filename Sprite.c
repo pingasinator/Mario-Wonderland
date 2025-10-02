@@ -132,7 +132,8 @@ void Set_Tile_Palette(int i) BANKED
         case 1:
         Current_Background_Palette = Underground_Background_Palette;
         Current_Ground_Palette = Underground_Ground_Palette;
-        set_bkg_data(0x0,18,S_Underground_Ground);
+        set_bkg_data(0x00,93,S_Underground_Ground);
+        BGP_REG = 0xC6;
         break;
 
         case 2:

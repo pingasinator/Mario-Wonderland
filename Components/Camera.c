@@ -15,8 +15,7 @@ extern Scene CurrentScene;
 
 extern unsigned char Tilemap[];
 
-char c[20] = 
-{
+char c[] = {
     0xF0,0xFF,0xF4,0xF4,0x00,0xF1,0xFF,0xF4,0xF4,0x00,0xF3,0xF3,0xF3,0xF3,0xF3,0x00,0xFE,0xF4,0xF4,0xF4
 };
 
@@ -49,11 +48,6 @@ void Set_Camera_Position(int x,int y)BANKED
     Camera.x = x;
     Camera.y = y;
     move_bkg(Camera.x,Camera.y);
-}
-
-void Update_Camera(void)BANKED
-{
-
 }
 
 void MoveCamera(int x,int y)BANKED

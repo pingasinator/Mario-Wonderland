@@ -1,3 +1,4 @@
+#pragma bank 2
 
 extern unsigned char T_null[];
 extern unsigned char T_Grey_Light[];

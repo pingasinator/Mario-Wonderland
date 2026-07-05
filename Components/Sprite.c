@@ -131,7 +131,7 @@ int Remove_NonMarioObject_Sprite(int place,int size) BANKED
  * 1 = Underground
  * 2 =
  * 3 =
- * 4 =
+ * 4 = Castle
  * 
 **/
 void Set_Tile_Palette(int i) BANKED
@@ -164,7 +164,7 @@ void Set_Tile_Palette(int i) BANKED
         case 4:
         Current_Background_Palette = Castle_Background_Palette;
         Current_Ground_Palette = Castle_Ground_Palette;
-        set_bkg_data(0x00,93,S_Castle_Ground);
+        set_bkg_data(0x00,103,S_Castle_Ground);
         BGP_REG = 0xE1;
         break;
 

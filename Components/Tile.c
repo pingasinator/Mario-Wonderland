@@ -76,7 +76,6 @@ void Tile_Mario_Interact(unsigned char Tile,int X,int Y,Vector2 velocity,int sid
                 if (allInputsPressed[Joy_Button_RIGHT] && sideY == 0 && sideX == 1 && Mario_State != Mario_State_EnterPipe)
                 {
                     Level_Set_Scene(Tile == 0xA9 ? 1 : 0);
-                    Mario_Hitbox.position.y -= 8;
                     Mario_pipeDir.x = 1;
                     Mario_pipeDir.y = 0;
                     Mario_State = Mario_State_EnterPipe;
@@ -90,6 +89,10 @@ void Tile_Mario_Interact(unsigned char Tile,int X,int Y,Vector2 velocity,int sid
         {
             case 0:
             Tile_Overworld_Mario_Interact(Tile);
+            break;
+
+            case 4:
+            Tile_Castle_Mario_Interact(Tile);
             break;
         }
     }
@@ -115,4 +118,9 @@ void Tile_Overworld_Mario_Interact(unsigned char Tile) BANKED
         Mario_Hit();
         break;
     }
+}
+
+void Tile_Castle_Mario_Interact(unsigned char Tile) BANKED
+{
+
 }

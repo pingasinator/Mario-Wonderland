@@ -58,6 +58,9 @@ extern  unsigned char T_Castle_Background_5[];
 extern  unsigned char T_Castle_Background_6[];
 extern  unsigned char T_Castle_Background_7[];
 extern  unsigned char T_Castle_Background_8[];
+extern  unsigned char T_Castle_Background_9[];
+extern  unsigned char T_Castle_Background_10[];
+extern  unsigned char T_Castle_Background_11[];
 
 const unsigned char *Castle_Ground_Palette[] = 
 {
@@ -71,5 +74,5 @@ const unsigned char *Castle_Ground_Palette[] =
 const unsigned char *Castle_Background_Palette[] = 
 {
     T_null,T_Grey_Light,T_Grey_Dark,T_Black,T_Coin,T_Hidden_Coin,T_Lava_Top,T_Grey_Dark,T_Water_Top,T_Grey_Light,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,T_Castle_Background_0,
-    T_Castle_Background_1,T_Castle_Background_2,T_Castle_Background_3,T_Castle_Background_4,T_Castle_Background_5,T_Castle_Background_6,T_Castle_Background_7,T_Castle_Background_8
+    T_Castle_Background_1,T_Castle_Background_2,T_Castle_Background_3,T_Castle_Background_4,T_Castle_Background_5,T_Castle_Background_6,T_Castle_Background_7,T_Castle_Background_8,T_Castle_Background_9,T_Castle_Background_10,T_Castle_Background_11
 };

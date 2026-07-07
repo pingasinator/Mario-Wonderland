@@ -100,7 +100,7 @@ int Add_Sprite(int size) BANKED
  **/
 int Remove_Sprite(int Place,int size) BANKED
 {
-    if(size < 40){
+    if(size <= 40){
         for(int i = 0; i < size ;i++)
         {
             Sprites[Place + i] = 0;

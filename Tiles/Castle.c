@@ -1,4 +1,4 @@
-#pragma bank 2
+#pragma bank 5
 
 const unsigned char T_Castle_Ground_0[] = {0x34,0x35,0x38,0x39};
 

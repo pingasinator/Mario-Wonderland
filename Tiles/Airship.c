@@ -1,4 +1,4 @@
-#pragma bank 2
+#pragma bank 5
 
 const unsigned char T_Airship_Ground_0[] = {0x00,0x00,0x00,0x00};
 

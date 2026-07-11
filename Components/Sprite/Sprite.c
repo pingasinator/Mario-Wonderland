@@ -1,14 +1,12 @@
-#include "../include/Sprite.h"
-#include "../include/Level.h"
-#include "../include/Animations/Mario/Mario.h"
-#include "../include/Animations/Enemies.h"
+#include "../../include/Sprite.h"
+#include "../../include/Level.h"
+#include "../../include/Animations/Mario/Mario.h"
+#include "../../include/Animations/Enemies.h"
 #include <gb/gb.h>
 
 #pragma bank 2
 
-unsigned char current_Palette_Index;
-unsigned char **Current_Ground_Palette;
-unsigned char **Current_Background_Palette;
+
 
 extern unsigned char S_Items[];
 extern unsigned char S_FireBall_H[];
@@ -36,10 +34,7 @@ extern unsigned char S_Koopa_Shell_2[];
 extern unsigned char S_Koopa_Shell_3[];
 extern unsigned char S_Muncher_0[];
 
-extern unsigned char S_Overworld_Ground[];
-extern unsigned char S_Underground_Ground[];
-extern unsigned char S_Airship_Ground[];
-extern unsigned char S_Castle_Ground[];
+
 
 extern unsigned char S_World_Overworld[];
 extern unsigned char S_World_HUD[];
@@ -49,16 +44,10 @@ extern unsigned char BKG_GBDK[];
 
 extern unsigned char S_HUD[];
 
-extern unsigned char *Overworld_Background_Palette[];
-extern unsigned char *Overworld_Ground_Palette[];
-extern unsigned char *Underground_Background_Palette[];
-extern unsigned char *Underground_Ground_Palette[];
-extern unsigned char *Castle_Ground_Palette[];
-extern unsigned char *Castle_Background_Palette[];
 
-extern Scene CurrentScene;
 
-extern unsigned char Tilemap[];
+
+
 
 extern unsigned char BKG_World_1_Tilemap[];
 
@@ -97,7 +86,7 @@ int Add_Sprite(int size) BANKED
 
 /**
  * removing sprites from the OAM and reseting the positions  
- **/
+**/
 int Remove_Sprite(int Place,int size) BANKED
 {
     if(size <= 40){
@@ -124,123 +113,16 @@ int Remove_NonMarioObject_Sprite(int place,int size) BANKED
     return 0;
 }
 
-/**
- * Change the Level tile palette and BKG color palette in the Vram
- * 
- * 0 = Overworld
- * 1 = Underground
- * 2 =
- * 3 =
- * 4 = Castle
- * 
-**/
-void Set_Tile_Palette(int i) BANKED
-{
-    current_Palette_Index = i;
-    switch(i)
-    {
-        case 0:
-        Current_Background_Palette = Overworld_Background_Palette;
-        Current_Ground_Palette = Overworld_Ground_Palette;
-        set_bkg_data(0x00,110,S_Overworld_Ground);
-        BGP_REG = 0xE1;
-        break;
 
-        case 1:
-        Current_Background_Palette = Underground_Background_Palette;
-        Current_Ground_Palette = Underground_Ground_Palette;
-        set_bkg_data(0x00,93,S_Underground_Ground);
-        BGP_REG = 0xC6;
-        break;
 
-        case 2:
 
-        break;
 
-        case 3:
 
-        break;
 
-        case 4:
-        Current_Background_Palette = Castle_Background_Palette;
-        Current_Ground_Palette = Castle_Ground_Palette;
-        set_bkg_data(0x00,103,S_Castle_Ground);
-        BGP_REG = 0xE1;
-        break;
 
-        case 5:
-
-        break;
-    }
-}
 
 /**
- * returns a tile from the tilemap of the current level
-**/
-unsigned char Get_Tile(int x,int y) BANKED
-{
-    ENABLE_RAM;
-    SWITCH_RAM(2);
-    unsigned char tempTile = Tilemap[x/16 + y/16*CurrentScene.Length];
-    DISABLE_RAM;
-    return tempTile;
-}
-
-void Set_Tile(unsigned char Tile,int x,int y) BANKED
-{
-    ENABLE_RAM;
-    SWITCH_RAM(2);
-    Tilemap[x/16 + y/16*CurrentScene.Length] = Tile;
-    DISABLE_RAM;
-    Display_Tile(Tile,x/16*2,y/16*2);
-}
-
-
-
-void Display_Tile(unsigned char Tile,int x,int y) BANKED
-{
-    x -= 32 * (x / 32);
-    y -= 32 * (y / 32);
-    if(Tile < 0x80)
-    {
-        set_bkg_tile_xy(x,y,Current_Background_Palette[Tile][0]);
-        set_bkg_tile_xy(x + 1,y,Current_Background_Palette[Tile][1]);
-        set_bkg_tile_xy(x,y + 1,Current_Background_Palette[Tile][2]);
-        set_bkg_tile_xy(x + 1,y + 1,Current_Background_Palette[Tile][3]);
-    }else
-    {
-        set_bkg_tile_xy(x,y,Current_Ground_Palette[Tile - 0x80][0]);
-        set_bkg_tile_xy(x + 1,y,Current_Ground_Palette[Tile - 0x80][1]);
-        set_bkg_tile_xy(x,y + 1,Current_Ground_Palette[Tile - 0x80][2]);
-        set_bkg_tile_xy(x + 1,y + 1,Current_Ground_Palette[Tile - 0x80][3]);
-    }
-    
-}
-
-void Tile_Tilmap_display_xy(int x,int y) BANKED
-{
-    unsigned char Tile = Tilemap[x / 16 + y / 16 * CurrentScene.Length];
-    int VramX = (x / 16 - 16 * (x / 16 / 16)) * 2;
-    int VramY = (y / 16 - 16 * (y / 16 / 16)) * 2;
-
-    if(Tile <= 0x80)
-    {
-        set_bkg_tile_xy(VramX,VramY,Current_Background_Palette[Tile][0]);
-        set_bkg_tile_xy(VramX + 1,VramY,Current_Background_Palette[Tile][1]);
-        set_bkg_tile_xy(VramX,VramY + 1,Current_Background_Palette[Tile][2]);
-        set_bkg_tile_xy(VramX + 1,VramY + 1,Current_Background_Palette[Tile][3]);
-    }else
-    {
-        set_bkg_tile_xy(VramX,VramY,Current_Ground_Palette[Tile - 0x80][0]);
-        set_bkg_tile_xy(VramX + 1,VramY,Current_Ground_Palette[Tile - 0x80][1]);
-        set_bkg_tile_xy(VramX,VramY + 1,Current_Ground_Palette[Tile - 0x80][2]);
-        set_bkg_tile_xy(VramX + 1,VramY + 1,Current_Ground_Palette[Tile - 0x80][3]);
-    }
-    
-}
-
-/**
-* 
+* Reset everything in the VRAM and hide the layers
 **/
 void Reset_Vram(void) BANKED
 {
@@ -251,6 +133,9 @@ void Reset_Vram(void) BANKED
     Reset_BKG_Vram();
 }
 
+/*
+* reset the tiles and the OAM
+*/
 void Reset_Sprite_Vram(void) BANKED
 {
     Remove_Sprite(0,40);
@@ -259,6 +144,7 @@ void Reset_Sprite_Vram(void) BANKED
         set_sprite_data(i,1,S_null);
     }
 }
+
 
 void Reset_BKG_Vram(void) BANKED
 {   
@@ -322,6 +208,14 @@ void init_GBDK_Title(void) BANKED
 
 /**
 * set the tiles of mario in the vram from 0x00 to 0x7F
+*
+* @param i select the transformation (
+* 0 = Small Mario,
+* 1 = Great Mario,
+* 2 = Fire Mario,
+* 3 = Racoon Mario,
+* any other values = Small Mario
+* )
 **/
 void Set_Mario_Palette(int i) NONBANKED
 {

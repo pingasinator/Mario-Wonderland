@@ -1,6 +1,6 @@
-#pragma bank 2
+#pragma bank 5
 
-const unsigned char S_Beach_Ground[] = 
+const unsigned char S_Underwater_Ground[] = 
 {
     0x00,0x00,
     0x00,0x00,

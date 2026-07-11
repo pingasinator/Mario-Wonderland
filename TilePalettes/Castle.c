@@ -1,4 +1,4 @@
-#pragma bank 2 
+#pragma bank 5
 
 extern unsigned char T_null[];
 extern unsigned char T_Grey_Light[];
@@ -6,7 +6,6 @@ extern unsigned char T_Grey_Dark[];
 extern unsigned char T_Black[];
 extern unsigned char T_Coin[];
 extern unsigned char T_Hidden_Coin[];
-extern unsigned char T_Lava_Top[];
 extern unsigned char T_Water_Top[];
 extern unsigned char T_End_Background[];
 extern unsigned char T_End_Block_UL[];
@@ -18,18 +17,14 @@ extern unsigned char T_Q_Block[];
 extern unsigned char T_Brick[];
 extern unsigned char T_Alt_Block[];
 extern unsigned char T_Used_Block[];
-extern unsigned char T_Pipe_V_UL[];
-extern unsigned char T_Pipe_V_UR[];
-extern unsigned char T_Pipe_V_ML[];
-extern unsigned char T_Pipe_V_MR[];
-extern unsigned char T_Pipe_V_DL[];
-extern unsigned char T_Pipe_V_DR[];
-extern unsigned char T_Pipe_H_UL[];
-extern unsigned char T_Pipe_H_DL[];
-extern unsigned char T_Pipe_H_MU[];
-extern unsigned char T_Pipe_H_MD[];
-extern unsigned char T_Pipe_H_DR[];
-extern unsigned char T_Pipe_H_UR[];
+extern unsigned char T_Pipe_V_Head_L[];
+extern unsigned char T_Pipe_V_Head_R[];
+extern unsigned char T_Pipe_V_Body_L[];
+extern unsigned char T_Pipe_V_Body_R[];
+extern unsigned char T_Pipe_H_Head_U[];
+extern unsigned char T_Pipe_H_Head_D[];
+extern unsigned char T_Pipe_H_Body_U[];
+extern unsigned char T_Pipe_H_Body_D[];
 
 extern unsigned char T_Castle_Ground_0[];
 extern unsigned char T_Castle_Ground_1[];
@@ -65,14 +60,14 @@ extern  unsigned char T_Castle_Background_11[];
 const unsigned char *Castle_Ground_Palette[] = 
 {
     T_null,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Q_Block,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,T_Brick,
-    T_Alt_Block,T_Used_Block,T_Pipe_V_UL,T_Pipe_V_UR,T_Pipe_V_ML,T_Pipe_V_MR,T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_MU,T_Pipe_H_MD,T_Pipe_H_DR,T_Pipe_H_UR,T_Pipe_V_UL,T_Pipe_V_UR,
-    T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_DR,T_Pipe_H_UR,T_Pipe_V_UL,T_Pipe_V_UR,T_Pipe_V_DL,T_Pipe_V_DR,T_Pipe_H_UL,T_Pipe_H_DL,T_Pipe_H_DR,T_Pipe_H_UR,T_Castle_Ground_0,T_Castle_Ground_1,
+    T_Alt_Block,T_Used_Block,T_Pipe_V_Head_L,T_Pipe_V_Head_R,T_Pipe_V_Body_L,T_Pipe_V_Body_R,T_Pipe_V_Head_L,T_Pipe_V_Head_R,T_Pipe_H_Head_U,T_Pipe_H_Head_D,T_Pipe_H_Body_U,T_Pipe_H_Body_D,T_Pipe_H_Head_D,T_Pipe_H_Head_U,T_Pipe_V_Head_L,T_Pipe_V_Head_R,
+    T_Pipe_V_Head_L,T_Pipe_V_Head_R,T_Pipe_H_Head_U,T_Pipe_H_Head_D,T_Pipe_H_Head_D,T_Pipe_H_Head_U,T_Pipe_V_Head_L,T_Pipe_V_Head_R,T_Pipe_V_Head_L,T_Pipe_V_Head_R,T_Pipe_H_Head_U,T_Pipe_H_Head_D,T_Pipe_H_Head_D,T_Pipe_H_Head_U,T_Castle_Ground_0,T_Castle_Ground_1,
     T_Castle_Ground_2,T_Castle_Ground_3,T_Castle_Ground_4,T_Castle_Ground_5,T_Castle_Ground_6,T_Castle_Ground_7,T_Castle_Ground_8,T_Castle_Ground_9,T_Castle_Ground_10,T_Castle_Ground_11,T_Castle_Ground_12,T_Castle_Ground_13,T_Castle_Ground_14,T_Castle_Ground_15,
     T_Castle_Ground_16
 };
 
 const unsigned char *Castle_Background_Palette[] = 
 {
-    T_null,T_Grey_Light,T_Grey_Dark,T_Black,T_Coin,T_Hidden_Coin,T_Lava_Top,T_Grey_Dark,T_Water_Top,T_Grey_Light,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,T_Castle_Background_0,
+    T_null,T_Grey_Light,T_Grey_Dark,T_Black,T_Coin,T_Hidden_Coin,T_Grey_Dark,T_Water_Top,T_Grey_Light,T_End_Background,T_End_Block_UL,T_End_Block_UR,T_End_Block_DL,T_End_Block_DR,T_Castle_Background_0,
     T_Castle_Background_1,T_Castle_Background_2,T_Castle_Background_3,T_Castle_Background_4,T_Castle_Background_5,T_Castle_Background_6,T_Castle_Background_7,T_Castle_Background_8,T_Castle_Background_9,T_Castle_Background_10,T_Castle_Background_11
 };

@@ -1,4 +1,4 @@
-#pragma bank 2
+#pragma bank 5
 
 const unsigned char S_Volcano_Ground[] = 
 {

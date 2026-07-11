@@ -7,7 +7,7 @@
 
 #include <gb/gb.h>
 
-#pragma bank 2
+#pragma bank 5
 
 extern unsigned char allInputsPressed[];
 extern unsigned char current_Palette_Index;

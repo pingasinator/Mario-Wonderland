@@ -89,10 +89,14 @@ void Level_Load_Scene(int SelectedScene)
     init_HUD_Vram();
     currentScene_Size = CurrentScene.Length * CurrentScene.Width;
     Set_Tile_Palette(CurrentScene.Palette);
+    Set_Anim_Palette(CurrentScene.Palette);
 
+    // copy the tilemap from the rom into the ram
     memcpy(Tilemap,CurrentScene.Tilemap,sizeof(uint8_t) * currentScene_Size);
     init_Mario(CurrentScene.Spawnpoints[spawnpointIndex].Point.x,CurrentScene.Spawnpoints[spawnpointIndex].Point.y);
     Set_Camera_Position(CurrentScene.Spawnpoints[spawnpointIndex].Camera.x,CurrentScene.Spawnpoints[spawnpointIndex].Camera.y);
+
+    // Loading the Background
     for(int y = 0;y < 16;y++)
     {
         for(int x = 0;x < 16;x++)

@@ -11,10 +11,20 @@ char Lava_animstate = 0;
 
 extern char Time;
 
-extern unsigned char S_Coin_0[];
-extern unsigned char S_Coin_1[];
-extern unsigned char S_Coin_2[];
-extern unsigned char S_Coin_3[];
+unsigned char *S_Coin_0;
+unsigned char *S_Coin_1;
+unsigned char *S_Coin_2;
+unsigned char *S_Coin_3;
+
+extern unsigned char S_Coin_Overworld_0[];
+extern unsigned char S_Coin_Overworld_1[];
+extern unsigned char S_Coin_Overworld_2[];
+extern unsigned char S_Coin_Overworld_3[];
+
+extern unsigned char S_Coin_UnderGround_0[];
+extern unsigned char S_Coin_UnderGround_1[];
+extern unsigned char S_Coin_UnderGround_2[];
+extern unsigned char S_Coin_UnderGround_3[];
 
 extern unsigned char S_Lava_0[];
 extern unsigned char S_Lava_1[];
@@ -31,9 +41,48 @@ extern unsigned char S_Water_1[];
 extern unsigned char S_Water_2[];
 extern unsigned char S_Water_3[];
 
+/**
+ * 
+ * @param i
+**/
+void Set_Anim_Palette(int i)BANKED{
+    switch(i){
+        case 0:
+            S_Coin_0 = S_Coin_Overworld_0;
+            S_Coin_1 = S_Coin_Overworld_1;
+            S_Coin_2 = S_Coin_Overworld_2;
+            S_Coin_3 = S_Coin_Overworld_3;
+        break;
+
+        case 1:
+            S_Coin_0 = S_Coin_UnderGround_0;
+            S_Coin_1 = S_Coin_UnderGround_1;
+            S_Coin_2 = S_Coin_UnderGround_2;
+            S_Coin_3 = S_Coin_UnderGround_3;
+        break;
+
+        case 2:
+            S_Coin_0 = S_Coin_Overworld_0;
+            S_Coin_1 = S_Coin_Overworld_1;
+            S_Coin_2 = S_Coin_Overworld_2;
+            S_Coin_3 = S_Coin_Overworld_3;
+        break;
+
+        case 3:
+            S_Coin_0 = S_Coin_Overworld_0;
+            S_Coin_1 = S_Coin_Overworld_1;
+            S_Coin_2 = S_Coin_Overworld_2;
+            S_Coin_3 = S_Coin_Overworld_3;
+        break;
+    }
+}
+
+/**
+ * Update the animations in the background
+**/
 void Anim_BKG_Update(void) BANKED
 {
-
+    Anim_BKG_Coin();
 }
 
 void Anim_BKG_Coin(void)BANKED
@@ -42,19 +91,19 @@ void Anim_BKG_Coin(void)BANKED
     switch (coin_animstate)
     {
         case 0:
-        set_bkg_data(0x11,4,S_Coin_0);
+        set_bkg_data(0x14,4,S_Coin_0);
         break;
 
         case 5:
-        set_bkg_data(0x11,4,S_Coin_1);
+        set_bkg_data(0x14,4,S_Coin_1);
         break;
 
         case 10:
-        set_bkg_data(0x11,4,S_Coin_2);
+        set_bkg_data(0x14,4,S_Coin_2);
         break;
        
         case 15:
-        set_bkg_data(0x11,4,S_Coin_3);
+        set_bkg_data(0x14,4,S_Coin_3);
         break;
     }
 

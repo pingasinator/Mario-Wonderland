@@ -9,7 +9,7 @@ const Level Level_1_1 = {.Scenes=Level_1_1_Scenes,.StartScene=0};
 
 const Scene Level_1_1_Scenes[] = 
 {
-    {.LevelID=1,.Tilemap=Level_1_1_Tilemap,.Spawnpoints=Level_1_1_Spawnpoints,.Enemies=Level_1_1_Enemies,.EnemiesCount=11,.Length=192,.Width=32,.Endblock={.hitbox={.pixelsize={.x=8,.y=8},.pixeloffset={.x=-8,.y=-8},.position={.x=16 * 187 + 8,.y=16 * 28 - 8}}},.Palette=0},
+    {.LevelID=1,.Tilemap=Level_1_1_Tilemap,.Spawnpoints=Level_1_1_Spawnpoints,.Enemies=Level_1_1_Enemies,.EnemiesCount=11,.Length=192,.Width=32,.Endblock={.hitbox={.pixelsize={.x=8,.y=8},.pixeloffset={.x=-8,.y=-8},.position={.x=16 * 187 + 8,.y=16 * 28 - 8}}},.Palette=7},
     {.LevelID=1,.Tilemap=Level_1_1_UnderGround,.Spawnpoints=Level_1_1_Spawnpoints,.Enemies=Level_1_1_Underground_Enemies,.EnemiesCount=2,.Length=48,.Width=16,.Endblock={.hitbox={.pixelsize={.x=8,.y=8},.pixeloffset={.x=-8,.y=-8},.position={.x=16 * 187 + 8,.y=16 * 28 - 8}}},.Palette=1}
 };
 

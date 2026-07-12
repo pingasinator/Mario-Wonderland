@@ -109,9 +109,11 @@ void Set_Tile_Palette(int i) BANKED
         break;
 
         case 7:
+        Current_Background_Palette = Sky_Background_Palette;
+        Current_Ground_Palette = Sky_Ground_Palette;
         set_bkg_data(0x00,54,S_Default_0);
         set_bkg_data(0x36,62,S_Sky_Ground);
-        BGP_REG = 0xC6;
+        BGP_REG = 0xE1;
         break;
 
         case 8:
